@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -34,7 +35,7 @@
         .phase-2-title { color: var(--phase2); border-right: 5px solid var(--phase2); }
         .phase-3-title { color: var(--phase3); border-right: 5px solid var(--phase3); }
 
-        /* 🟥 شبكة الكروت المربعة */
+        /* 🟥 شبكة الكروت */
         .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
         .day-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 300px; transition: 0.3s; }
         .day-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
@@ -115,14 +116,18 @@
     let campData = {};
     let syncInterval; 
     let isSaving = false; 
+    let lockServerUpdates = false; // قفل أمان لمنع التحديثات الهابطة أثناء التعديل
 
     async function loadData() {
-        if (isSaving) return; 
+        // لو بنسيف أو القفل الزمني شغال، ارفض تماماً إنك تجيب داتا قديمة من السيرفر تنزل فوق داتاتنا الحالية
+        if (isSaving || lockServerUpdates) return; 
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
-            campData = json.record || {};
-            renderDashboard();
+            if(json.record) {
+                campData = json.record;
+                renderDashboard();
+            }
         } catch (e) { 
             console.log("عطل شبكة مؤقت..."); 
         }
@@ -130,25 +135,34 @@
 
     async function saveToServer() {
         isSaving = true;
+        lockServerUpdates = true; // تفعيل القفل فوراً
         clearInterval(syncInterval); 
         
         try {
-            await fetch(BIN_URL, {
+            const res = await fetch(BIN_URL, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                 body: JSON.stringify(campData)
             });
+            await res.json(); // ننتظر السيرفر يخلص معالجة تماماً
         } catch(e) {
             console.log("خطأ أثناء الحفظ");
         }
         
         isSaving = false;
-        startSync(); 
+        
+        // فك القفل الزمني بعد 10 ثواني كاملة للتأكد إن السيرفر استقر بنسبة 100% بالداتا الجديدة
+        setTimeout(() => {
+            lockServerUpdates = false;
+            startSync();
+        }, 10000);
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        syncInterval = setInterval(loadData, 5000); 
+        if(!lockServerUpdates) {
+            syncInterval = setInterval(loadData, 5000); 
+        }
     }
 
     function renderDashboard() {
@@ -158,7 +172,6 @@
         
         p1Container.innerHTML = ''; p2Container.innerHTML = ''; p3Container.innerHTML = '';
         
-        // 💡 التعديل السحري هنا: المتغير بقى بيتعرف ويقول "بسم الله" من جديد كل ما الفانكشن تترسم
         let startDate = new Date('2026-05-20');
         const endDate = new Date('2026-06-21');
         let dayCounter = 1; let tScore = 0; let hScore = 0;
@@ -211,9 +224,12 @@
         const input = document.getElementById(`input-${dateStr}`);
         if (!input.value.trim()) return;
         
+        // 1. أضف محلياً فوراً عشان اليوزر يشوفها في نفس اللحظة
         campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
         input.value = '';
-        renderDashboard(); // هنا الكود هيعيد الرسم من أول يوم 20 مايو بنجاح!
+        renderDashboard(); 
+        
+        // 2. ارفع للسيرفر وأنت مطمن إن القفل شغال والداتا مش هتتمسح
         await saveToServer();
     }
 
@@ -249,4 +265,3 @@
 </script>
 </body>
 </html>
-
