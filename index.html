@@ -1,319 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حلبة تحدي الثانوية العامة</title>
+    <title>حلبة التحدي والمنافسة</title>
     <style>
-        body {
-            background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #f8fafc; margin: 0; padding: 0;
-        }
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
-            padding: 15px 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .brand span { color: #f59e0b; font-weight: 800; }
-        .links a { color: #94a3b8; text-decoration: none; margin-right: 20px; font-weight: 700; }
-        .links a.active { color: #6366f1; }
-        
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-        
-        .vs-board {
-            display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px;
-            align-items: center; margin-bottom: 30px;
-        }
-        .score-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
-            backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s;
-        }
-        .score-card.tareq { border-bottom: 5px solid #10b981; }
-        .score-card.hazem { border-bottom: 5px solid #6366f1; }
-        .score-num { font-size: 2.8rem; font-weight: 900; margin-top: 5px; }
-        .vs-circle { background: #f59e0b; color: #0f172a; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; box-shadow: 0 0 20px #f59e0b; }
-        .leader-text { font-size: 0.9rem; color: #f59e0b; font-weight: bold; margin-top: 5px; display: block; }
-
-        .card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
-            backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 25px;
-        }
-        .input-group { display: flex; gap: 10px; margin-top: 15px; }
-        .input-group input { flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; font-size: 1rem; }
-        .input-group button { background: #6366f1; border: none; padding: 0 25px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; overflow: hidden; border-radius: 12px; }
-        th, td { padding: 14px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        th { background: #1e293b; color: #94a3b8; font-weight: bold; }
-        td.task-title { text-align: right; max-width: 300px; }
-        tr:hover { background: rgba(255,255,255,0.02); }
-        
-        .check-btn { background: #334155; border: 2px solid #475569; color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; width: 140px; }
-        .check-btn.done-tareq { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
-        .check-btn.done-hazem { background: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
-        
-        .delete-btn { color: #ef4444; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
-        .sync-loader { font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 10px; }
-        .creator-tag { font-size: 0.7rem; color: #64748b; display: block; margin-top: 2px; }
-        .reset-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 0.8rem; }
+        body { font-family: sans-serif; background: #0f172a; color: white; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: auto; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+        input { width: 60%; padding: 10px; border-radius: 8px; border: none; }
+        button { padding: 10px 20px; border-radius: 8px; border: none; background: #6366f1; color: white; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e293b; border-radius: 15px; overflow: hidden; }
+        th, td { padding: 15px; border-bottom: 1px solid #334155; }
+        .done { background: #10b981 !important; }
+        .btn-status { width: 100px; padding: 5px; background: #475569; color: white; border: none; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="brand">🚀 حلبة تحدي الثانوية العامة | مرحباً <span id="welcomeUser">..</span></div>
-        <div class="links">
-            <a href="index.html" class="active">🏠 الجدول والمنافسة</a>
-            <a href="meet.html">🎥 العداد المشترك والميت</a>
-            <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <!-- 🏆 العداد الإجمالي للمنافسة الحية -->
-        <div class="vs-board">
-            <div class="score-card tareq" id="card-طارق">
-                <h3 style="margin:0; color:#10b981;">🛠️ طارق</h3>
-                <div class="score-num" id="tareqScoreDisplay">00</div>
-                <span class="leader-text" id="lead-طارق"></span>
-            </div>
-            <div class="vs-circle">VS</div>
-            <div class="score-card hazem" id="card-حازم">
-                <h3 style="margin:0; color:#6366f1;">🩺 حازم</h3>
-                <div class="score-num" id="hazemScoreDisplay">00</div>
-                <span class="leader-text" id="lead-حازم"></span>
-            </div>
-        </div>
-
-        <div class="sync-loader" id="syncStatus">جاري فحص المستودع المشترك.. ⏳</div>
-
-        <!-- خانة إضافة مادة -->
-        <div class="card">
-            <h2 style="margin-top:0; color:#f59e0b;">➕ إضافة درس أو شابتر جديد في التحدي الموحد</h2>
-            <div class="input-group">
-                <input type="text" id="subjectName" placeholder="مثلاً: فيزياء - الفصل الأول (توصيل المقاومات)..." onkeypress="if(event.key==='Enter') addSubject()">
-                <button onclick="addSubject()">إضافة للجدول الموحد 🚀</button>
-            </div>
-        </div>
-
-        <!-- الجدول الأسطوري المشترك بمفاتيح أمان -->
-        <div class="card">
-            <h2 style="margin-top:0;">📋 جدول الفرم والمراقبة الحية</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="text-align: right;">المهمة / الدرس</th>
-                        <th>إنجاز طارق 🛠️</th>
-                        <th>إنجاز حازم 🩺</th>
-                        <th>حذف</th>
-                    </tr>
-                </thead>
-                <tbody id="subjectsTableBody">
-                    <!-- الصفوف هتنزل هنا لايف من السيرفر -->
-                </tbody>
-            </table>
-            
-            <!-- زرار إصلاح وتصفير السيرفر -->
-            <button class="reset-btn" onclick="resetServerDatabase()">⚙️ إعادة ضبط السيرفر (اضغط هنا لو المواد مش بتنزل)</button>
-        </div>
+<div class="container">
+    <h2>أهلاً بك يا <span id="userName">..</span></h2>
+    <div class="card">
+        <input type="text" id="taskInput" placeholder="اسم المادة الجديدة...">
+        <button onclick="addTask()">إضافة للمستودع</button>
     </div>
 
-    <script>
-        if (!localStorage.getItem('currentUser')) { window.location.href = "login.html"; }
-        const rawUser = localStorage.getItem('currentUser') || "طارق 🛠️";
-        const myName = (rawUser.includes("طارق") || rawUser.includes("طارq")) ? "طارق" : "حازم";
-        document.getElementById('welcomeUser').innerText = myName;
+    <table>
+        <thead>
+            <tr>
+                <th>المادة</th>
+                <th>إنجاز طارق</th>
+                <th>إنجاز حازم</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
 
-        const BIN_URL = "https://api.jsonbin.io/v3/b/664ec5b3e41b4d34e4fa4411";
-        const API_KEY = "$2b$10$W7bO4S.Vptn6hJUnm/VTeOWeWb2P.qF1fL4UWhpOfb5D8IlyD36wW";
+<script>
+    const API_URL = "https://sheetdb.io/api/v1/cbzh9fqp3s9o4";
+    const currentUser = localStorage.getItem('currentUser') || "طارق"; // تأكد إنك مظبط ده في صفحة اللوجين
+    document.getElementById('userName').innerText = currentUser;
 
-        let serverData = { tasks: [], timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo" }, chat: [], lastSeen: {}, diary: { tareq: [], hazem: [] } };
-        let isUpdating = false;
+    async function fetchData() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        renderTable(data);
+    }
 
-        function fetchData() {
-            if (isUpdating) return;
-            fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
-            .then(res => res.json())
-            .then(data => {
-                if (data && !isUpdating) {
-                    serverData = data;
-                    serverData.tasks = data.tasks || [];
-                    renderTableAndScores();
-                    document.getElementById('syncStatus').innerText = "الجدول متزامن لايف دقيقة بدقيقة 🟢";
-                }
-            })
-            .catch(e => { document.getElementById('syncStatus').innerText = "مشكلة في الاتصال بالسيرفر.. 🔴"; });
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${item.المادة}</td>
+                    <td><button class="btn-status ${item.إنجاز_طارق === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_طارق', '${item.المادة}')">${item.إنجاز_طارق === 'TRUE' ? '✅ تم' : '❌ لا'}</button></td>
+                    <td><button class="btn-status ${item.إنجاز_حازم === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_حازم', '${item.المادة}')">${item.إنجاز_حازم === 'TRUE' ? '✅ تم' : '❌ لا'}</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    async function toggle(column, taskName) {
+        // قفل أمان: طارق ميعلمش لحازم والعكس
+        const myName = currentUser.includes("طارق") ? "إنجاز_طارق" : "إنجاز_حازم";
+        if(column !== myName) {
+            alert("ممنوع تلمس خانة زميلك!");
+            return;
         }
 
-        // 🛠️ دالة إصلاح وتصفير السيرفر (اضغط عليها مرة واحدة لو مهنج)
-        function resetServerDatabase() {
-            if (!confirm("هل تريد إعادة تهيئة السيرفر لحل مشكلة الإضافة؟ (هيمسح المواد التجريبية القديمة فقط)")) return;
-            isUpdating = true;
-            
-            // هيكل البيانات الجديد والنظيف تماماً
-            const freshStructure = {
-                tasks: [],
-                timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false, type: "25" },
-                chat: [],
-                lastSeen: {},
-                diary: { tareq: [], hazem: [], lastResetDate: "" }
-            };
+        // جلب الحالة الحالية
+        const res = await fetch(`${API_URL}/المادة/${taskName}`);
+        const data = await res.json();
+        const newState = data[0][column] === 'TRUE' ? 'FALSE' : 'TRUE';
 
-            fetch(BIN_URL, {
-                method: 'PUT',
-                headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-                body: JSON.stringify(freshStructure)
-            })
-            .then(() => {
-                serverData = freshStructure;
-                isUpdating = false;
-                alert("✅ تم تصفير السيرفر وإصلاحه! جرب ضيف مادة دلوقتي هتشتغل طلقة!");
-                fetchData();
-            })
-            .catch(e => { isUpdating = false; alert("فشلت التهيئة، جرب تاني."); });
-        }
+        await fetch(`${API_URL}/المادة/${taskName}`, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ [column]: newState })
+        });
+        fetchData();
+    }
 
-        function addSubject() {
-            const nameInput = document.getElementById('subjectName');
-            const name = nameInput.value.trim();
-            if (!name) return;
+    async function addTask() {
+        const task = document.getElementById('taskInput').value;
+        if(!task) return;
+        await fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ "المادة": task, "إنجاز_طارق": "FALSE", "إنجاز_حازم": "FALSE" })
+        });
+        document.getElementById('taskInput').value = '';
+        fetchData();
+    }
 
-            isUpdating = true;
-            document.getElementById('syncStatus').innerText = "جاري الإضافة على السيرفر.. ⏳";
-
-            // حماية للتأكد من وجود مصفوفة الـ tasks
-            serverData.tasks = serverData.tasks || [];
-
-            serverData.tasks.push({
-                id: "id_" + Date.now() + "_" + Math.floor(Math.random()*1000),
-                title: name,
-                creator: myName,
-                tareqDone: false,
-                hazemDone: false
-            });
-
-            pushToCloud(() => {
-                nameInput.value = '';
-                isUpdating = false;
-                fetchData();
-            });
-        }
-
-        function toggleTaskStatus(id, targetUser) {
-            if (targetUser !== myName) {
-                alert(`🚨 عيب الغش يا بطل! متقدرش تقيم أو تعلّم لـ ${targetUser}! كل واحد يعلم في خانته بنفسه! 🛑😉`);
-                return;
-            }
-
-            isUpdating = true;
-            const task = serverData.tasks.find(t => t.id === id);
-            
-            if (task) {
-                if (targetUser === "طارق") task.tareqDone = !task.tareqDone;
-                if (targetUser === "حازم") task.hazemDone = !task.hazemDone;
-            }
-
-            pushToCloud(() => {
-                isUpdating = false;
-                fetchData();
-            });
-        }
-
-        function deleteSubject(id) {
-            if(!confirm("⚠️ مسح الدرس ده هيشيله نهائياً من عندك ومن عند زميلك. متأكد؟")) return;
-            isUpdating = true;
-            serverData.tasks = serverData.tasks.filter(t => t.id !== id);
-
-            pushToCloud(() => {
-                isUpdating = false;
-                fetchData();
-            });
-        }
-
-        function renderTableAndScores() {
-            const tbody = document.getElementById('subjectsTableBody');
-            tbody.innerHTML = '';
-
-            let totalTareqScore = 0;
-            let totalHazemScore = 0;
-            const tasksList = serverData.tasks || [];
-
-            tasksList.forEach(task => {
-                if (task.tareqDone === undefined) task.tareqDone = false;
-                if (task.hazemDone === undefined) task.hazemDone = false;
-
-                if(task.tareqDone) totalTareqScore++;
-                if(task.hazemDone) totalHazemScore++;
-
-                const tareqBtnClass = task.tareqDone ? "check-btn done-tareq" : "check-btn";
-                const tareqText = task.tareqDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
-
-                const hazemBtnClass = task.hazemDone ? "check-btn done-hazem" : "check-btn";
-                const hazemText = task.hazemDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
-
-                const titleStyle = (task.tareqDone && task.hazemDone) 
-                    ? 'text-decoration: line-through; color: #64748b; font-weight: normal;' 
-                    : 'font-weight: bold;';
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="task-title" style="${titleStyle}">
-                            ${task.title}
-                            <span class="creator-tag">مُضاف بواسطة: ${task.creator}</span>
-                        </td>
-                        <td>
-                            <button class="${tareqBtnClass}" onclick="toggleTaskStatus('${task.id}', 'طارق')">${tareqText}</button>
-                        </td>
-                        <td>
-                            <button class="${hazemBtnClass}" onclick="toggleTaskStatus('${task.id}', 'حازم')">${hazemText}</button>
-                        </td>
-                        <td>
-                            <button class="delete-btn" onclick="deleteSubject('${task.id}')">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('tareqScoreDisplay').innerText = totalTareqScore < 10 ? "0" + totalTareqScore : totalTareqScore;
-            document.getElementById('hazemScoreDisplay').innerText = totalHazemScore < 10 ? "0" + totalHazemScore : totalHazemScore;
-
-            const leadT = document.getElementById('lead-طارق');
-            const leadH = document.getElementById('lead-حازم');
-            const cardT = document.getElementById('card-طارق');
-            const cardH = document.getElementById('card-حازم');
-
-            leadT.innerText = ''; leadH.innerText = '';
-            cardT.style.boxShadow = 'none'; cardH.style.boxShadow = 'none';
-
-            if (totalTareqScore > totalHazemScore) {
-                leadT.innerText = "👑 الدحيح المتصدر كاسح!";
-                cardT.style.boxShadow = "0 0 25px rgba(16, 185, 129, 0.4)";
-            } else if (totalHazemScore > totalTareqScore) {
-                leadH.innerText = "👑 الدحيح المتصدر كاسح!";
-                cardH.style.boxShadow = "0 0 25px rgba(99, 102, 241, 0.4)";
-            } else if (totalTareqScore > 0 && totalTareqScore === totalHazemScore) {
-                leadT.innerText = "🤝 تعادل نمور المذاكرة!";
-                leadH.innerText = "🤝 تعادل نمور المذاكرة!";
-            }
-        }
-
-        function pushToCloud(callback) {
-            fetch(BIN_URL, {
-                method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(serverData)
-            })
-            .then(() => { if(callback) callback(); })
-            .catch(e => { isUpdating = false; });
-        }
-
-        window.onload = function() {
-            fetchData();
-            setInterval(fetchData, 3000);
-        };
-    </script>
+    setInterval(fetchData, 3000);
+    fetchData();
+</script>
 </body>
 </html>
