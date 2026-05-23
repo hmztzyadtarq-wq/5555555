@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -93,7 +92,8 @@
 
 <script>
     const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
-    const API_KEY = "$2a$10$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
+    // 🛠️ تم إصلاح كتابة الكي هنا بوضع الهروب الصحيح حتى لا يضرب الـ JavaScript
+    const API_KEY = "\$2a\$10\$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSuccessSound() {
@@ -116,15 +116,13 @@
     let campData = {};
     let syncInterval; 
     let isSaving = false; 
-    let lockServerUpdates = false; // قفل أمان لمنع التحديثات الهابطة أثناء التعديل
 
     async function loadData() {
-        // لو بنسيف أو القفل الزمني شغال، ارفض تماماً إنك تجيب داتا قديمة من السيرفر تنزل فوق داتاتنا الحالية
-        if (isSaving || lockServerUpdates) return; 
+        if (isSaving) return; 
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
-            if(json.record) {
+            if (json.record) {
                 campData = json.record;
                 renderDashboard();
             }
@@ -135,34 +133,25 @@
 
     async function saveToServer() {
         isSaving = true;
-        lockServerUpdates = true; // تفعيل القفل فوراً
         clearInterval(syncInterval); 
         
         try {
-            const res = await fetch(BIN_URL, {
+            await fetch(BIN_URL, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                 body: JSON.stringify(campData)
             });
-            await res.json(); // ننتظر السيرفر يخلص معالجة تماماً
         } catch(e) {
             console.log("خطأ أثناء الحفظ");
         }
         
         isSaving = false;
-        
-        // فك القفل الزمني بعد 10 ثواني كاملة للتأكد إن السيرفر استقر بنسبة 100% بالداتا الجديدة
-        setTimeout(() => {
-            lockServerUpdates = false;
-            startSync();
-        }, 10000);
+        startSync(); 
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        if(!lockServerUpdates) {
-            syncInterval = setInterval(loadData, 5000); 
-        }
+        syncInterval = setInterval(loadData, 6000); // تحديث هادئ كل 6 ثواني
     }
 
     function renderDashboard() {
@@ -224,29 +213,20 @@
         const input = document.getElementById(`input-${dateStr}`);
         if (!input.value.trim()) return;
         
-        // 1. أضف محلياً فوراً عشان اليوزر يشوفها في نفس اللحظة
         campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
         input.value = '';
         renderDashboard(); 
-        
-        // 2. ارفع للسيرفر وأنت مطمن إن القفل شغال والداتا مش هتتمسح
         await saveToServer();
     }
 
     async function toggleTask(dateStr, index, userField) {
         const myField = (currentUser === "طارق") ? "tareq" : "hazem";
-        
         if (userField !== myField) { 
             alert("يا عم أنت.. خليك في حالك وفي خيبتك وم تلمسش درجات زميلك! ركز في مادتك وبلاش بياخة وعك 🤬💪"); 
             return; 
         }
-        
         campData[dateStr][index][userField] = !campData[dateStr][index][userField];
-        
-        if (campData[dateStr][index][userField] === true) {
-            playSuccessSound();
-        }
-        
+        if (campData[dateStr][index][userField] === true) playSuccessSound();
         renderDashboard();
         await saveToServer();
     }
