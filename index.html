@@ -1,75 +1,73 @@
-<!DOCTYPE html>
+
+</html><!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>حلبة التحدي والمنافسة</title>
+    <title>حلبة التحدي - طارق وحازم</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: white; padding: 20px; text-align: center; }
-        .container { max-width: 800px; margin: auto; }
+        body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; text-align: center; }
+        .vs-board { display: flex; justify-content: center; gap: 50px; margin-bottom: 30px; }
+        .score-card { background: #1e293b; padding: 20px; border-radius: 20px; width: 150px; border: 2px solid #334155; }
+        .score-num { font-size: 3rem; font-weight: bold; color: #6366f1; }
         .card { background: #1e293b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        input { width: 60%; padding: 10px; border-radius: 8px; border: none; }
+        input { width: 60%; padding: 12px; border-radius: 8px; border: none; }
         button { padding: 10px 20px; border-radius: 8px; border: none; background: #6366f1; color: white; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #1e293b; border-radius: 15px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { padding: 15px; border-bottom: 1px solid #334155; }
-        .done { background: #10b981 !important; }
-        .btn-status { width: 100px; padding: 5px; background: #475569; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .done { background: #10b981 !important; color: white; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>أهلاً بك يا <span id="userName">..</span></h2>
-    <div class="card">
-        <input type="text" id="taskInput" placeholder="اسم المادة الجديدة...">
-        <button onclick="addTask()">إضافة للمستودع</button>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>المادة</th>
-                <th>إنجاز طارق</th>
-                <th>إنجاز حازم</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+<div class="vs-board">
+    <div class="score-card"><h3>طارق</h3><div id="scoreTareq" class="score-num">0</div></div>
+    <div class="score-card"><h3>حازم</h3><div id="scoreHazem" class="score-num">0</div></div>
 </div>
+
+<div class="card">
+    <input type="text" id="taskInput" placeholder="أضف مادة للمذاكرة...">
+    <button onclick="addTask()">إضافة للملحمة 🚀</button>
+</div>
+
+<table>
+    <thead><tr><th>المادة</th><th>إنجاز طارق</th><th>إنجاز حازم</th></tr></thead>
+    <tbody id="tableBody"></tbody>
+</table>
 
 <script>
     const API_URL = "https://sheetdb.io/api/v1/cbzh9fqp3s9o4";
-    const currentUser = localStorage.getItem('currentUser') || "طارق"; // تأكد إنك مظبط ده في صفحة اللوجين
-    document.getElementById('userName').innerText = currentUser;
+    // حدد مين اللي داخل دلوقتي (في رابطك خليها ?user=حازم أو ?user=طارق)
+    const params = new URLSearchParams(window.location.search);
+    const currentUser = params.get('user') || "طارق";
 
-    async function fetchData() {
+    async function updateData() {
         const res = await fetch(API_URL);
         const data = await res.json();
-        renderTable(data);
-    }
-
-    function renderTable(data) {
+        
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
+        
+        let tScore = 0, hScore = 0;
+
         data.forEach(item => {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${item.المادة}</td>
-                    <td><button class="btn-status ${item.إنجاز_طارق === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_طارق', '${item.المادة}')">${item.إنجاز_طارق === 'TRUE' ? '✅ تم' : '❌ لا'}</button></td>
-                    <td><button class="btn-status ${item.إنجاز_حازم === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_حازم', '${item.المادة}')">${item.إنجاز_حازم === 'TRUE' ? '✅ تم' : '❌ لا'}</button></td>
-                </tr>
-            `;
+            if(item.إنجاز_طارق === 'TRUE') tScore++;
+            if(item.إنجاز_حازم === 'TRUE') hScore++;
+
+            tbody.innerHTML += `<tr>
+                <td>${item.المادة}</td>
+                <td><button class="${item.إنجاز_طارق === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_طارق', '${item.المادة}')">${item.إنجاز_طارق === 'TRUE' ? 'تم ✅' : '❌'}</button></td>
+                <td><button class="${item.إنجاز_حازم === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_حازم', '${item.المادة}')">${item.إنجاز_حازم === 'TRUE' ? 'تم ✅' : '❌'}</button></td>
+            </tr>`;
         });
+
+        document.getElementById('scoreTareq').innerText = tScore;
+        document.getElementById('scoreHazem').innerText = hScore;
     }
 
     async function toggle(column, taskName) {
-        // قفل أمان: طارق ميعلمش لحازم والعكس
-        const myName = currentUser.includes("طارق") ? "إنجاز_طارق" : "إنجاز_حازم";
-        if(column !== myName) {
-            alert("ممنوع تلمس خانة زميلك!");
-            return;
-        }
+        const myColumn = (currentUser === "طارق") ? "إنجاز_طارق" : "إنجاز_حازم";
+        if(column !== myColumn) { alert("يا بطل! ده شغل زميلك 😅"); return; }
 
-        // جلب الحالة الحالية
         const res = await fetch(`${API_URL}/المادة/${taskName}`);
         const data = await res.json();
         const newState = data[0][column] === 'TRUE' ? 'FALSE' : 'TRUE';
@@ -79,23 +77,22 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ [column]: newState })
         });
-        fetchData();
+        updateData();
     }
 
     async function addTask() {
         const task = document.getElementById('taskInput').value;
-        if(!task) return;
         await fetch(API_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ "المادة": task, "إنجاز_طارق": "FALSE", "إنجاز_حازم": "FALSE" })
         });
         document.getElementById('taskInput').value = '';
-        fetchData();
+        updateData();
     }
 
-    setInterval(fetchData, 3000);
-    fetchData();
+    setInterval(updateData, 2000);
+    updateData();
 </script>
 </body>
 </html>
