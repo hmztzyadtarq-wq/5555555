@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدول التحدي والمراقبة الحية</title>
+    <title>حلبة تحدي الثانوية العامة</title>
     <style>
         body {
             background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
@@ -21,7 +22,6 @@
         
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         
-        /* 🏆 لوحة النقط والعد التنافسي */
         .vs-board {
             display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px;
             align-items: center; margin-bottom: 30px;
@@ -53,7 +53,6 @@
         td.task-title { text-align: right; max-width: 300px; }
         tr:hover { background: rgba(255,255,255,0.02); }
         
-        /* أزرار الإنجاز المنفصلة */
         .check-btn { background: #334155; border: 2px solid #475569; color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; width: 140px; }
         .check-btn.done-tareq { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
         .check-btn.done-hazem { background: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
@@ -61,6 +60,7 @@
         .delete-btn { color: #ef4444; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
         .sync-loader { font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 10px; }
         .creator-tag { font-size: 0.7rem; color: #64748b; display: block; margin-top: 2px; }
+        .reset-btn { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -95,9 +95,8 @@
         <!-- خانة إضافة مادة -->
         <div class="card">
             <h2 style="margin-top:0; color:#f59e0b;">➕ إضافة درس أو شابتر جديد في التحدي الموحد</h2>
-            <p style="margin: -10px 0 15px 0; font-size: 0.85rem; color: #94a3b8;">أي درس هتكتبه هنا هينزل في جدولكم أنتوا الاتنين، وكل واحد يعلم في خانته لما يخلص عشان نولع التنافس! 🔥</p>
             <div class="input-group">
-                <input type="text" id="subjectName" placeholder="مثلاً: فيزياء - الفصل الأول (توصيل المقاومات)...">
+                <input type="text" id="subjectName" placeholder="مثلاً: فيزياء - الفصل الأول (توصيل المقاومات)..." onkeypress="if(event.key==='Enter') addSubject()">
                 <button onclick="addSubject()">إضافة للجدول الموحد 🚀</button>
             </div>
         </div>
@@ -118,6 +117,9 @@
                     <!-- الصفوف هتنزل هنا لايف من السيرفر -->
                 </tbody>
             </table>
+            
+            <!-- زرار إصلاح وتصفير السيرفر -->
+            <button class="reset-btn" onclick="resetServerDatabase()">⚙️ إعادة ضبط السيرفر (اضغط هنا لو المواد مش بتنزل)</button>
         </div>
     </div>
 
@@ -130,10 +132,9 @@
         const BIN_URL = "https://api.jsonbin.io/v3/b/664ec5b3e41b4d34e4fa4411";
         const API_KEY = "$2b$10$W7bO4S.Vptn6hJUnm/VTeOWeWb2P.qF1fL4UWhpOfb5D8IlyD36wW";
 
-        let serverData = { tasks: [], timer: {}, chat: [], lastSeen: {}, diary: {} };
+        let serverData = { tasks: [], timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo" }, chat: [], lastSeen: {}, diary: { tareq: [], hazem: [] } };
         let isUpdating = false;
 
-        // 📥 جلب الجدول والبيانات بالكامل من السيرفر المشترك
         function fetchData() {
             if (isUpdating) return;
             fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
@@ -149,21 +150,51 @@
             .catch(e => { document.getElementById('syncStatus').innerText = "مشكلة في الاتصال بالسيرفر.. 🔴"; });
         }
 
-        // 🛠️ إضافة مهمة جديدة للجدول الموحد
+        // 🛠️ دالة إصلاح وتصفير السيرفر (اضغط عليها مرة واحدة لو مهنج)
+        function resetServerDatabase() {
+            if (!confirm("هل تريد إعادة تهيئة السيرفر لحل مشكلة الإضافة؟ (هيمسح المواد التجريبية القديمة فقط)")) return;
+            isUpdating = true;
+            
+            // هيكل البيانات الجديد والنظيف تماماً
+            const freshStructure = {
+                tasks: [],
+                timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false, type: "25" },
+                chat: [],
+                lastSeen: {},
+                diary: { tareq: [], hazem: [], lastResetDate: "" }
+            };
+
+            fetch(BIN_URL, {
+                method: 'PUT',
+                headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+                body: JSON.stringify(freshStructure)
+            })
+            .then(() => {
+                serverData = freshStructure;
+                isUpdating = false;
+                alert("✅ تم تصفير السيرفر وإصلاحه! جرب ضيف مادة دلوقتي هتشتغل طلقة!");
+                fetchData();
+            })
+            .catch(e => { isUpdating = false; alert("فشلت التهيئة، جرب تاني."); });
+        }
+
         function addSubject() {
             const nameInput = document.getElementById('subjectName');
             const name = nameInput.value.trim();
             if (!name) return;
 
             isUpdating = true;
-            document.getElementById('syncStatus').innerText = "جاري الإضافة على السيرفر العام.. ⏳";
+            document.getElementById('syncStatus').innerText = "جاري الإضافة على السيرفر.. ⏳";
+
+            // حماية للتأكد من وجود مصفوفة الـ tasks
+            serverData.tasks = serverData.tasks || [];
 
             serverData.tasks.push({
-                id: "task_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+                id: "id_" + Date.now() + "_" + Math.floor(Math.random()*1000),
                 title: name,
                 creator: myName,
-                tareqDone: false, // خانة طارق المستقلة
-                hazemDone: false  // خانة حازم المستقلة
+                tareqDone: false,
+                hazemDone: false
             });
 
             pushToCloud(() => {
@@ -173,9 +204,7 @@
             });
         }
 
-        // 🔒 دالة التبديل والتحقق من صلاحية الضغط (قفل الأمان الإلهي)
         function toggleTaskStatus(id, targetUser) {
-            // قفل الأمان: طارق يقدر يضغط على خانة طارق بس، وحازم على خانة حازم بس
             if (targetUser !== myName) {
                 alert(`🚨 عيب الغش يا بطل! متقدرش تقيم أو تعلّم لـ ${targetUser}! كل واحد يعلم في خانته بنفسه! 🛑😉`);
                 return;
@@ -185,11 +214,8 @@
             const task = serverData.tasks.find(t => t.id === id);
             
             if (task) {
-                if (targetUser === "طارق") {
-                    task.tareqDone = !task.tareqDone;
-                } else if (targetUser === "حازم") {
-                    task.hazemDone = !task.hazemDone;
-                }
+                if (targetUser === "طارق") task.tareqDone = !task.tareqDone;
+                if (targetUser === "حازم") task.hazemDone = !task.hazemDone;
             }
 
             pushToCloud(() => {
@@ -198,7 +224,6 @@
             });
         }
 
-        // ❌ حذف مهمة نهائياً من الجدول للاتنين
         function deleteSubject(id) {
             if(!confirm("⚠️ مسح الدرس ده هيشيله نهائياً من عندك ومن عند زميلك. متأكد؟")) return;
             isUpdating = true;
@@ -210,32 +235,27 @@
             });
         }
 
-        // 🎨 رندرة الجدول والعداد الإجمالي لايف
         function renderTableAndScores() {
             const tbody = document.getElementById('subjectsTableBody');
             tbody.innerHTML = '';
 
             let totalTareqScore = 0;
             let totalHazemScore = 0;
+            const tasksList = serverData.tasks || [];
 
-            serverData.tasks.forEach(task => {
-                // تأمين الخانات القديمة لو مش متعرف فيها الخانات الجديدة
+            tasksList.forEach(task => {
                 if (task.tareqDone === undefined) task.tareqDone = false;
                 if (task.hazemDone === undefined) task.hazemDone = false;
 
-                // حساب النقاط الكلية
                 if(task.tareqDone) totalTareqScore++;
                 if(task.hazemDone) totalHazemScore++;
 
-                // تنسيق كلاسات أزرار طارق
                 const tareqBtnClass = task.tareqDone ? "check-btn done-tareq" : "check-btn";
                 const tareqText = task.tareqDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
 
-                // تنسيق كلاسات أزرار حازم
                 const hazemBtnClass = task.hazemDone ? "check-btn done-hazem" : "check-btn";
                 const hazemText = task.hazemDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
 
-                // لو الاتنين خلصوا المادة، يتشطب اسم الدرس دليلاً على الفرم الجماعي!
                 const titleStyle = (task.tareqDone && task.hazemDone) 
                     ? 'text-decoration: line-through; color: #64748b; font-weight: normal;' 
                     : 'font-weight: bold;';
@@ -259,7 +279,6 @@
                 `;
             });
 
-            // تحديث لوحة الـ VS فوق
             document.getElementById('tareqScoreDisplay').innerText = totalTareqScore < 10 ? "0" + totalTareqScore : totalTareqScore;
             document.getElementById('hazemScoreDisplay').innerText = totalHazemScore < 10 ? "0" + totalHazemScore : totalHazemScore;
 
@@ -291,7 +310,6 @@
             .catch(e => { isUpdating = false; });
         }
 
-        // تحديث كل 3 ثواني لمراقبة إنجاز الطرف التاني لايف
         window.onload = function() {
             fetchData();
             setInterval(fetchData, 3000);
