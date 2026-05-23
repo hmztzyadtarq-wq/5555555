@@ -1,331 +1,210 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحدي المراجعة المشتركة</title>
-    <link rel="stylesheet" href="style.css">
+    <title>بنك المهام المشترك والسرّي</title>
     <style>
-        /* 🎨 الستايل الاحترافي الزجاجي الفخم المريح جداً للعين */
         body {
             background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #f8fafc;
-            margin: 0;
-            padding: 0;
+            color: #f8fafc; margin: 0; padding: 0;
         }
-
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+            padding: 15px 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .brand { font-weight: 800; font-size: 1.1rem; color: #f8fafc; }
-        .brand span { color: #f59e0b; }
+        .brand span { color: #f59e0b; font-weight: 800; }
         .links a { color: #94a3b8; text-decoration: none; margin-right: 20px; font-weight: 700; }
         .links a.active { color: #6366f1; }
-
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         .card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 25px auto;
-            max-width: 1200px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
         }
-
-        .vs-container { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 20px; }
-        .user-stats { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-        .progress-bar-bg { width: 100%; height: 15px; background: #0f172a; border-radius: 10px; overflow: hidden; border: 1px solid #334155; }
-        .progress-bar { height: 100%; width: 0%; transition: width 0.5s ease; }
-        .vs-badge { background: #ef4444; color: white; padding: 5px 15px; border-radius: 5px; font-weight: 900; }
-
-        /* 📅 تقسيم شبكة الجدول لكروت احترافية */
-        .week-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        .day-card {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .day-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #f59e0b;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
-        }
-
-        /* صفوف المهام داخل كارت اليوم */
-        .task-row {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 14px;
-            border-radius: 14px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .task-header { display: flex; gap: 10px; align-items: center; }
-        .date-badge { background: #312e81; color: #e0e7ff; padding: 3px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; }
-        .task-text { font-size: 0.95rem; color: #f8fafc; font-weight: 500; word-break: break-word; }
-
-        .task-controls { display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 8px; }
-
-        .chk-container { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 700; border: 1px solid transparent; }
-        .chk-tareq { background: rgba(16, 185, 129, 0.05); color: #10b981; border-color: rgba(16, 185, 129, 0.1); }
-        .chk-hazem { background: rgba(99, 102, 241, 0.05); color: #6366f1; border-color: rgba(99, 102, 241, 0.1); }
-        .chk-container input { accent-color: currentColor; cursor: pointer; }
-
-        /* الشطب لما الاثنين يخلصوا */
-        .task-row.both-done .task-text { text-decoration: line-through; color: #64748b; }
-
-        .input-group { display: flex; gap: 12px; flex-wrap: wrap; background: rgba(15, 23, 42, 0.4); padding: 16px; border-radius: 16px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .input-group input, .input-group select { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; }
-        .input-group button { background: linear-gradient(135deg, #4f46e5, #6366f1); border: none; border-radius: 10px; padding: 12px 24px; color: white; font-weight: 700; cursor: pointer; }
-
-        /* نافذة التنبيه المضحكة */
-        .funny-alert { position: fixed; bottom: 20px; left: 20px; background: #ef4444; color: white; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4); font-weight: bold; z-index: 9999; display: none; direction: rtl; }
+        .input-group { display: flex; gap: 10px; margin-top: 15px; }
+        .input-group input { flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; font-size: 1rem; }
+        .input-group button { background: #6366f1; border: none; padding: 0 25px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; overflow: hidden; border-radius: 12px; }
+        th, td { padding: 14px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { background: #1e293b; color: #94a3b8; font-weight: bold; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        .status-btn { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; }
+        .status-btn.done { background: #10b981; color: white; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+        .delete-btn { color: #ef4444; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+        .sync-loader { font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 10px; }
+        .creator-tag { font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px; }
     </style>
 </head>
 <body>
-    <div id="funnyAlert" class="funny-alert"></div>
 
     <nav>
-        <!-- 👤 هنا هيظهر اسم المستخدم اللي سجل دخول بوضوح حلاوة -->
-        <div class="brand">🚀 لوحة مراجعة الثانوية العامة | مرحباً <span id="welcomeUser">جاري التحميل..</span> 👋</div>
+        <div class="brand">🚀 بنك المهام والفرم المشترك | مرحباً <span id="welcomeUser">..</span></div>
         <div class="links">
-            <a href="index.html" class="active">🏠 الجدول والمنافسة</a>
+            <a href="index.html" class="active">🏠 الجدول المشترك</a>
             <a href="meet.html">🎥 العداد المشترك والميت</a>
             <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
         </div>
     </nav>
 
-    <!-- كارت الإنجاز العام -->
-    <div class="card">
-        <h2>📊 مؤشر تحدي المراجعة العام (نسبة إنجاز المهام المطلوبة)</h2>
-        <div class="vs-container">
-            <div class="user-stats">
-                <span style="color: #10b981; font-weight: 800;">🛠️ البشمهندس طارق</span>
-                <div class="progress-bar-bg"><div id="myProgress" class="progress-bar" style="background: #10b981;"></div></div>
-                <span id="myPercent" style="font-weight: 800; color: #10b981;">0%</span>
-            </div>
-            <div class="vs-badge">VS</div>
-            <div class="user-stats">
-                <span style="color: #6366f1; font-weight: 800;">🩺 الدكتور حازم</span>
-                <div class="progress-bar-bg"><div id="hazemProgress" class="progress-bar" style="background: #6366f1;"></div></div>
-                <span id="hazemPercent" style="font-weight: 800; color: #6366f1;">0%</span>
+    <div class="container">
+        <div class="sync-loader" id="syncStatus">جاري المزامنة مع السيرفر.. ⏳</div>
+
+        <!-- خانة إضافة مادة -->
+        <div class="card">
+            <h2 style="margin-top:0; color:#f59e0b;">➕ إضافة مهمة جديدة للجميع</h2>
+            <p style="margin: -10px 0 15px 0; font-size: 0.85rem; color: #94a3b8;">أي مهمة هتضيفها هنا هتظهر عندك وعند حازم فوراً، وكل واحد يخلصها في سرّية تامة! 🤫</p>
+            <div class="input-group">
+                <input type="text" id="subjectName" placeholder="اكتب المادة أو الدرس (مثلاً: فيزياء - حديثة)...">
+                <button onclick="addSubject()">إضافة للجدول العام 🚀</button>
             </div>
         </div>
-    </div>
 
-    <!-- كارت إضافة المهام والجدول -->
-    <div class="card">
-        <h2>📝 إضافة مهمة مشتركة للجدول</h2>
-        <div class="input-group">
-            <input type="text" id="taskText" style="flex: 3; min-width: 250px;" placeholder="المهمة (مثال: فرم الباب الأول فيزياء)...">
-            <input type="number" id="taskDayNum" style="width: 110px;" placeholder="يوم كام؟" min="1" max="31">
-            <select id="taskDay" style="width: 130px;">
-                <option value="الأحد">الأحد</option><option value="الإثنين">الإثنين</option><option value="الثلاثاء">الثلاثاء</option>
-                <option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option><option value="الجمعة">الجمعة</option><option value="السبت">السبت</option>
-            </select>
-            <button onclick="addTask()">أضف للجدول المشترك ➕</button>
+        <!-- جدول التحدي الحقيقي -->
+        <div class="card">
+            <h2 style="margin-top:0;">📋 قائمة المهام المشتركة</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>المهمة / الدرس</th>
+                        <th>حالة إنجازك أنت</th>
+                        <th>التحكم العام</th>
+                    </tr>
+                </thead>
+                <tbody id="subjectsTableBody">
+                    <!-- البيانات هتنزل هنا لايف -->
+                </tbody>
+            </table>
         </div>
-
-        <!-- شبكة عرض الأيام الاحترافية -->
-        <div class="week-grid" id="weekGrid"></div>
     </div>
 
     <script>
-        // 🔒 حماية الدخول
-        if (!localStorage.getItem('currentUser')) {
-            window.location.href = "login.html";
-        }
-
-        // قراءة وعرض اسم المستخدم المنظف
+        if (!localStorage.getItem('currentUser')) { window.location.href = "login.html"; }
         const rawUser = localStorage.getItem('currentUser') || "طارق 🛠️";
-        const isTareqUser = rawUser.includes("طارق");
-        document.getElementById('welcomeUser').innerText = isTareqUser ? "طارق 🛠️" : "حازم 🩺";
+        const myName = (rawUser.includes("طارق") || rawUser.includes("طارq")) ? "طارق" : "حازم";
+        document.getElementById('welcomeUser').innerText = myName;
 
         const BIN_URL = "https://api.jsonbin.io/v3/b/664ec5b3e41b4d34e4fa4411";
         const API_KEY = "$2b$10$W7bO4S.Vptn6hJUnm/VTeOWeWb2P.qF1fL4UWhpOfb5D8IlyD36wW";
-        
-        let allData = { tasks: JSON.parse(localStorage.getItem('local_tasks_backup')) || [], timer: {} };
-        const days = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-        // 🔊 تجهيز مصادر الصوت للتأثيرات التفاعلية الفورية
-        const successSound = new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"); // صوت إنجاز سريع
-        const errorSound = new Audio("https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg"); // صوت بيمبو مضحك للغلط
+        let serverData = { tasks: [], timer: {}, chat: [], lastSeen: {}, diary: {} };
+        let isUpdating = false;
 
-        const trollInsults = [
-            "رايح فين يا غبي؟ دي مش مهمتك! شيل إيدك بدل ما اقطعهالك! 🛑",
-            "يا ابني سيب خانة زميلك في حالها، روح ذاكرلك كلمتين ينفعوك! 🤫",
-            "بتعلم للثاني ليه؟ باصص في ورقة صاحبك حتى في الجدول يا فاشل؟ 🤣",
-            "بس يا بابا! العب بعيد، الخصوصية هنا في العالي يا حليتها! 🚷",
-            "يا كسلان سيب مهمة الراجل الشغال وعلم على مهامك أنت الأول! 🐴"
-        ];
-
-        function showTrollAlert(msg, isError = true) {
-            const alertBox = document.getElementById('funnyAlert');
-            alertBox.innerText = msg;
-            alertBox.style.background = isError ? "#ef4444" : "#10b981";
-            alertBox.style.display = 'block';
-            
-            // تشغيل الصوت المناسب
-            if(isError) {
-                errorSound.currentTime = 0; errorSound.play().catch(e=>{});
-            } else {
-                successSound.currentTime = 0; successSound.play().catch(e=>{});
-            }
-
-            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+        // جلب جدول التشغيل من المتصفح لمعرفة اللي خلصته "أنت بس"
+        function getMyFinishedTasks() {
+            const key = `finished_tasks_${myName}`;
+            return JSON.parse(localStorage.getItem(key)) || [];
         }
 
-        function loadData() {
-            fetch(BIN_URL, { 
-                method: 'GET',
-                headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } 
-            })
-            .then(res => { if (!res.ok) throw new Error(); return res.json(); })
-            .then(resData => {
-                if (resData && resData.tasks) {
-                    allData = resData;
-                    localStorage.setItem('local_tasks_backup', JSON.stringify(allData.tasks));
-                    renderSchedule();
+        function saveMyFinishedTasks(list) {
+            const key = `finished_tasks_${myName}`;
+            localStorage.setItem(key, JSON.stringify(list));
+        }
+
+        // 📥 جلب الجدول المشترك من السيرفر
+        function fetchData() {
+            if (isUpdating) return;
+            fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
+            .then(res => res.json())
+            .then(data => {
+                if (data && !isUpdating) {
+                    serverData = data;
+                    serverData.tasks = data.tasks || []; 
+                    renderTable();
+                    document.getElementById('syncStatus').innerText = "تم التحديث والمزامنة لايف 🟢";
                 }
             })
-            .catch(err => { renderSchedule(); });
+            .catch(e => { document.getElementById('syncStatus').innerText = "مشكلة في الاتصال بالسيرفر.. 🔴"; });
         }
 
-        function renderSchedule() {
-            const grid = document.getElementById('weekGrid');
-            grid.innerHTML = '';
-            let tTotal = 0, tDone = 0, hTotal = 0, hDone = 0;
+        // 🛠️ إضافة مهمة تظهر للاتنين
+        function addSubject() {
+            const nameInput = document.getElementById('subjectName');
+            const name = nameInput.value.trim();
+            if (!name) return;
 
-            days.forEach(day => {
-                let dayTasks = allData.tasks.filter(t => t.day === day);
-                dayTasks.sort((a, b) => (parseInt(a.dayNum) || 0) - (parseInt(b.dayNum) || 0));
-                let tasksHTML = '';
-                
-                dayTasks.forEach(task => {
-                    tTotal++; if(task.doneTareq) tDone++;
-                    hTotal++; if(task.doneHazem) hDone++;
+            isUpdating = true;
+            document.getElementById('syncStatus').innerText = "جاري الرفع للجميع.. ⏳";
 
-                    let globalIndex = allData.tasks.indexOf(task);
-                    let bothDoneClass = (task.doneTareq && task.doneHazem) ? 'both-done' : '';
+            serverData.tasks.push({
+                id: "task_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+                title: name,
+                creator: myName
+            });
 
-                    tasksHTML += `
-                        <div class="task-row ${bothDoneClass}">
-                            <div class="task-header">
-                                <div class="date-badge">📅 يوم ${task.dayNum || '--'}</div>
-                                <div class="task-text">${task.text}</div>
-                            </div>
-                            
-                            <div class="task-controls">
-                                <label class="chk-container chk-tareq">
-                                    <input type="checkbox" ${task.doneTareq ? 'checked' : ''} onchange="validateAndToggle(${globalIndex}, 'tareq', this)">
-                                    <span>طارق 🛠️</span>
-                                </label>
-                                
-                                <label class="chk-container chk-hazem">
-                                    <input type="checkbox" ${task.doneHazem ? 'checked' : ''} onchange="validateAndToggle(${globalIndex}, 'hazem', this)">
-                                    <span>حازم 🩺</span>
-                                </label>
-                            </div>
-                        </div>
-                    `;
-                });
+            pushToCloud(() => {
+                nameInput.value = '';
+                isUpdating = false;
+                fetchData();
+            });
+        }
 
-                grid.innerHTML += `
-                    <div class="day-card">
-                        <div class="day-title">⭐ يوم ${day}</div>
-                        <div class="task-list-container">
-                            ${dayTasks.length ? tasksHTML : '<span style="color:#64748b; font-size:0.85rem; padding: 5px; display:block; text-align:center;">مفيش مهام للنهارده.. 🎯</span>'}
-                        </div>
-                    </div>
+        // 🤫 علم على مادة إنها خلصت (عندي أنا بس!)
+        function toggleMyComplete(id) {
+            let finished = getMyFinishedTasks();
+            if (finished.includes(id)) {
+                // لو كانت مخلصة وعايز يرجعها جاري العمل
+                finished = finished.filter(item => item !== id);
+            } else {
+                // علم عليها مخلصة
+                finished.push(id);
+            }
+            saveMyFinishedTasks(finished);
+            renderTable(); // رندر فوراً محلياً عشان السرعة
+        }
+
+        // ❌ مسح مادة من الجدول العام للاتنين (تعديل متاح للطرفين)
+        function deleteSubject(id) {
+            if(!confirm("⚠️ مسح المهمة دي هيشيلها من عندك ومن عند زميلك برضه. متأكد؟")) return;
+            isUpdating = true;
+            serverData.tasks = serverData.tasks.filter(t => t.id !== id);
+
+            pushToCloud(() => {
+                isUpdating = false;
+                fetchData();
+            });
+        }
+
+        // 🎨 رسم الجدول بناء على السيرفر + الـ LocalStorage السري بتاعك
+        function renderTable() {
+            const tbody = document.getElementById('subjectsTableBody');
+            tbody.innerHTML = '';
+            
+            const myFinished = getMyFinishedTasks();
+
+            serverData.tasks.forEach(task => {
+                const isDoneByMe = myFinished.includes(task.id);
+                const statusText = isDoneByMe ? "منتهية عندك ومخفية عن زميلك ✅" : "جاري الفرم.. 📚";
+                const btnClass = isDoneByMe ? "status-btn done" : "status-btn";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="${isDoneByMe ? 'text-decoration: line-through; color: #64748b; font-weight: normal;' : 'font-weight: bold;'}">
+                            ${task.title}
+                            <span class="creator-tag">بواسطة: ${task.creator}</span>
+                        </td>
+                        <td><button class="${btnClass}" onclick="toggleMyComplete('${task.id}')">${statusText}</button></td>
+                        <td><button class="delete-btn" onclick="deleteSubject('${task.id}')" title="حذف المهمة نهائياً للجميع">🗑️</button></td>
+                    </tr>
                 `;
             });
-
-            let tPct = tTotal > 0 ? Math.round((tDone/tTotal)*100) : 0;
-            let hPct = hTotal > 0 ? Math.round((hDone/hTotal)*100) : 0;
-            document.getElementById('myProgress').style.width = tPct + '%';
-            document.getElementById('myPercent').innerText = tPct + '%';
-            document.getElementById('hazemProgress').style.width = hPct + '%';
-            document.getElementById('hazemPercent').innerText = hPct + '%';
         }
 
-        // 🔒 فحص الصلاحية وتشغيل الأصوات التفاعلية المضحكة
-        function validateAndToggle(index, targetRole, checkboxElement) {
-            if (targetRole === 'tareq' && !isTareqUser) {
-                checkboxElement.checked = !checkboxElement.checked; // إرجاع الخانة لوضعها الأصلي
-                const randomInsult = trollInsults[Math.floor(Math.random() * trollInsults.length)];
-                showTrollAlert("يا حازم: " + randomInsult, true);
-                return;
-            } 
-            else if (targetRole === 'hazem' && isTareqUser) {
-                checkboxElement.checked = !checkboxElement.checked; // إرجاع الخانة لوضعها الأصلي
-                const randomInsult = trollInsults[Math.floor(Math.random() * trollInsults.length)];
-                showTrollAlert("يا طارق: " + randomInsult, true);
-                return;
-            }
-
-            // لو الهوية سليمة
-            if (targetRole === 'tareq') {
-                allData.tasks[index].doneTareq = checkboxElement.checked;
-                if(checkboxElement.checked) showTrollAlert("عاش يا طارق يا دحيح، أديها كمان! 🔥", false);
-            } else if (targetRole === 'hazem') {
-                allData.tasks[index].doneHazem = checkboxElement.checked;
-                if(checkboxElement.checked) showTrollAlert("أخيراً خلصت حاجة يا حازم؟ مبروك المعجزة! 😂🩺", false);
-            }
-            
-            localStorage.setItem('local_tasks_backup', JSON.stringify(allData.tasks));
-            renderSchedule(); 
-            saveToCloud();
-        }
-
-        function addTask() {
-            let text = document.getElementById('taskText').value.trim();
-            let dayNum = document.getElementById('taskDayNum').value.trim();
-            let day = document.getElementById('taskDay').value;
-            if(!text) return;
-
-            allData.tasks.push({ text: text, dayNum: dayNum || "1", day: day, doneTareq: false, doneHazem: false });
-            document.getElementById('taskText').value = '';
-            document.getElementById('taskDayNum').value = '';
-            localStorage.setItem('local_tasks_backup', JSON.stringify(allData.tasks));
-            renderSchedule(); 
-            saveToCloud();    
-        }
-
-        function saveToCloud() {
+        function pushToCloud(callback) {
             fetch(BIN_URL, {
-                method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-                body: JSON.stringify(allData)
-            });
+                method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY }, body: JSON.stringify(serverData)
+            })
+            .then(() => { if(callback) callback(); })
+            .catch(e => { isUpdating = false; });
         }
 
         window.onload = function() {
-            renderSchedule(); 
-            loadData();       
-            setInterval(loadData, 4000); 
+            fetchData();
+            setInterval(fetchData, 4000); // تحديث كل 4 ثواني عشان لو حد ضاف مادة تظهر للتاني لايف
         };
     </script>
 </body>
