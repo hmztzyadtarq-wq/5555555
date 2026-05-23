@@ -1,98 +1,98 @@
 
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>حلبة التحدي - طارق وحازم</title>
+    <!-- استيراد مكتبة Firebase عشان التحديث اللحظي -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; padding: 20px; text-align: center; }
-        .vs-board { display: flex; justify-content: center; gap: 50px; margin-bottom: 30px; }
-        .score-card { background: #1e293b; padding: 20px; border-radius: 20px; width: 150px; border: 2px solid #334155; }
-        .score-num { font-size: 3rem; font-weight: bold; color: #6366f1; }
-        .card { background: #1e293b; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        input { width: 60%; padding: 12px; border-radius: 8px; border: none; }
-        button { padding: 10px 20px; border-radius: 8px; border: none; background: #6366f1; color: white; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 15px; border-bottom: 1px solid #334155; }
-        .done { background: #10b981 !important; color: white; }
+        body { background: radial-gradient(circle at top right, #0f172a, #1e1b4b); font-family: 'Segoe UI', sans-serif; color: #f8fafc; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; }
+        .vs-board { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin-bottom: 30px; }
+        .score-card { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .score-num { font-size: 2.8rem; font-weight: 900; color: #f59e0b; }
+        .card { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border-radius: 20px; padding: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+        input { flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; width: 60%; }
+        button { background: #6366f1; border: none; padding: 10px 20px; border-radius: 10px; color: white; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .btn-status { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; width: 90px; }
+        .done { background: #10b981; color: white; }
+        .not-done { background: #334155; color: #94a3b8; }
     </style>
 </head>
 <body>
 
-<div class="vs-board">
-    <div class="score-card"><h3>طارق</h3><div id="scoreTareq" class="score-num">0</div></div>
-    <div class="score-card"><h3>حازم</h3><div id="scoreHazem" class="score-num">0</div></div>
-</div>
+<div class="container">
+    <div class="vs-board">
+        <div class="score-card"><h3>طارق 🛠️</h3><div id="scoreTareq" class="score-num">00</div></div>
+        <div style="font-weight:900; font-size: 2rem;">VS</div>
+        <div class="score-card"><h3>حازم 🩺</h3><div id="scoreHazem" class="score-num">00</div></div>
+    </div>
 
-<div class="card">
-    <input type="text" id="taskInput" placeholder="أضف مادة للمذاكرة...">
-    <button onclick="addTask()">إضافة للملحمة 🚀</button>
-</div>
+    <div class="card">
+        <input type="text" id="taskInput" placeholder="أضف مادة للملحمة...">
+        <button onclick="addTask()">إضافة 🚀</button>
+    </div>
 
-<table>
-    <thead><tr><th>المادة</th><th>إنجاز طارق</th><th>إنجاز حازم</th></tr></thead>
-    <tbody id="tableBody"></tbody>
-</table>
+    <div class="card">
+        <table>
+            <thead><tr><th>المادة</th><th>إنجاز طارق</th><th>إنجاز حازم</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
 
 <script>
-    const API_URL = "https://sheetdb.io/api/v1/cbzh9fqp3s9o4";
-    // حدد مين اللي داخل دلوقتي (في رابطك خليها ?user=حازم أو ?user=طارق)
+    // إعدادات الربط السريع
+    const firebaseConfig = { databaseURL: "https://tariq-hazem-default-rtdb.firebaseio.com/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database().ref('tasks');
+
     const params = new URLSearchParams(window.location.search);
     const currentUser = params.get('user') || "طارق";
 
-    async function updateData() {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        
+    // تحديث البيانات لحظياً (بدون ريفرش)
+    db.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
-        
         let tScore = 0, hScore = 0;
 
-        data.forEach(item => {
-            if(item.إنجاز_طارق === 'TRUE') tScore++;
-            if(item.إنجاز_حازم === 'TRUE') hScore++;
+        Object.keys(data).forEach(id => {
+            const item = data[id];
+            if(item.tareq) tScore++;
+            if(item.hazem) hScore++;
 
             tbody.innerHTML += `<tr>
-                <td>${item.المادة}</td>
-                <td><button class="${item.إنجاز_طارق === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_طارق', '${item.المادة}')">${item.إنجاز_طارق === 'TRUE' ? 'تم ✅' : '❌'}</button></td>
-                <td><button class="${item.إنجاز_حازم === 'TRUE' ? 'done' : ''}" onclick="toggle('إنجاز_حازم', '${item.المادة}')">${item.إنجاز_حازم === 'TRUE' ? 'تم ✅' : '❌'}</button></td>
+                <td>${item.name}</td>
+                <td><button class="btn-status ${item.tareq ? 'done' : 'not-done'}" onclick="toggle('${id}', 'tareq')">${item.tareq ? 'تم ✅' : '❌'}</button></td>
+                <td><button class="btn-status ${item.hazem ? 'done' : 'not-done'}" onclick="toggle('${id}', 'hazem')">${item.hazem ? 'تم ✅' : '❌'}</button></td>
             </tr>`;
         });
+        document.getElementById('scoreTareq').innerText = tScore < 10 ? "0"+tScore : tScore;
+        document.getElementById('scoreHazem').innerText = hScore < 10 ? "0"+hScore : hScore;
+    });
 
-        document.getElementById('scoreTareq').innerText = tScore;
-        document.getElementById('scoreHazem').innerText = hScore;
+    function toggle(id, user) {
+        if (user !== (currentUser === "طارق" ? "tareq" : "hazem")) {
+            alert("يا بطل! ممنوع تلمس شغل زميلك 😅");
+            return;
+        }
+        db.child(id).once('value', (s) => {
+            const val = s.val();
+            db.child(id).update({ [user]: !val[user] });
+        });
     }
 
-    async function toggle(column, taskName) {
-        const myColumn = (currentUser === "طارق") ? "إنجاز_طارق" : "إنجاز_حازم";
-        if(column !== myColumn) { alert("يا بطل! ده شغل زميلك 😅"); return; }
-
-        const res = await fetch(`${API_URL}/المادة/${taskName}`);
-        const data = await res.json();
-        const newState = data[0][column] === 'TRUE' ? 'FALSE' : 'TRUE';
-
-        await fetch(`${API_URL}/المادة/${taskName}`, {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ [column]: newState })
-        });
-        updateData();
-    }
-
-    async function addTask() {
-        const task = document.getElementById('taskInput').value;
-        await fetch(API_URL, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ "المادة": task, "إنجاز_طارق": "FALSE", "إنجاز_حازم": "FALSE" })
-        });
+    function addTask() {
+        const val = document.getElementById('taskInput').value;
+        if(!val) return;
+        db.push({ name: val, tareq: false, hazem: false });
         document.getElementById('taskInput').value = '';
-        updateData();
     }
-
-    setInterval(updateData, 2000);
-    updateData();
 </script>
 </body>
 </html>
