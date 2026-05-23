@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>غرفة المذاكرة والمراسلة الحية</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* 🎨 الستايل الاحترافي الزجاجي الفخم المريح للعين */
         body {
             background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -61,7 +60,7 @@
         .diary-delete { position: absolute; left: 8px; top: 8px; color: #ef4444; cursor: pointer; font-weight: bold; font-size: 0.75rem; }
 
         /* 💬 ستايل الشات الفوري */
-        .chat-box { display: flex; flex-direction: column; height: 500px; }
+        .chat-box { display: flex; flex-direction: column; height: 550px; }
         .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
         .status-dot { display: inline-block; width: 12px; height: 12px; background: #64748b; border-radius: 50%; margin-left: 6px; }
         .status-dot.online { background: #10b981; box-shadow: 0 0 10px #10b981; }
@@ -80,6 +79,7 @@
 </head>
 <body>
 
+    <!-- صندوق التنبيهات والقفشات التفاعلية -->
     <div id="funnyAlert" class="funny-alert"></div>
 
     <nav>
@@ -104,7 +104,7 @@
                     <button id="mode-joint" onclick="setMode('joint')">👥 مع حازم (طلب مزامنة)</button>
                 </div>
                 
-                <!-- 🎯 القائمة الجديدة لاختيار نوع الجلسة -->
+                <!-- 🎯 القائمة لاختيار نوع الجلسة -->
                 <div class="pomo-selects">
                     <select id="pomoTechnique" onchange="changeTechnique(this.value)">
                         <option value="25">📚 جلسة دحيح (25 دقيقة)</option>
@@ -125,7 +125,7 @@
             <!-- 📑 كارت "عملت إيه النهارده؟" (اليوميات والدولاب المشترك) -->
             <div class="card">
                 <h2 style="margin-top:0; color: #f59e0b;">📑 عملت إيه النهارده؟ (دولاب اليوميات الحية)</h2>
-                <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">اكتب هنا كل تحركاتك (كلت، نمت، صحيت، هربت من المذاكرة..) وعينك على تحركات زميلك!</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">اكتب هنا كل تحركاتك (كلت، نمت، صحيت..) وعينك على تحركات زميلك! (بيتصفر تلقائياً كل يوم جديد 📅)</p>
                 
                 <div class="diary-grid">
                     <!-- عمود طارق -->
@@ -180,6 +180,7 @@
     </div>
 
     <script>
+        // 🔒 حماية الدخول
         if (!localStorage.getItem('currentUser')) { window.location.href = "login.html"; }
 
         const rawUser = localStorage.getItem('currentUser') || "طارق 🛠️";
@@ -192,13 +193,12 @@
         const BIN_URL = "https://api.jsonbin.io/v3/b/664ec5b3e41b4d34e4fa4411";
         const API_KEY = "$2b$10$W7bO4S.Vptn6hJUnm/VTeOWeWb2P.qF1fL4UWhpOfb5D8IlyD36wW";
 
-        // قاعدة البيانات الشاملة مع إضافة جيب "diary" الجديد
         let serverData = { 
             tasks: [], 
             timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false, type: "25" }, 
             chat: [], 
             lastSeen: {},
-            diary: { tareq: [], hazem: [] }
+            diary: { tareq: [], hazem: [], lastResetDate: "" }
         };
         
         let localInterval = null;
@@ -227,7 +227,10 @@
                     serverData.timer = data.timer || serverData.timer;
                     serverData.chat = data.chat || [];
                     serverData.lastSeen = data.lastSeen || {};
-                    serverData.diary = data.diary || { tareq: [], hazem: [] };
+                    serverData.diary = data.diary || { tareq: [], hazem: [], lastResetDate: "" };
+
+                    // فحص مسح اليوميات اليومي تلقائياً عند تغيير التاريخ
+                    checkAndResetDiaryDaily();
 
                     checkPartnerOnline();
                     renderChat();
@@ -235,6 +238,18 @@
                     handleSharedTimer();
                 }
             }).catch(e=>{});
+        }
+
+        function checkAndResetDiaryDaily() {
+            const todayStr = new Date().toLocaleDateString('en-US'); 
+            serverData.diary.lastResetDate = serverData.diary.lastResetDate || todayStr;
+
+            if (serverData.diary.lastResetDate !== todayStr) {
+                serverData.diary.tareq = [];
+                serverData.diary.hazem = [];
+                serverData.diary.lastResetDate = todayStr;
+                pushToCloud();
+            }
         }
 
         function checkPartnerOnline() {
@@ -252,7 +267,6 @@
             }
         }
 
-        // ⏱️ إدارة تقنيات البومودورو والتايمر
         function changeTechnique(val) {
             if(currentMode === 'joint') {
                 alert("برجاء إلغاء الوضع المشترك أولاً لتغيير نوع الجلسة للفردي، أو ارسل طلب جديد بنوع الجلسة!");
@@ -336,7 +350,7 @@
                 if (pomoSeconds === 0) {
                     if (pomoMinutes === 0) {
                         clearInterval(localInterval); localInterval = null;
-                        alert("🎉 عاش يا وحوش خلصتوا الجلسة بنجاح! وقت الراحة 🥳");
+                        alert("🎉 مبروك يا وحوش خلصتوا الجلسة بنجاح! وقت الراحة 🥳");
                         resetTimer(); return;
                     }
                     pomoMinutes--; pomoSeconds = 59;
@@ -373,9 +387,7 @@
             document.getElementById('timerDisplay').innerText = mStr + ":" + sStr;
         }
 
-        /* 📑 إدارة دولاب اليوميات "عملت إيه النهارده؟" */
         function addDiaryItem(targetRole) {
-            // 🔒 حماية أمنية: منع طارق من الكتابة في خانة حازم والعكس
             if (targetRole === 'tareq' && !isTareqUser) {
                 showTrollAlert("يا حازم رايح فين؟ اكتب في دولابك أنت وسيب دولاب طارق في حاله! 🛑");
                 document.getElementById('hazemDiaryInput').value = '';
@@ -391,13 +403,13 @@
             const text = document.getElementById(inputId).value.trim();
             if(!text) return;
 
-            serverData.diary = serverData.diary || { tareq: [], hazem: [] };
+            serverData.diary = serverData.diary || { tareq: [], hazem: [], lastResetDate: "" };
             serverData.diary[targetRole] = serverData.diary[targetRole] || [];
 
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'}) + " | " + now.toLocaleDateString('ar-EG', {month: 'numeric', day: 'numeric'});
 
-            serverData.diary[targetRole].unshift({ text: text, time: timeStr }); // إدراج في الأول عشان الأحدث يظهر فوق
+            serverData.diary[targetRole].unshift({ text: text, time: timeStr });
             document.getElementById(inputId).value = '';
             
             renderDiary();
@@ -414,7 +426,7 @@
         }
 
         function renderDiary() {
-            serverData.diary = serverData.diary || { tareq: [], hazem: [] };
+            serverData.diary = serverData.diary || { tareq: [], hazem: [], lastResetDate: "" };
             const tList = document.getElementById('tareqDiaryList');
             const hList = document.getElementById('hazemDiaryList');
 
@@ -441,7 +453,6 @@
             });
         }
 
-        /* 💬 إرسال شات */
         function sendChat() {
             const input = document.getElementById('msgInput');
             const text = input.value.trim();
