@@ -112,30 +112,32 @@
     let campData = {};
     let syncInterval; 
     let isSaving = false; 
+    let lockServerUpdates = false; // قفل أمان لمنع التحديثات الهابطة البايظة أثناء التعديل المحلي
 
     async function loadData() {
-        if (isSaving) return; 
+        // لو بنسيف أو القفل الزمني شغال، ارفض تماماً إنك تجيب داتا من السيرفر تنزل فوق داتاتنا الحالية
+        if (isSaving || lockServerUpdates) return; 
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
             
-            // التأكد الدفاعي: لو السيرفر راجع بداتا بايظة أو مش Object، بنعمل Object نظيف وما بنخليش الكود يضرب
             if (json && json.record && typeof json.record === 'object') {
                 campData = json.record;
             } else {
                 campData = {};
             }
         } catch (e) { 
-            console.log("خطأ في جلب البيانات، سيتم استخدام البيانات المحلية مؤقتاً"); 
+            console.log("خطأ شبكة مؤقت"); 
         } finally {
-            // غصب عن أي عطل.. ارسم الجدول والـ Grid للمستخدم دايماً!
             renderDashboard();
         }
     }
 
     async function saveToServer() {
         isSaving = true;
+        lockServerUpdates = true; // شغل القفل فوراً لمنع المسح التلقائي
         clearInterval(syncInterval); 
+        
         try {
             await fetch(BIN_URL, {
                 method: "PUT",
@@ -145,13 +147,21 @@
         } catch(e) {
             console.log("خطأ أثناء الحفظ بالسيرفر");
         }
+        
         isSaving = false;
-        startSync(); 
+        
+        // فك قفل الاستقبال بعد 8 ثواني كاملة عشان نضمن إن السيرفر حدث الملف المشترك بنسبة 100%
+        setTimeout(() => {
+            lockServerUpdates = false;
+            startSync();
+        }, 8000);
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        syncInterval = setInterval(loadData, 7000); // تحديث هادئ كل 7 ثواني
+        if (!lockServerUpdates) {
+            syncInterval = setInterval(loadData, 7000); 
+        }
     }
 
     function renderDashboard() {
@@ -160,14 +170,12 @@
         const p3Container = document.getElementById('phase3Container');
         
         if (!p1Container || !p2Container || !p3Container) return;
-        
         p1Container.innerHTML = ''; p2Container.innerHTML = ''; p3Container.innerHTML = '';
         
         let startDate = new Date('2026-05-20');
         const endDate = new Date('2026-06-21');
         let dayCounter = 1; let tScore = 0; let hScore = 0;
 
-        // حماية مضافة: لو حصل أي مشكلة في الـ campData بنضمن إنها تتفرع كـ Object
         if (!campData || typeof campData !== 'object') campData = {};
 
         while (startDate <= endDate) {
@@ -221,9 +229,12 @@
         const input = document.getElementById(`input-${dateStr}`);
         if (!input || !input.value.trim()) return;
         
+        // إضافة محلياً فوراً لمنع أي اختفاء بصري للمهمة
         campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
         input.value = '';
         renderDashboard(); 
+        
+        // حفظ آمن مع تفعيل قفل الـ 8 ثواني
         await saveToServer();
     }
 
@@ -247,7 +258,6 @@
         }
     }
 
-    // أول تشغيل
     loadData().then(() => {
         startSync();
     });
