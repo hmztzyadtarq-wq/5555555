@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بنك المهام المشترك والسرّي</title>
+    <title>جدول التحدي والمراقبة الحية</title>
     <style>
         body {
             background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
@@ -19,7 +18,25 @@
         .brand span { color: #f59e0b; font-weight: 800; }
         .links a { color: #94a3b8; text-decoration: none; margin-right: 20px; font-weight: 700; }
         .links a.active { color: #6366f1; }
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        
+        /* 🏆 لوحة النقط والعد التنافسي */
+        .vs-board {
+            display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px;
+            align-items: center; margin-bottom: 30px;
+        }
+        .score-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
+            backdrop-filter: blur(12px); border-radius: 20px; padding: 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s;
+        }
+        .score-card.tareq { border-bottom: 5px solid #10b981; }
+        .score-card.hazem { border-bottom: 5px solid #6366f1; }
+        .score-num { font-size: 2.8rem; font-weight: 900; margin-top: 5px; }
+        .vs-circle { background: #f59e0b; color: #0f172a; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; box-shadow: 0 0 20px #f59e0b; }
+        .leader-text { font-size: 0.9rem; color: #f59e0b; font-weight: bold; margin-top: 5px; display: block; }
+
         .card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
             backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05);
@@ -29,54 +46,76 @@
         .input-group { display: flex; gap: 10px; margin-top: 15px; }
         .input-group input { flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; font-size: 1rem; }
         .input-group button { background: #6366f1; border: none; padding: 0 25px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; overflow: hidden; border-radius: 12px; }
-        th, td { padding: 14px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th, td { padding: 14px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
         th { background: #1e293b; color: #94a3b8; font-weight: bold; }
+        td.task-title { text-align: right; max-width: 300px; }
         tr:hover { background: rgba(255,255,255,0.02); }
-        .status-btn { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; }
-        .status-btn.done { background: #10b981; color: white; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
+        
+        /* أزرار الإنجاز المنفصلة */
+        .check-btn { background: #334155; border: 2px solid #475569; color: #94a3b8; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; width: 140px; }
+        .check-btn.done-tareq { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+        .check-btn.done-hazem { background: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #6366f1; box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
+        
         .delete-btn { color: #ef4444; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
         .sync-loader { font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 10px; }
-        .creator-tag { font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px; }
+        .creator-tag { font-size: 0.7rem; color: #64748b; display: block; margin-top: 2px; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="brand">🚀 بنك المهام والفرم المشترك | مرحباً <span id="welcomeUser">..</span></div>
+        <div class="brand">🚀 حلبة تحدي الثانوية العامة | مرحباً <span id="welcomeUser">..</span></div>
         <div class="links">
-            <a href="index.html" class="active">🏠 الجدول المشترك</a>
+            <a href="index.html" class="active">🏠 الجدول والمنافسة</a>
             <a href="meet.html">🎥 العداد المشترك والميت</a>
             <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
         </div>
     </nav>
 
     <div class="container">
-        <div class="sync-loader" id="syncStatus">جاري المزامنة مع السيرفر.. ⏳</div>
-
-        <!-- خانة إضافة مادة -->
-        <div class="card">
-            <h2 style="margin-top:0; color:#f59e0b;">➕ إضافة مهمة جديدة للجميع</h2>
-            <p style="margin: -10px 0 15px 0; font-size: 0.85rem; color: #94a3b8;">أي مهمة هتضيفها هنا هتظهر عندك وعند حازم فوراً، وكل واحد يخلصها في سرّية تامة! 🤫</p>
-            <div class="input-group">
-                <input type="text" id="subjectName" placeholder="اكتب المادة أو الدرس (مثلاً: فيزياء - حديثة)...">
-                <button onclick="addSubject()">إضافة للجدول العام 🚀</button>
+        <!-- 🏆 العداد الإجمالي للمنافسة الحية -->
+        <div class="vs-board">
+            <div class="score-card tareq" id="card-طارق">
+                <h3 style="margin:0; color:#10b981;">🛠️ طارق</h3>
+                <div class="score-num" id="tareqScoreDisplay">00</div>
+                <span class="leader-text" id="lead-طارق"></span>
+            </div>
+            <div class="vs-circle">VS</div>
+            <div class="score-card hazem" id="card-حازم">
+                <h3 style="margin:0; color:#6366f1;">🩺 حازم</h3>
+                <div class="score-num" id="hazemScoreDisplay">00</div>
+                <span class="leader-text" id="lead-حازم"></span>
             </div>
         </div>
 
-        <!-- جدول التحدي الحقيقي -->
+        <div class="sync-loader" id="syncStatus">جاري فحص المستودع المشترك.. ⏳</div>
+
+        <!-- خانة إضافة مادة -->
         <div class="card">
-            <h2 style="margin-top:0;">📋 قائمة المهام المشتركة</h2>
+            <h2 style="margin-top:0; color:#f59e0b;">➕ إضافة درس أو شابتر جديد في التحدي الموحد</h2>
+            <p style="margin: -10px 0 15px 0; font-size: 0.85rem; color: #94a3b8;">أي درس هتكتبه هنا هينزل في جدولكم أنتوا الاتنين، وكل واحد يعلم في خانته لما يخلص عشان نولع التنافس! 🔥</p>
+            <div class="input-group">
+                <input type="text" id="subjectName" placeholder="مثلاً: فيزياء - الفصل الأول (توصيل المقاومات)...">
+                <button onclick="addSubject()">إضافة للجدول الموحد 🚀</button>
+            </div>
+        </div>
+
+        <!-- الجدول الأسطوري المشترك بمفاتيح أمان -->
+        <div class="card">
+            <h2 style="margin-top:0;">📋 جدول الفرم والمراقبة الحية</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>المهمة / الدرس</th>
-                        <th>حالة إنجازك أنت</th>
-                        <th>التحكم العام</th>
+                        <th style="text-align: right;">المهمة / الدرس</th>
+                        <th>إنجاز طارق 🛠️</th>
+                        <th>إنجاز حازم 🩺</th>
+                        <th>حذف</th>
                     </tr>
                 </thead>
                 <tbody id="subjectsTableBody">
-                    <!-- البيانات هتنزل هنا لايف -->
+                    <!-- الصفوف هتنزل هنا لايف من السيرفر -->
                 </tbody>
             </table>
         </div>
@@ -94,18 +133,7 @@
         let serverData = { tasks: [], timer: {}, chat: [], lastSeen: {}, diary: {} };
         let isUpdating = false;
 
-        // جلب جدول التشغيل من المتصفح لمعرفة اللي خلصته "أنت بس"
-        function getMyFinishedTasks() {
-            const key = `finished_tasks_${myName}`;
-            return JSON.parse(localStorage.getItem(key)) || [];
-        }
-
-        function saveMyFinishedTasks(list) {
-            const key = `finished_tasks_${myName}`;
-            localStorage.setItem(key, JSON.stringify(list));
-        }
-
-        // 📥 جلب الجدول المشترك من السيرفر
+        // 📥 جلب الجدول والبيانات بالكامل من السيرفر المشترك
         function fetchData() {
             if (isUpdating) return;
             fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
@@ -113,27 +141,29 @@
             .then(data => {
                 if (data && !isUpdating) {
                     serverData = data;
-                    serverData.tasks = data.tasks || []; 
-                    renderTable();
-                    document.getElementById('syncStatus').innerText = "تم التحديث والمزامنة لايف 🟢";
+                    serverData.tasks = data.tasks || [];
+                    renderTableAndScores();
+                    document.getElementById('syncStatus').innerText = "الجدول متزامن لايف دقيقة بدقيقة 🟢";
                 }
             })
             .catch(e => { document.getElementById('syncStatus').innerText = "مشكلة في الاتصال بالسيرفر.. 🔴"; });
         }
 
-        // 🛠️ إضافة مهمة تظهر للاتنين
+        // 🛠️ إضافة مهمة جديدة للجدول الموحد
         function addSubject() {
             const nameInput = document.getElementById('subjectName');
             const name = nameInput.value.trim();
             if (!name) return;
 
             isUpdating = true;
-            document.getElementById('syncStatus').innerText = "جاري الرفع للجميع.. ⏳";
+            document.getElementById('syncStatus').innerText = "جاري الإضافة على السيرفر العام.. ⏳";
 
             serverData.tasks.push({
                 id: "task_" + Date.now() + "_" + Math.floor(Math.random()*1000),
                 title: name,
-                creator: myName
+                creator: myName,
+                tareqDone: false, // خانة طارق المستقلة
+                hazemDone: false  // خانة حازم المستقلة
             });
 
             pushToCloud(() => {
@@ -143,23 +173,34 @@
             });
         }
 
-        // 🤫 علم على مادة إنها خلصت (عندي أنا بس!)
-        function toggleMyComplete(id) {
-            let finished = getMyFinishedTasks();
-            if (finished.includes(id)) {
-                // لو كانت مخلصة وعايز يرجعها جاري العمل
-                finished = finished.filter(item => item !== id);
-            } else {
-                // علم عليها مخلصة
-                finished.push(id);
+        // 🔒 دالة التبديل والتحقق من صلاحية الضغط (قفل الأمان الإلهي)
+        function toggleTaskStatus(id, targetUser) {
+            // قفل الأمان: طارق يقدر يضغط على خانة طارق بس، وحازم على خانة حازم بس
+            if (targetUser !== myName) {
+                alert(`🚨 عيب الغش يا بطل! متقدرش تقيم أو تعلّم لـ ${targetUser}! كل واحد يعلم في خانته بنفسه! 🛑😉`);
+                return;
             }
-            saveMyFinishedTasks(finished);
-            renderTable(); // رندر فوراً محلياً عشان السرعة
+
+            isUpdating = true;
+            const task = serverData.tasks.find(t => t.id === id);
+            
+            if (task) {
+                if (targetUser === "طارق") {
+                    task.tareqDone = !task.tareqDone;
+                } else if (targetUser === "حازم") {
+                    task.hazemDone = !task.hazemDone;
+                }
+            }
+
+            pushToCloud(() => {
+                isUpdating = false;
+                fetchData();
+            });
         }
 
-        // ❌ مسح مادة من الجدول العام للاتنين (تعديل متاح للطرفين)
+        // ❌ حذف مهمة نهائياً من الجدول للاتنين
         function deleteSubject(id) {
-            if(!confirm("⚠️ مسح المهمة دي هيشيلها من عندك ومن عند زميلك برضه. متأكد؟")) return;
+            if(!confirm("⚠️ مسح الدرس ده هيشيله نهائياً من عندك ومن عند زميلك. متأكد؟")) return;
             isUpdating = true;
             serverData.tasks = serverData.tasks.filter(t => t.id !== id);
 
@@ -169,29 +210,77 @@
             });
         }
 
-        // 🎨 رسم الجدول بناء على السيرفر + الـ LocalStorage السري بتاعك
-        function renderTable() {
+        // 🎨 رندرة الجدول والعداد الإجمالي لايف
+        function renderTableAndScores() {
             const tbody = document.getElementById('subjectsTableBody');
             tbody.innerHTML = '';
-            
-            const myFinished = getMyFinishedTasks();
+
+            let totalTareqScore = 0;
+            let totalHazemScore = 0;
 
             serverData.tasks.forEach(task => {
-                const isDoneByMe = myFinished.includes(task.id);
-                const statusText = isDoneByMe ? "منتهية عندك ومخفية عن زميلك ✅" : "جاري الفرم.. 📚";
-                const btnClass = isDoneByMe ? "status-btn done" : "status-btn";
+                // تأمين الخانات القديمة لو مش متعرف فيها الخانات الجديدة
+                if (task.tareqDone === undefined) task.tareqDone = false;
+                if (task.hazemDone === undefined) task.hazemDone = false;
+
+                // حساب النقاط الكلية
+                if(task.tareqDone) totalTareqScore++;
+                if(task.hazemDone) totalHazemScore++;
+
+                // تنسيق كلاسات أزرار طارق
+                const tareqBtnClass = task.tareqDone ? "check-btn done-tareq" : "check-btn";
+                const tareqText = task.tareqDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
+
+                // تنسيق كلاسات أزرار حازم
+                const hazemBtnClass = task.hazemDone ? "check-btn done-hazem" : "check-btn";
+                const hazemText = task.hazemDone ? "منتهي مية مية ✅" : "لم يبدأ 📚";
+
+                // لو الاتنين خلصوا المادة، يتشطب اسم الدرس دليلاً على الفرم الجماعي!
+                const titleStyle = (task.tareqDone && task.hazemDone) 
+                    ? 'text-decoration: line-through; color: #64748b; font-weight: normal;' 
+                    : 'font-weight: bold;';
 
                 tbody.innerHTML += `
                     <tr>
-                        <td style="${isDoneByMe ? 'text-decoration: line-through; color: #64748b; font-weight: normal;' : 'font-weight: bold;'}">
+                        <td class="task-title" style="${titleStyle}">
                             ${task.title}
-                            <span class="creator-tag">بواسطة: ${task.creator}</span>
+                            <span class="creator-tag">مُضاف بواسطة: ${task.creator}</span>
                         </td>
-                        <td><button class="${btnClass}" onclick="toggleMyComplete('${task.id}')">${statusText}</button></td>
-                        <td><button class="delete-btn" onclick="deleteSubject('${task.id}')" title="حذف المهمة نهائياً للجميع">🗑️</button></td>
+                        <td>
+                            <button class="${tareqBtnClass}" onclick="toggleTaskStatus('${task.id}', 'طارق')">${tareqText}</button>
+                        </td>
+                        <td>
+                            <button class="${hazemBtnClass}" onclick="toggleTaskStatus('${task.id}', 'حازم')">${hazemText}</button>
+                        </td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteSubject('${task.id}')">🗑️</button>
+                        </td>
                     </tr>
                 `;
             });
+
+            // تحديث لوحة الـ VS فوق
+            document.getElementById('tareqScoreDisplay').innerText = totalTareqScore < 10 ? "0" + totalTareqScore : totalTareqScore;
+            document.getElementById('hazemScoreDisplay').innerText = totalHazemScore < 10 ? "0" + totalHazemScore : totalHazemScore;
+
+            const leadT = document.getElementById('lead-طارق');
+            const leadH = document.getElementById('lead-حازم');
+            const cardT = document.getElementById('card-طارق');
+            const cardH = document.getElementById('card-حازم');
+
+            leadT.innerText = ''; leadH.innerText = '';
+            cardT.style.boxShadow = 'none'; cardH.style.boxShadow = 'none';
+
+            if (totalTareqScore > totalHazemScore) {
+                leadT.innerText = "👑 الدحيح المتصدر كاسح!";
+                cardT.style.boxShadow = "0 0 25px rgba(16, 185, 129, 0.4)";
+            } else if (totalHazemScore > totalTareqScore) {
+                leadH.innerText = "👑 الدحيح المتصدر كاسح!";
+                cardH.style.boxShadow = "0 0 25px rgba(99, 102, 241, 0.4)";
+            } else if (totalTareqScore > 0 && totalTareqScore === totalHazemScore) {
+                leadT.innerText = "🤝 تعادل نمور المذاكرة!";
+                leadH.innerText = "🤝 تعادل نمور المذاكرة!";
+            }
         }
 
         function pushToCloud(callback) {
@@ -202,9 +291,10 @@
             .catch(e => { isUpdating = false; });
         }
 
+        // تحديث كل 3 ثواني لمراقبة إنجاز الطرف التاني لايف
         window.onload = function() {
             fetchData();
-            setInterval(fetchData, 4000); // تحديث كل 4 ثواني عشان لو حد ضاف مادة تظهر للتاني لايف
+            setInterval(fetchData, 3000);
         };
     </script>
 </body>
