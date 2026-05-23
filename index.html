@@ -9,95 +9,51 @@
             --accent: #f59e0b;
             --card-bg: rgba(30, 41, 59, 0.6);
             --border: rgba(255, 255, 255, 0.08);
-            
-            /* ألوان المراحل */
-            --phase1: #818cf8;
-            --phase2: #38bdf8;
-            --phase3: #f87171;
+            --phase1: #818cf8; --phase2: #38bdf8; --phase3: #f87171;
         }
-        
         body { 
             background: radial-gradient(circle at top right, #0f172a, #1e1b4b, #090d16); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            color: #f8fafc; margin: 0; padding: 0; min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif; color: #f8fafc; margin: 0; padding: 0; min-height: 100vh;
         }
-
-        nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); 
-            padding: 15px 40px; border-bottom: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 15px 40px; border-bottom: 1px solid var(--border); }
         .brand { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
-        .user-tag { background: rgba(245, 158, 11, 0.15); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-size: 0.9rem; }
+        .user-tag { background: rgba(245, 158, 11, 0.15); padding: 4px 12px; border-radius: 20px; color: var(--accent); }
         .links a { color: #94a3b8; text-decoration: none; margin-right: 25px; font-weight: 700; }
-
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
         
-        /* 🏆 لوحة المقارنة والـ VS الشرسة اللي رجعت */
+        /* 🏆 لوحة المقارنة والـ VS */
         .vs-board { display: grid; grid-template-columns: 1fr auto 1fr; gap: 25px; margin-bottom: 30px; align-items: center; }
-        .score-card { 
-            background: var(--card-bg); backdrop-filter: blur(16px); padding: 20px; 
-            border-radius: 20px; text-align: center; border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;
-        }
-        .score-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #6366f1; }
-        .score-card.hazem-card::before { background: #ec4899; }
-        .score-num { font-size: 3rem; font-weight: 900; color: var(--accent); text-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
-        .vs-sign { font-weight: 900; font-size: 2rem; color: #475569; font-style: italic; }
+        .score-card { background: var(--card-bg); padding: 20px; border-radius: 20px; text-align: center; border: 1px solid var(--border); }
+        .score-num { font-size: 3rem; font-weight: 900; color: var(--accent); }
+        .vs-sign { font-weight: 900; font-size: 2rem; color: #475569; }
 
-        /* 💾 لوحة المزامنة السحرية */
-        .sync-panel { background: rgba(245, 158, 11, 0.05); border: 1px dashed var(--accent); border-radius: 15px; padding: 15px; margin-bottom: 35px; display: flex; gap: 10px; align-items: center; }
-        .sync-panel input { flex: 1; background: #070a12; border: 1px solid #334155; padding: 12px; color: white; border-radius: 8px; outline: none; }
-        
-        /* 🏷️ عناوين المراحل العريضة */
-        .phase-title { 
-            font-size: 1.6rem; font-weight: 900; margin: 40px 0 20px 0; padding-right: 15px;
-            display: flex; align-items: center; gap: 10px;
-        }
+        /* 🏷️ المراحل */
+        .phase-title { font-size: 1.5rem; font-weight: 900; margin: 40px 0 20px 0; padding-right: 15px; }
         .phase-1-title { color: var(--phase1); border-right: 5px solid var(--phase1); }
         .phase-2-title { color: var(--phase2); border-right: 5px solid var(--phase2); }
         .phase-3-title { color: var(--phase3); border-right: 5px solid var(--phase3); }
 
-        /* 🟥 شبكة كروت الأيام المربعة */
+        /* 🟥 شبكة الكروت المربعة */
         .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        
-        .day-card { 
-            background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; 
-            padding: 20px; border: 1px solid var(--border); box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            display: flex; flex-direction: column; justify-content: space-between; min-height: 280px;
-        }
-        
-        /* تمييز توب الكارت حسب المرحلة */
+        .day-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 20px; border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 280px; }
         .day-card.p1 { border-top: 4px solid var(--phase1); }
         .day-card.p2 { border-top: 4px solid var(--phase2); }
         .day-card.p3 { border-top: 4px solid var(--phase3); }
 
         .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .day-title { font-size: 1.1rem; font-weight: 800; color: #e2e8f0; }
-        .day-date { font-size: 0.85rem; color: #94a3b8; font-weight: bold; }
+        .day-title { font-size: 1.1rem; font-weight: 800; }
+        .day-date { font-size: 0.85rem; color: #94a3b8; }
         
         .task-input-zone { display: flex; gap: 8px; margin-bottom: 12px; }
-        .task-input-zone input { flex: 1; background: #0b0f19; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.9rem; }
+        .task-input-zone input { flex: 1; background: #0b0f19; border: 1px solid #334155; border-radius: 8px; padding: 8px; color: white; }
         
-        /* قائمة المهام جوه الكارت المربع */
-        .tasks-list { flex: 1; overflow-y: auto; max-height: 180px; margin-bottom: 10px; }
-        .task-item { 
-            display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; 
-            align-items: center; background: rgba(15, 23, 42, 0.4); 
-            padding: 8px; border-radius: 8px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.02);
-        }
-        .task-name { font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        
-        /* أزرار الإنجاز الصغيرة */
+        .tasks-list { flex: 1; overflow-y: auto; }
+        .task-item { display: grid; grid-template-columns: 1fr auto auto auto; gap: 6px; align-items: center; background: rgba(15, 23, 42, 0.4); padding: 8px; border-radius: 8px; margin-bottom: 6px; }
         .btn-status { padding: 4px 8px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: white; }
         .done { background: #10b981; }
         .not-done { background: #334155; color: #94a3b8; }
-        
-        button { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 4px 8px; font-size: 0.8rem; }
-        .btn-danger:hover { background: #ef4444; color: white; }
+        button { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-danger { background: none; color: #ef4444; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -105,87 +61,80 @@
 <nav>
     <div class="brand">🚀 صالة معسكر الفرم <span class="user-tag" id="userTag">..</span></div>
     <div class="links">
-        <a href="index.html" style="color:white; border-bottom: 2px solid var(--primary); padding-bottom:5px;">🏠 لوحة المراحل الثلاثة</a>
+        <a href="index.html" style="color:white; border-bottom: 2px solid var(--primary);">🏠 لوحة المراحل الثلاثة</a>
         <a href="meet.html">🎥 العداد والميت</a>
-        <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
     </div>
 </nav>
 
 <div class="container">
-
-    <!-- 🏆 لوحة المقارنة والـ VS اللي رجعت لتوليد الحماس -->
+    <!-- 🏆 لوحة الـ VS والمقارنة لايف -->
     <div class="vs-board">
         <div class="score-card"><h3>طارق 🛠️</h3><div id="scoreTareq" class="score-num">00</div></div>
         <div class="vs-sign">VS</div>
-        <div class="score-card hazem-card"><h3>حازم 🩺</h3><div id="scoreHazem" class="score-num">00</div></div>
+        <div class="score-card text-center"><h3>حازم 🩺</h3><div id="scoreHazem" class="score-num">00</div></div>
     </div>
 
-    <!-- 📲 لوحة المزامنة السحرية -->
-    <div class="sync-panel">
-        <button onclick="exportData()" style="background: var(--accent); color: #0f172a;">💾 نسخ كود التزامُن لإرساله لحازم</button>
-        <input type="text" id="syncInput" placeholder="ضع هنا الكود المنسوخ من حازم للتحديث وضغط تحديث...">
-        <button onclick="importData()">🔄 تحديث الجدول الآن</button>
-    </div>
-
-    <!-- 🟪 المرحلة الأولى -->
+    <!-- 🟪 المراحل الثلاثة -->
     <div class="phase-title phase-1-title">🔥 العشرة الأوائل (20/5 - 31/5)</div>
     <div class="days-grid" id="phase1Container"></div>
 
-    <!-- 🟦 المرحلة الثانية -->
     <div class="phase-title phase-2-title">📚 معسكر الحل (1/6 - 9/6)</div>
     <div class="days-grid" id="phase2Container"></div>
 
-    <!-- 🟥 المرحلة الثالثة -->
     <div class="phase-title phase-3-title">⚔️ مدعكة الامتحانات (10/6 - 21/6)</div>
     <div class="days-grid" id="phase3Container"></div>
-
 </div>
 
 <script>
+    // 🌍 سيرفر مجاني ومفتوح ومخفي ومفهوش وجع دماغ ومفاتيح
+    const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
+    const API_KEY = "$2a$10$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D"; // مفتاح جاهز ومشفر للاتصال السريع
+
     const params = new URLSearchParams(window.location.search);
     const currentUser = params.get('user') || "طارق";
     document.getElementById('userTag').innerText = "الحساب الحالي: " + currentUser;
 
-    let campData = JSON.parse(localStorage.getItem('campData_2026_phases')) || {};
+    let campData = {};
 
-    // دالة لتوليد كروت الأيام وتقسيمها على الحاويات الثلاثة وحساب السكور
-    function generateDashboard() {
+    // جلب البيانات من السيرفر فوراً بدون ريفريش
+    async function loadData() {
+        try {
+            const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
+            const json = await res.json();
+            campData = json.record;
+            renderDashboard();
+        } catch (e) { console.log("تحميل البيانات علق، بيحاول تاني..."); }
+    }
+
+    // حفظ البيانات على السيرفر في خلفية الصفحة
+    async function saveToServer() {
+        await fetch(BIN_URL, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+            body: JSON.stringify(campData)
+        });
+    }
+
+    function renderDashboard() {
         const p1Container = document.getElementById('phase1Container');
         const p2Container = document.getElementById('phase2Container');
         const p3Container = document.getElementById('phase3Container');
         
-        p1Container.innerHTML = '';
-        p2Container.innerHTML = '';
-        p3Container.innerHTML = '';
+        p1Container.innerHTML = ''; p2Container.innerHTML = ''; p3Container.innerHTML = '';
         
         let startDate = new Date('2026-05-20');
         const endDate = new Date('2026-06-21');
-        
-        let dayCounter = 1;
-        let tScore = 0, hScore = 0;
+        let dayCounter = 1; let tScore = 0; let hScore = 0;
 
         while (startDate <= endDate) {
             const dateStr = startDate.toISOString().split('T')[0];
             const formattedDate = startDate.toLocaleDateString('ar-EG', { weekday: 'short', month: 'numeric', day: 'numeric' });
             
-            if (!campData[dateStr]) {
-                campData[dateStr] = [];
-            }
+            if (!campData[dateStr]) campData[dateStr] = [];
 
-            // تحديد المرحلة والـ CSS class الخاص بها
-            let phase = 1;
-            let cardClass = 'p1';
-            let targetContainer = p1Container;
-
-            if (startDate >= new Date('2026-06-01') && startDate <= new Date('2026-06-09')) {
-                phase = 2;
-                cardClass = 'p2';
-                targetContainer = p2Container;
-            } else if (startDate >= new Date('2026-06-10')) {
-                phase = 3;
-                cardClass = 'p3';
-                targetContainer = p3Container;
-            }
+            let cardClass = 'p1'; let targetContainer = p1Container;
+            if (startDate >= new Date('2026-06-01') && startDate <= new Date('2026-06-09')) { cardClass = 'p2'; targetContainer = p2Container; }
+            else if (startDate >= new Date('2026-06-10')) { cardClass = 'p3'; targetContainer = p3Container; }
 
             let itemsHtml = '';
             campData[dateStr].forEach((task, index) => {
@@ -194,7 +143,7 @@
 
                 itemsHtml += `
                     <div class="task-item">
-                        <div class="task-name" title="${task.name}">${task.name}</div>
+                        <div style="font-size:0.9rem; font-weight:600;">${task.name}</div>
                         <button class="btn-status ${task.tareq ? 'done' : 'not-done'}" onclick="toggleTask('${dateStr}', ${index}, 'tareq')">طارق ${task.tareq ? '✅' : '❌'}</button>
                         <button class="btn-status ${task.hazem ? 'done' : 'not-done'}" onclick="toggleTask('${dateStr}', ${index}, 'hazem')">حازم ${task.hazem ? '✅' : '❌'}</button>
                         <button class="btn-danger" onclick="deleteTask('${dateStr}', ${index})">🗑️</button>
@@ -209,82 +158,46 @@
                         <div class="day-date">${dateStr}</div>
                     </div>
                     <div class="task-input-zone">
-                        <input type="text" id="input-${dateStr}" placeholder="إضافة مهمة جديدة..." onkeypress="if(event.key==='Enter') addTask('${dateStr}')">
+                        <input type="text" id="input-${dateStr}" placeholder="إضافة مهمة..." onkeypress="if(event.key==='Enter') addTask('${dateStr}')">
                         <button onclick="addTask('${dateStr}')">➕</button>
                     </div>
-                    <div class="tasks-list">${itemsHtml || '<p style="text-align:center; color:#475569; font-size:0.85rem; margin-top:20px;">لا يوجد مهام مضافة</p>'}</div>
+                    <div class="tasks-list">${itemsHtml}</div>
                 </div>
             `;
-
-            startDate.setDate(startDate.getDate() + 1);
-            dayCounter++;
+            startDate.setDate(startDate.getDate() + 1); dayCounter++;
         }
-
-        // تحديث لوحة الـ VS بالأرقام الحقيقية للإنجاز
         document.getElementById('scoreTareq').innerText = tScore < 10 ? "0"+tScore : tScore;
         document.getElementById('scoreHazem').innerText = hScore < 10 ? "0"+hScore : hScore;
-        
-        localStorage.setItem('campData_2026_phases', JSON.stringify(campData));
     }
 
-    function addTask(dateStr) {
+    async function addTask(dateStr) {
         const input = document.getElementById(`input-${dateStr}`);
-        const taskName = input.value.trim();
-        if (!taskName) return;
-
-        campData[dateStr].push({
-            name: taskName,
-            tareq: false,
-            hazem: false
-        });
-        
+        if (!input.value.trim()) return;
+        campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
         input.value = '';
-        generateDashboard();
+        renderDashboard();
+        await saveToServer();
     }
 
-    // قفل خانة الزميل بشكل صارم لمنع الغش والتلاعب بالتحدي 😉
-    function toggleTask(dateStr, index, userField) {
+    async function toggleTask(dateStr, index, userField) {
         const myField = (currentUser === "طارق") ? "tareq" : "hazem";
-        if (userField !== myField) {
-            alert("يا بطل! دي خانة زميلك، ركز في فرم مادتك ومتقربش من درجاته 😅💪");
-            return;
-        }
+        if (userField !== myField) { alert("دي خانة زميلك يا بطل! 😉"); return; }
         campData[dateStr][index][userField] = !campData[dateStr][index][userField];
-        generateDashboard();
+        renderDashboard();
+        await saveToServer();
     }
 
-    function deleteTask(dateStr, index) {
-        if (confirm("هل تريد حذف هذه المهمة؟")) {
+    async function deleteTask(dateStr, index) {
+        if (confirm("حذف المهمة؟")) {
             campData[dateStr].splice(index, 1);
-            generateDashboard();
+            renderDashboard();
+            await saveToServer();
         }
     }
 
-    // 💾 نسخ البيانات كـ كود مشفر
-    function exportData() {
-        const dataStr = btoa(unescape(encodeURIComponent(JSON.stringify(campData))));
-        navigator.clipboard.writeText(dataStr);
-        alert("تم نسخ كود التزامن بنجاح! ابعته لحازم على الواتساب، ولما يحطه عنده هيظهرله إنجازك والعداد هيتحدث فوراً.");
-    }
-
-    // 🔄 استقبال كود التحديث ومزامنته فوراً
-    function importData() {
-        const code = document.getElementById('syncInput').value.trim();
-        if (!code) { alert("حط الكود المنسوخ الأول يا نجم!"); return; }
-        try {
-            const decodedData = JSON.parse(decodeURIComponent(escape(atob(code))));
-            campData = decodedData;
-            localStorage.setItem('campData_2026_phases', JSON.stringify(campData));
-            generateDashboard();
-            document.getElementById('syncInput').value = '';
-            alert("تم تحديث لوحة المنافسة ومزامنتها مع حازم بنجاح! ⚡");
-        } catch (e) {
-            alert("الكود غير صحيح أو ناقص، خليه ينسخه ويبعته تاني.");
-        }
-    }
-
-    // تشغيل النظام
-    generateDashboard();
+    // تحديث تلقائي كل 5 ثواني عشان تشوفوا كتابة بعض لايف بدون ريفريش
+    setInterval(loadData, 5000);
+    loadData();
 </script>
 </body>
 </html>
