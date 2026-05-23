@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -79,7 +80,6 @@
 </head>
 <body>
 
-    <!-- صندوق التنبيهات والقفشات التفاعلية -->
     <div id="funnyAlert" class="funny-alert"></div>
 
     <nav>
@@ -92,19 +92,13 @@
     </nav>
 
     <div class="meet-container">
-        
-        <!-- القسم الرئيسي (الميت + البومودورو + اليوميات) -->
         <div class="main-panel">
-            
-            <!-- ⏱️ كارت البومودورو المطور بالتقنيات الجديدة -->
             <div class="card pomodoro-box">
                 <h2 style="margin-top:0;">⏱️ تايمر البومودورو الذكي المتزامن</h2>
                 <div class="pomo-modes">
                     <button id="mode-solo" class="active" onclick="setMode('solo')">👤 لوحدي</button>
                     <button id="mode-joint" onclick="setMode('joint')">👥 مع حازم (طلب مزامنة)</button>
                 </div>
-                
-                <!-- 🎯 القائمة لاختيار نوع الجلسة -->
                 <div class="pomo-selects">
                     <select id="pomoTechnique" onchange="changeTechnique(this.value)">
                         <option value="25">📚 جلسة دحيح (25 دقيقة)</option>
@@ -113,7 +107,6 @@
                         <option value="5">☕ جلسة روقان وفصلان (5 دقائق)</option>
                     </select>
                 </div>
-
                 <div id="pomoStatus" style="color: #94a3b8; font-size: 0.9rem;">وضع المذاكرة الفردي شغال..</div>
                 <div class="timer-display" id="timerDisplay">25:00</div>
                 <div class="control-btns">
@@ -122,13 +115,10 @@
                 </div>
             </div>
 
-            <!-- 📑 كارت "عملت إيه النهارده؟" (اليوميات والدولاب المشترك) -->
             <div class="card">
                 <h2 style="margin-top:0; color: #f59e0b;">📑 عملت إيه النهارده؟ (دولاب اليوميات الحية)</h2>
                 <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">اكتب هنا كل تحركاتك (كلت، نمت، صحيت..) وعينك على تحركات زميلك! (بيتصفر تلقائياً كل يوم جديد 📅)</p>
-                
                 <div class="diary-grid">
-                    <!-- عمود طارق -->
                     <div class="diary-column tareq">
                         <h4 style="margin:0 0 8px 0; color:#10b981;">🛠️ يوميات طارق</h4>
                         <div class="diary-input-group">
@@ -137,8 +127,6 @@
                         </div>
                         <div class="diary-list" id="tareqDiaryList"></div>
                     </div>
-
-                    <!-- عمود حازم -->
                     <div class="diary-column hazem">
                         <h4 style="margin:0 0 8px 0; color:#6366f1;">🩺 يوميات حازم</h4>
                         <div class="diary-input-group">
@@ -150,16 +138,13 @@
                 </div>
             </div>
 
-            <!-- 🎥 كارت فيديو الاجتماع المباشر -->
             <div class="card">
                 <h2 style="margin-top:0; color:#10b981;">🎥 شاشة الفيديو والاجتماع المباشر</h2>
                 <a href="https://meet.google.com/new" target="_blank" style="display:inline-block; background:#ea4335; color:white; padding:10px 18px; text-decoration:none; border-radius:8px; font-weight:bold; margin-bottom:15px;">فتح اجتماع جديد على Google Meet 🔗</a>
                 <iframe class="meet-embed" src="https://meet.jit.si/ThanaweyaAmmaTareqAndHazem2026#config.startWithVideoMuted=true" allow="camera; microphone; fullscreen; display-capture"></iframe>
             </div>
-
         </div>
 
-        <!-- 💬 قسم المراسلة الفورية وحالة الاتصال (العمود الجانبي) -->
         <div class="card chat-box">
             <div class="chat-header">
                 <h3 style="margin:0;">💬 الشات السريع</h3>
@@ -168,15 +153,12 @@
                     <span id="partnerStatusText" style="font-size:0.85rem; color:#94a3b8;">جاري الفحص..</span>
                 </div>
             </div>
-            
             <div class="chat-messages" id="chatMessages"></div>
-
             <div class="chat-input-area">
                 <input type="text" id="msgInput" placeholder="اكتب رسالة لحازم..." onkeypress="if(event.key==='Enter') sendChat()">
                 <button onclick="sendChat()">إرسال ✈️</button>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -205,18 +187,18 @@
         let pomoSeconds = 0;
         let currentMode = "solo";
         
-        // 🎵 تعريف ملفات الصوت
-        const errorSound = new Audio("https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg");
-        const chatNotificationSound = new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"); 
-        chatNotificationSound.volume = 0.5; // ضبط مستوى الصوت عشان ميبقاش مزعج جداً
+        // 🔒 قفل حماية لمنع مسح الرسائل أثناء الإرسال
+        let isSendingMessage = false; 
 
-        let lastChatCount = 0; // متغير لمراقبة عدد الرسائل القديمة لمنع تكرار الإشعار
+        const errorSound = new Audio("https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg");
+        const chatNotificationSound = new Audio("https://actions.google.com/sounds/v1/notification/ambient_notification.ogg"); 
+        chatNotificationSound.volume = 0.6; 
+
+        let lastChatCount = 0;
 
         function playNotification() {
             chatNotificationSound.currentTime = 0;
-            chatNotificationSound.play().catch(e => {
-                console.log("المتصفح حجب الصوت تلقائياً، هيشتغل أول ما تدوس في أي حتة في الصفحة.");
-            });
+            chatNotificationSound.play().catch(e => {});
         }
 
         function showTrollAlert(msg) {
@@ -228,22 +210,23 @@
         }
 
         function syncServer() {
+            // لو بنبعت رسالة حالياً، بنوقف الـ Sync لثواني عشان يحصل الرفع بأمان ومنغير مسح
+            if (isSendingMessage) return;
+
             serverData.lastSeen = serverData.lastSeen || {};
             serverData.lastSeen[myName] = Date.now();
 
             fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
             .then(res => res.json())
             .then(data => {
-                if(data) {
+                if(data && !isSendingMessage) { // تأكيد إضافي إننا مش بنبعت رسالة
                     serverData.tasks = data.tasks || [];
                     serverData.timer = data.timer || serverData.timer;
                     
                     const newChat = data.chat || [];
                     
-                    // 🔔 فحص لو فيه رسالة جديدة جاية من الشخص الآخر لتشغيل الإشعار الصوتي
                     if (newChat.length > lastChatCount) {
                         const lastMessage = newChat[newChat.length - 1];
-                        // لو آخر رسالة مش بتاعتي أنا، شغل الصوت فوراً
                         if (lastChatCount > 0 && lastMessage && lastMessage.sender !== myName) {
                             playNotification();
                         }
@@ -312,7 +295,6 @@
             } else {
                 const selectedType = document.getElementById('pomoTechnique').value;
                 const typeText = document.getElementById('pomoTechnique').options[document.getElementById('pomoTechnique').selectedIndex].text;
-                
                 document.getElementById('pomoStatus').innerText = "تم إرسال طلب مزامنة لـ [" + typeText + "] وبانتظار الموافقة.. ⏳";
                 
                 serverData.timer.mode = "joint";
@@ -344,7 +326,6 @@
                         pushToCloud();
                     }
                 }
-                
                 if (t.approved && t.state === "running" && currentMode === "joint") {
                     document.getElementById('pomoStatus').innerText = "🚨 بومودورو مشترك شغال حالياً! ممنوع الهروب من المذاكرة ⚔️";
                     document.getElementById('pomoTechnique').value = t.type;
@@ -441,7 +422,7 @@
 
         function deleteDiaryItem(targetRole, idx) {
             if (targetRole === 'tareq' && !isTareqUser) { return showTrollAlert("عايز تمسح يوميات طارق عشان تداري على خيبتك يا حازم؟ مش هسمحلك! 🤣"); }
-            if (targetRole === 'hazem' && isTareqUser) { return showTrollAlert("يا طارق سيب حازم يعبر عن مشاعره ويمسح براحته، متتدخلش! 🤫"); }
+            if (targetRole === 'hazem' && isTareqUser) { return showTrollAlert("يا طارق سيب حازم يعبر عن مشاعره ويمسح براحته, متتدخلش! 🤫"); }
 
             serverData.diary[targetRole].splice(idx, 1);
             renderDiary();
@@ -476,26 +457,48 @@
             });
         }
 
+        // 🔥 التعديل الجوهري والآمن لإرسال الشات بدون فقدان البيانات
         function sendChat() {
             const input = document.getElementById('msgInput');
             const text = input.value.trim();
             if(!text) return;
 
-            serverData.chat = serverData.chat || [];
-            if(serverData.chat.length > 30) serverData.chat.shift();
+            isSendingMessage = true; // 🔒 قفل المزامنة فوراً لمنع المسح التلقائي
 
-            serverData.chat.push({
-                sender: myName, text: text,
-                time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
+            // كود إضافي للتأكد من جلب آخر نسخة شات من السيرفر قبل الإضافة لتجنب مسح رسائل الطرف التاني
+            fetch(BIN_URL, { method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" } })
+            .then(res => res.json())
+            .then(data => {
+                if(data) {
+                    serverData.chat = data.chat || [];
+                }
+                
+                if(serverData.chat.length > 30) serverData.chat.shift();
+
+                serverData.chat.push({
+                    sender: myName, 
+                    text: text,
+                    time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
+                });
+
+                input.value = ''; 
+                playNotification();
+                renderChat(); 
+
+                // رفع البيانات الجديدة للسيرفر أولاً
+                return fetch(BIN_URL, {
+                    method: 'PUT', 
+                    headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+                    body: JSON.stringify(serverData)
+                });
+            })
+            .then(() => {
+                lastChatCount = serverData.chat.length;
+                setTimeout(() => { isSendingMessage = false; }, 1000); // فتح المزامنة تاني بعد ثانية من التثبيت
+            })
+            .catch(e => {
+                isSendingMessage = false;
             });
-
-            input.value = ''; 
-            
-            // تشغيل صوت الإشعار محلياً فور الإرسال للتفاعل
-            playNotification();
-            
-            renderChat(); 
-            pushToCloud();
         }
 
         function renderChat() {
@@ -510,6 +513,7 @@
         }
 
         function pushToCloud() {
+            if (isSendingMessage) return; // عدم الرفع العشوائي لو الشات شغال برفع مخصص
             fetch(BIN_URL, {
                 method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
                 body: JSON.stringify(serverData)
