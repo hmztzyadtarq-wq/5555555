@@ -3,175 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غرفة المذاكرة والعداد الحي</title>
+    <title>غرفة المذاكرة والمراسلة الحية</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .pomo-card { background: radial-gradient(circle at top left, #1e293b, #0f172a); border-radius: 24px; text-align: center; padding: 40px; margin-top: 20px; }
-        .timer-big { font-size: 6rem; font-weight: 800; font-family: monospace; color: var(--text-main); margin: 20px 0; text-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-        .btn-meet { background: linear-gradient(135deg, #10b981, #059669); font-size: 1.1rem; padding: 15px 35px; box-shadow: 0 4px 15px rgba(16,185,129,0.3); text-decoration: none; display: inline-block; color: white; border-radius: 12px; font-weight: bold; margin-bottom: 25px; }
-        .options-group button { background: #334155; font-size: 0.9rem; padding: 8px 16px; margin: 0 5px; color: var(--text-muted); }
-        .options-group button.active { background: var(--accent); color: #000; }
-        .control-btns button { font-size: 1.1rem; padding: 12px 30px; margin: 10px; }
-        .state-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; margin-top: 10px; }
+        body {
+            background: radial-gradient(circle at top right, #0f172a, #1e1b4b);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #f8fafc;
+            margin: 0; padding: 0;
+        }
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+            padding: 15px 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .brand span { color: #f59e0b; font-weight: 800; }
+        .links a { color: #94a3b8; text-decoration: none; margin-right: 20px; font-weight: 700; }
+        .links a.active { color: #6366f1; }
+
+        .meet-container {
+            display: grid; grid-template-columns: 1fr 350px; gap: 25px;
+            max-width: 1300px; margin: 25px auto; padding: 0 20px;
+        }
+
+        .main-panel { display: flex; flex-direction: column; gap: 25px; }
+        
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.7));
+            backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* ⏱️ ستايل البومودورو المطور */
+        .pomodoro-box { text-align: center; }
+        .timer-display { font-size: 4rem; font-weight: 900; color: #f59e0b; margin: 15px 0; font-family: monospace; }
+        .pomo-modes { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+        .pomo-modes button { background: #334155; border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .pomo-modes button.active { background: #6366f1; }
+        .control-btns button { background: #10b981; border: none; color: white; padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin: 0 5px; }
+        .control-btns button.stop { background: #ef4444; }
+
+        /* 💬 ستايل الشات الفوري */
+        .chat-box { display: flex; flex-direction: column; height: 500px; }
+        .chat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
+        .status-dot { display: inline-block; width: 12px; height: 12px; background: #64748b; border-radius: 50%; margin-left: 6px; }
+        .status-dot.online { background: #10b981; box-shadow: 0 0 10px #10b981; }
+        .chat-messages { flex: 1; overflow-y: auto; background: rgba(15, 23, 42, 0.5); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 0.95rem; word-break: break-word; line-height: 1.4; }
+        .msg.me { background: #4f46e5; color: white; align-self: flex-start; border-bottom-right-radius: 2px; }
+        .msg.him { background: #334155; color: white; align-self: flex-end; border-bottom-left-radius: 2px; }
+        .msg-meta { font-size: 0.7rem; color: #94a3b8; display: block; margin-top: 4px; text-align: left; }
+        .chat-input-area { display: flex; gap: 10px; margin-top: 15px; }
+        .chat-input-area input { flex: 1; background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px; color: white; }
+        .chat-input-area button { background: #6366f1; border: none; padding: 0 20px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
+
+        /* 🎥 كارت الميت */
+        .meet-embed { width: 100%; height: 400px; border: none; border-radius: 15px; background: #0f172a; margin-top: 15px; }
     </style>
 </head>
 <body>
+
     <nav>
-        <div class="brand">🎥 غرفة المذاكرة والمؤقت اللحظي المشترك</div>
+        <div class="brand">🚀 لوحة مراجعة الثانوية العامة | مرحباً <span id="welcomeUser">..</span></div>
         <div class="links">
             <a href="index.html">🏠 الجدول والمنافسة</a>
             <a href="meet.html" class="active">🎥 العداد المشترك والميت</a>
-            <a href="login.html" style="color: var(--danger);">🚪 خروج</a>
+            <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
         </div>
     </nav>
 
-    <div style="max-width: 700px; margin: 0 auto;">
-        <a href="https://meet.google.com/abc-defg-hij" target="_blank" class="btn-meet">🎥 انضم لجوجل ميت الحقيقي مع حازم الآن</a>
-
-        <div class="card pomo-card">
-            <h2>⏱️ مؤقت البومودورو المتزامن</h2>
-            <p class="subtitle" style="margin-bottom: 10px;">لو حازم شغل العداد هيشتغل عندك.. ولو وقفه هيقف عندك لايف! ⚡</p>
+    <div class="meet-container">
+        
+        <!-- القسم الرئيسي (الميت + البومودورو) -->
+        <div class="main-panel">
             
-            <div id="statusBadge" class="state-badge" style="background: #334155; color: white;">جاهز للبدء</div>
-
-            <div class="timer-big" id="timerDisplay">50:00</div>
-
-            <div class="options-group" style="margin-bottom: 25px;">
-                <button id="opt50" class="active" onclick="changeMode(50, 10, 'opt50')">⚡ جلسة دحيحة (50 د مذاكرة / 10 د راحة)</button>
-                <button id="opt25" onclick="changeMode(25, 5, 'opt25')">☕ جلسة سريعة (25 د مذاكرة / 5 د راحة)</button>
+            <!-- ⏱️ كارت البومودورو المطور -->
+            <div class="card pomodoro-box">
+                <h2 style="margin-top:0;">⏱️ تايمر البومودورو الذكي المتزامن</h2>
+                <div class="pomo-modes">
+                    <button id="mode-solo" class="active" onclick="setMode('solo')">👤 لوحدي</button>
+                    <button id="mode-joint" onclick="setMode('joint')">👥 مع حازم (طلب مزامنة)</button>
+                </div>
+                <div id="pomoStatus" style="color: #94a3b8; font-size: 0.9rem;">وضع المذاكرة الفردي شغال..</div>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="control-btns">
+                    <button id="startBtn" onclick="startTimer()">ابدأ التايمر ⚡</button>
+                    <button class="stop" onclick="resetTimer()">إعادة تعيين 🔄</button>
+                </div>
             </div>
 
-            <div class="control-btns">
-                <button style="background:var(--success);" onclick="triggerTimer('start')">ابدأ العداد سوا 🚀</button>
-                <button style="background:var(--danger);" onclick="triggerTimer('pause')">إيقاف مؤقت ⏸️</button>
-                <button style="background:var(--border); color:white;" onclick="triggerTimer('reset')">إعادة ضبط 🔄</button>
+            <!-- 🎥 كارت جوجل ميت / Jitsi المطور -->
+            <div class="card">
+                <h2 style="margin-top:0; color:#10b981;">🎥 شاشة الفيديو والاجتماع المباشر</h2>
+                <p style="color:#94a3b8; font-size: 0.85rem; margin-bottom: 10px;">
+                    💡 ملحوظة: جوجل ميت الأصلي بيقفل الشاشات المدمجة، عشان كدة شغلنالكم هنا سيرفر **Jitsi Meet** وهو سيرفر اجتماعات فيديو مجاني مفتوح بالكامل وخفيف جداً، أو تقدروا تفتحوا اللينك المباشر لجوجل ميت من الزرار ده:
+                </p>
+                <a href="https://meet.google.com/new" target="_blank" style="display:inline-block; background:#ea4335; color:white; padding:10px 18px; text-decoration:none; border-radius:8px; font-weight:bold; margin-bottom:15px;">فتح اجتماع جديد على Google Meet 🔗</a>
+                
+                <!-- شاشة الفيديو المباشر المدمجة ليكم أنتوا الاثنين علطول أول ما تفتحوا الصفحة -->
+                <iframe class="meet-embed" src="https://meet.jit.si/ThanaweyaAmmaTareqAndHazem2026#config.startWithVideoMuted=true" allow="camera; microphone; fullscreen; display-capture"></iframe>
+            </div>
+
+        </div>
+
+        <!-- 💬 قسم المراسلة الفورية وحالة الاتصال (العمود الجانبي) -->
+        <div class="card chat-box">
+            <div class="chat-header">
+                <h3 style="margin:0;">💬 الشات السريع</h3>
+                <div>
+                    <span id="partnerStatusDot" class="status-dot"></span>
+                    <span id="partnerStatusText" style="font-size:0.85rem; color:#94a3b8;">حازم أوفلاين</span>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- الرسائل هتنزل هنا تلقائياً -->
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="msgInput" placeholder="اكتب رسالة لحازم..." onkeypress="if(event.key==='Enter') sendChat()">
+                <button onclick="sendChat()">إرسال ✈️</button>
             </div>
         </div>
+
     </div>
 
-    <!-- كود صوت جرس رنين التنبيه المدمج أونلاين مجاناً -->
-    <audio id="alarmSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav" preload="auto"></audio>
-
     <script>
+        // 🔒 حماية الأمن والدخول
+        if (!localStorage.getItem('currentUser')) { window.location.href = "login.html"; }
+
+        const rawUser = localStorage.getItem('currentUser') || "طارق 🛠️";
+        const isTareqUser = rawUser.includes("طارq") || rawUser.includes("طارق");
+        const myName = isTareqUser ? "طارق" : "حازم";
+        const partnerName = isTareqUser ? "حازم" : "طارق";
+        
+        document.getElementById('welcomeUser').innerText = myName;
+
         const BIN_URL = "https://api.jsonbin.io/v3/b/664ec5b3e41b4d34e4fa4411";
         const API_KEY = "$2b$10$W7bO4S.Vptn6hJUnm/VTeOWeWb2P.qF1fL4UWhpOfb5D8IlyD36wW";
-        let localData = {};
-        let isSender = false;
 
-        function syncTimer() {
-            if (isSender) return; // لو أنا اللي ضغطت متقاطعش مع السيرفر
+        let serverData = { tasks: [], timer: { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false }, chat: [], lastSeen: {} };
+        
+        let localInterval = null;
+        let pomoMinutes = 25;
+        let pomoSeconds = 0;
+        let currentMode = "solo";
 
-            fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY }, cache: "no-store" })
-            .then(res => res.json()).then(resData => {
-                localData = resData.record;
-                if (!localData.timer) {
-                    localData.timer = { state: 'reset', timeLeft: 3000, studyTime: 50, breakTime: 10, type: 'study', lastUpdated: Date.now() };
+        // 📡 المزامنة مع السيرفر كل ثانيتين للشات والأونلاين والتايمر
+        function syncServer() {
+            // تحديث حالتي أنا أونلاين
+            serverData.lastSeen = serverData.lastSeen || {};
+            serverData.lastSeen[myName] = Date.now();
+
+            fetch(BIN_URL, {
+                method: 'GET', headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data) {
+                    // دمج البيانات المستلمة
+                    serverData.tasks = data.tasks || [];
+                    serverData.timer = data.timer || serverData.timer;
+                    serverData.chat = data.chat || [];
+                    serverData.lastSeen = data.lastSeen || {};
+
+                    checkPartnerOnline();
+                    renderChat();
+                    handleSharedTimer();
                 }
-                
-                const t = localData.timer;
-                // حساب الوقت الفعلي المنقضي بدقة لو حازم مشغل السيرفر
-                if (t.state === 'running') {
-                    let elapsed = Math.floor((Date.now() - t.lastUpdated) / 1000);
-                    let actualTimeLeft = t.timeLeft - elapsed;
-                    if (actualTimeLeft <= 0) {
-                        actualTimeLeft = 0;
-                        if(t.timeLeft > 0) playAlarm(); // تشغيل الرنة
-                    }
-                    updateDisplay(actualTimeLeft, t.type);
-                } else {
-                    updateDisplay(t.timeLeft, t.type);
-                }
-                
-                // تحديث شكل الخيارات النشطة
-                if(t.studyTime === 25) {
-                    document.getElementById('opt25').classList.add('active');
-                    document.getElementById('opt50').classList.remove('active');
-                } else {
-                    document.getElementById('opt50').classList.add('active');
-                    document.getElementById('opt25').classList.remove('active');
-                }
-            });
+            }).catch(e=>{});
         }
 
-        function updateDisplay(seconds, type) {
-            let mins = Math.floor(seconds / 60);
-            let secs = seconds % 60;
-            document.getElementById('timerDisplay').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-            
-            const badge = document.getElementById('statusBadge');
-            if (type === 'study') {
-                badge.innerText = "✍️ وقت التركيز والمذاكرة";
-                badge.style.background = "rgba(239, 68, 68, 0.2)";
-                badge.style.color = "var(--danger)";
+        // 🟢 فحص هل حازم/طارق فاتح الموقع حالياً؟
+        function checkPartnerOnline() {
+            const now = Date.now();
+            const partnerTime = serverData.lastSeen[partnerName] || 0;
+            const dot = document.getElementById('partnerStatusDot');
+            const txt = document.getElementById('partnerStatusText');
+
+            if (now - partnerTime < 6000) { // لو متصل خلال آخر 6 ثواني يبقى أونلاين
+                dot.className = "status-dot online";
+                txt.innerText = partnerName + " فاتح الموقع حالياً 🟢";
             } else {
-                badge.innerText = "☕ وقت الراحة والبريك";
-                badge.style.background = "rgba(16, 185, 129, 0.2)";
-                badge.style.color = "var(--success)";
+                dot.className = "status-dot";
+                txt.innerText = partnerName + " أوفلاين ⚪";
             }
         }
 
-        function triggerTimer(action) {
-            isSender = true;
-            fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } })
-            .then(res => res.json()).then(resData => {
-                let t = resData.record.timer || { studyTime: 50, breakTime: 10, type: 'study', timeLeft: 3000 };
-                
-                if (action === 'start') {
-                    t.state = 'running';
-                } else if (action === 'pause') {
-                    if (t.state === 'running') {
-                        let elapsed = Math.floor((Date.now() - t.lastUpdated) / 1000);
-                        t.timeLeft = Math.max(0, t.timeLeft - elapsed);
+        // 💬 إرسال رسالة شات جديدة
+        function sendChat() {
+            const input = document.getElementById('msgInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            serverData.chat = serverData.chat || [];
+            // الاحتفاظ بآخر 30 رسالة بس عشان حجم السيرفر
+            if(serverData.chat.length > 30) serverData.chat.shift();
+
+            serverData.chat.push({
+                sender: myName,
+                text: text,
+                time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
+            });
+
+            input.value = '';
+            renderChat();
+            pushToCloud();
+        }
+
+        // عرض الشات على الشاشة
+        function renderChat() {
+            const container = document.getElementById('chatMessages');
+            const isScrolledToBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 50;
+            
+            container.innerHTML = '';
+            (serverData.chat || []).forEach(m => {
+                const typeClass = m.sender === myName ? 'me' : 'him';
+                container.innerHTML += `
+                    <div class="msg ${typeClass}">
+                        <strong>${m.sender}:</strong> ${m.text}
+                        <span class="msg-meta">${m.time}</span>
+                    </div>
+                `;
+            });
+
+            if (isScrolledToBottom) { container.scrollTop = container.scrollHeight; }
+        }
+
+        // ⏱️ إدارة التايمر الفردي والمشترك
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('mode-solo').className = mode === 'solo' ? 'active' : '';
+            document.getElementById('mode-joint').className = mode === 'joint' ? 'active' : '';
+
+            if(mode === 'solo') {
+                document.getElementById('pomoStatus').innerText = "وضع المذاكرة الفردي شغال..";
+                resetTimer();
+            } else {
+                document.getElementById('pomoStatus').innerText = "جاري إرسال طلب مزامنة لـ " + partnerName + " وبانتظار موافقته.. ⏳";
+                serverData.timer.mode = "joint";
+                serverData.timer.requestFrom = myName;
+                serverData.timer.approved = false;
+                serverData.timer.state = "pending";
+                pushToCloud();
+            }
+        }
+
+        function handleSharedTimer() {
+            const t = serverData.timer;
+            if (t.mode === 'joint') {
+                // لو الشريك باعتلي طلب موافقة وأنا لسه موافقتش
+                if (t.requestFrom === partnerName && t.state === "pending") {
+                    if (confirm("🚨 " + partnerName + " يطلب بدء تايمر بومودورو متبادل معاً الآن! هل أنت جاهز للمذاكرة؟")) {
+                        serverData.timer.approved = true;
+                        serverData.timer.state = "running";
+                        serverData.timer.minutes = 25;
+                        serverData.timer.seconds = 0;
+                        pushToCloud();
+                        startLocalCountdown();
+                    } else {
+                        // رفض الطلب
+                        serverData.timer = { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false };
+                        pushToCloud();
                     }
-                    t.state = 'paused';
-                } else if (action === 'reset') {
-                    t.state = 'reset';
-                    t.type = 'study';
-                    t.timeLeft = t.studyTime * 60;
                 }
                 
-                t.lastUpdated = Date.now();
-                resData.record.timer = t;
-                
-                return fetch(BIN_URL, {
-                    method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-                    body: JSON.stringify(resData.record)
-                });
-            }).then(() => {
-                isSender = false;
-                syncTimer();
-            });
+                // تحديث العداد المشترك لو شغال عند الطرفين
+                if (t.approved && t.state === "running" && currentMode === "joint") {
+                    document.getElementById('pomoStatus').innerText = "🚨 تحدي بومودورو مشترك شغال مع " + partnerName + " حالياً! ممنوع الهروب ⚔️";
+                    pomoMinutes = t.minutes;
+                    pomoSeconds = t.seconds;
+                    updateTimerUI();
+                    
+                    // تشغيل العداد محلياً بالتوازي
+                    if(!localInterval) { startLocalCountdown(); }
+                }
+            }
         }
 
-        function changeMode(study, breakM, btnId) {
-            isSender = true;
-            fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } })
-            .then(res => res.json()).then(resData => {
-                resData.record.timer = {
-                    state: 'reset',
-                    studyTime: study,
-                    breakTime: breakM,
-                    timeLeft: study * 60,
-                    type: 'study',
-                    lastUpdated: Date.now()
-                };
-                return fetch(BIN_URL, {
-                    method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
-                    body: JSON.stringify(resData.record)
-                });
-            }).then(() => {
-                isSender = false;
-                syncTimer();
-            });
+        function startTimer() {
+            if(currentMode === 'solo') {
+                if(localInterval) return;
+                serverData.timer.state = "running";
+                startLocalCountdown();
+            } else {
+                if(serverData.timer.state === 'running') return;
+                alert("في الوضع المشترك، التايمر هيبدأ تلقائياً أول ما " + partnerName + " يقبل التحدي.");
+            }
         }
 
-        function playAlarm() {
-            document.getElementById('alarmSound').play();
+        function startLocalCountdown() {
+            clearInterval(localInterval);
+            localInterval = setInterval(() => {
+                if (pomoSeconds === 0) {
+                    if (pomoMinutes === 0) {
+                        clearInterval(localInterval);
+                        localInterval = null;
+                        alert("🎉 مبروك! خلصتوا البومودورو، وقت الراحة دلوقتي! 🥳");
+                        resetTimer();
+                        return;
+                    }
+                    pomoMinutes--;
+                    pomoSeconds = 59;
+                } else {
+                    pomoSeconds--;
+                }
+
+                updateTimerUI();
+
+                // لو الوضع مشترك، نقوم برفع الثواني والدقائق الحالية للسيرفر ليقرأها الطرف الآخر
+                if(currentMode === 'joint' && serverData.timer.requestFrom === myName) {
+                    serverData.timer.minutes = pomoMinutes;
+                    serverData.timer.seconds = pomoSeconds;
+                    pushToCloud();
+                }
+            }, 1000);
         }
 
-        // فحص ومزامنة حيّة سريعة جداً كل ثانيتين للتأكد من الرنين والمزامنة اللحظية
-        setInterval(syncTimer, 2000);
-        window.onload = syncTimer;
+        function resetTimer() {
+            clearInterval(localInterval);
+            localInterval = null;
+            pomoMinutes = 25;
+            pomoSeconds = 0;
+            updateTimerUI();
+
+            if (currentMode === 'joint') {
+                serverData.timer = { minutes: 25, seconds: 0, state: "stopped", mode: "solo", requestFrom: "", approved: false };
+                currentMode = "solo";
+                document.getElementById('mode-solo').className = 'active';
+                document.getElementById('mode-joint').className = '';
+                document.getElementById('pomoStatus').innerText = "تم إلغاء الوضع المشترك والعودة للفردي.";
+                pushToCloud();
+            }
+        }
+
+        function updateTimerUI() {
+            const mStr = pomoMinutes < 10 ? "0" + pomoMinutes : pomoMinutes;
+            const sStr = pomoSeconds < 10 ? "0" + pomoSeconds : pomoSeconds;
+            document.getElementById('timerDisplay').innerText = mStr + ":" + sStr;
+        }
+
+        function pushToCloud() {
+            fetch(BIN_URL, {
+                method: 'PUT', headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+                body: JSON.stringify(serverData)
+            }).catch(e=>{});
+        }
+
+        // تشغيل السيستم والمزامنة المستمرة الحية
+        window.onload = function() {
+            syncServer();
+            setInterval(syncServer, 2000); // تحديث فوري كل ثانيتين للشات وحالة حازم والتايمر
+        };
     </script>
 </body>
 </html>
