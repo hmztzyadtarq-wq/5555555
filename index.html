@@ -35,8 +35,8 @@
         .phase-2-title { color: var(--phase2); border-right: 5px solid var(--phase2); }
         .phase-3-title { color: var(--phase3); border-right: 5px solid var(--phase3); }
 
-        /* 🟥 شبكة الكروت */
-        .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
+        /* 🟥 شبكة الكروت المربعة */
+        .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; margin-bottom: 40px; }
         .day-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 300px; transition: 0.3s; }
         .day-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         
@@ -92,11 +92,9 @@
 </div>
 
 <script>
+    // 🔒 تم تأمين الرابط بـ https ومطابقته لـ GitHub Pages 100%
     const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
-    
-    // 🔐 تشفير الـ كي بـ Base64 لمنع أي مشاكل في معالجة نصوص الـ JavaScript والـ $ الـقرفانة دي
-    const OBFUSCATED_KEY = "JDJhJDEwJFI3TWJ5VS45djc4Ui4uS3E5Mkkxek8xYUMyQTFlMkszdTRNNXY2Vzd4OFk5ejBBMUIyQzNE";
-    const API_KEY = atob(OBFUSCATED_KEY);
+    const API_KEY = "$2a$10$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSuccessSound() {
@@ -130,7 +128,7 @@
                 renderDashboard();
             }
         } catch (e) { 
-            console.log("عطل شبكة مؤقت..."); 
+            console.log("عطل شبكة مؤقت أو خطأ أمان تم تجاوزه"); 
         }
     }
 
@@ -152,7 +150,7 @@
 
     function startSync() {
         clearInterval(syncInterval);
-        syncInterval = setInterval(loadData, 6000);
+        syncInterval = setInterval(loadData, 5000);
     }
 
     function renderDashboard() {
