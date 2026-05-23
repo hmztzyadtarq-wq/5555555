@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>معسكر الفرم النهائي 2026</title>
+    <title>معسكر الفرم - طارق وحازم 2026</title>
     <style>
         :root {
             --primary: #6366f1;
@@ -18,7 +19,8 @@
         nav { display: flex; justify-content: space-between; align-items: center; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); padding: 15px 40px; border-bottom: 1px solid var(--border); }
         .brand { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
         .user-tag { background: rgba(245, 158, 11, 0.15); padding: 4px 12px; border-radius: 20px; color: var(--accent); font-weight: bold; }
-        .links a { color: #94a3b8; text-decoration: none; margin-right: 25px; font-weight: 700; }
+        .links a { color: #94a3b8; text-decoration: none; margin-right: 25px; font-weight: 700; transition: 0.2s; }
+        .links a:hover { color: #fff; }
         .container { max-width: 1300px; margin: 30px auto; padding: 0 20px; }
         
         /* 🏆 لوحة الـ VS */
@@ -33,9 +35,9 @@
         .phase-2-title { color: var(--phase2); border-right: 5px solid var(--phase2); }
         .phase-3-title { color: var(--phase3); border-right: 5px solid var(--phase3); }
 
-        /* 🟥 شبكة الكروت المربعة المليانة */
+        /* 🟥 شبكة الكروت المربعة */
         .days-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
-        .day-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 320px; transition: 0.3s; }
+        .day-card { background: var(--card-bg); backdrop-filter: blur(16px); border-radius: 20px; padding: 22px; border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 300px; transition: 0.3s; }
         .day-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
         
         .day-card.p1 { border-top: 5px solid var(--phase1); }
@@ -46,14 +48,19 @@
         .day-title { font-size: 1.15rem; font-weight: 800; color: #fff; }
         .day-date { font-size: 0.85rem; color: #94a3b8; font-weight: bold; }
         
+        .task-input-zone { display: flex; gap: 8px; margin-bottom: 15px; }
+        .task-input-zone input { flex: 1; background: #0b0f19; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.9rem; }
+        .task-input-zone button { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
         .tasks-list { flex: 1; overflow-y: auto; }
-        .task-item { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; background: rgba(15, 23, 42, 0.5); padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.02); }
+        .task-item { display: grid; grid-template-columns: 1fr auto auto auto; gap: 8px; align-items: center; background: rgba(15, 23, 42, 0.5); padding: 10px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.02); }
         .task-name { font-size: 0.9rem; font-weight: 600; line-height: 1.4; color: #e2e8f0; }
         
-        .btn-status { padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: white; transition: 0.2s; }
-        .done { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+        .btn-status { padding: 6px 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: white; transition: 0.2s; }
+        .done { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
         .not-done { background: #334155; color: #94a3b8; }
         .not-done:hover { background: #475569; color: #fff; }
+        .btn-danger { background: none; color: #ef4444; border: none; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -61,7 +68,9 @@
 <nav>
     <div class="brand">🚀 صالة معسكر الفرم <span class="user-tag" id="userTag">..</span></div>
     <div class="links">
-        <a href="index.html" style="color:white; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">🏠 جدول المهام والمواد الجاهز</a>
+        <a href="index.html" style="color:white; border-bottom: 2px solid var(--primary); padding-bottom: 5px;">🏠 لوحة المراحل</a>
+        <a href="meet.html">🎥 العداد والميت</a>
+        <a href="login.html" style="color: #ef4444;">🚪 خروج</a>
     </div>
 </nav>
 
@@ -73,119 +82,40 @@
         <div class="score-card"><h3>حازم 🩺</h3><div id="scoreHazem" class="score-num">00</div></div>
     </div>
 
-    <!-- 🟪 المراحل الثلاثة المليانة تلقائياً -->
-    <div class="phase-title phase-1-title">🔥 المرحلة الأولى: العشرة الأوائل (تفنيد ولم المنهج)</div>
+    <!-- 🟪 المراحل الثلاثة الفاضية عشان تملاها بنفسك -->
+    <div class="phase-title phase-1-title">🔥 المرحلة الأولى: العشرة الأوائل (20/5 - 31/5)</div>
     <div class="days-grid" id="phase1Container"></div>
 
-    <div class="phase-title phase-2-title">📚 المرحلة الثانية: معسكر الحل (فرم الشوامل)</div>
+    <div class="phase-title phase-2-title">📚  المرحلة الثانية: معسكر الحل (1/6 - 9/6)</div>
     <div class="days-grid" id="phase2Container"></div>
 
-    <div class="phase-title phase-3-title">⚔️ المرحلة الثالثة: مدعكة الامتحانات (قفل المادة الأولى)</div>
+    <div class="phase-title phase-3-title">⚔️  المرحلة الثالثة: مدعكة الامتحانات (10/6 - 21/6)</div>
     <div class="days-grid" id="phase3Container"></div>
 </div>
 
 <script>
-    // سيرفر لحفظ الإنجاز لايف بينك وبين حازم
+    // 🌍 السيرفر المجاني السريع والمشترك بينك وبين حازم لايف
     const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
     const API_KEY = "$2a$10$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
+
+    // 🎵 توليد صوت الـ "تن" برمجياً بدون ملفات خارجية عشان ميهنجش
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSuccessSound() {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime); // نغمة حماسية
+        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); 
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.25);
+    }
 
     const params = new URLSearchParams(window.location.search);
     const currentUser = params.get('user') || "طارق";
     document.getElementById('userTag').innerText = "الحساب الحالي: " + currentUser;
-
-    // 🎯 الداتا متفنطة وجاهزة بالمواد والشباتر عشان متتعبش في الكتابة
-    const defaultPlan = {
-        "2026-05-20": [
-            { name: "فيزياء: الفصل 1 + 2 (كهربية)", tareq: false, hazem: false },
-            { name: "عربي: مراجعة الوحدة الأولى نحـو + أدب المهاجر", tareq: false, hazem: false }
-        ],
-        "2026-05-21": [
-            { name: "كيمياء: الباب الأول + الباب الثاني بالكامل", tareq: false, hazem: false },
-            { name: "إنجليزي: Units 1, 2, 3 كلمات وقواعد", tareq: false, hazem: false }
-        ],
-        "2026-05-22": [
-            { name: "فيزياء: الفصل 3 + 4 (التيار المتردد والمغناطيسية)", tareq: false, hazem: false },
-            { name: "جيولوجيا: الباب الأول والباب الثاني (معادن وصخور)", tareq: false, hazem: false }
-        ],
-        "2026-05-23": [
-            { name: "كيمياء: الباب الثالث (الاتزان الكيميائي)", tareq: false, hazem: false },
-            { name: "عربي: مراجعة الوحدة الثانية نحو + مدرسة الإحياء والبعث", tareq: false, hazem: false }
-        ],
-        "2026-05-24": [
-            { name: "أحياء/رياضة: الباب الأول (دعامة وحركة) / تفاضل وتكامل (شابتر 1)", tareq: false, hazem: false },
-            { name: "لغة ثانية (فرنسي/ألماني): مراجعة نصف المنهج وقواعده", tareq: false, hazem: false }
-        ],
-        "2026-05-25": [
-            { name: "فيزياء: الفصل 5 + 6 (الفيزياء الحديثة)", tareq: false, hazem: false },
-            { name: "إنجليزي: Units 4, 5, 6 + مراجعة القصة", tareq: false, hazem: false }
-        ],
-        "2026-05-26": [
-            { name: "كيمياء: الباب الرابع (الكيمياء الكهربية)", tareq: false, hazem: false },
-            { name: "جيولوجيا: الباب الثالث والباب الرابع", tareq: false, hazem: false }
-        ],
-        "2026-05-27": [
-            { name: "عربي: الوحدة الثالثة والرابعة نحو + أدب الديوان والواقعية", tareq: false, hazem: false },
-            { name: "أحياء/رياضة: تنسيق هرموني / جبر وهندسة فراغية (شابتر 1)", tareq: false, hazem: false }
-        ],
-        "2026-05-28": [
-            { name: "كيمياء: العضوية (الهيدروكربونات بالكامل)", tareq: false, hazem: false },
-            { name: "فيزياء: الفصل 7 + 8 (الليزر والإلكترونيات)", tareq: false, hazem: false }
-        ],
-        "2026-05-29": [
-            { name: "إنجليزي: مراجعة الكلمات والقواعد المقررة كاملة", tareq: false, hazem: false },
-            { name: "لغة ثانية: تقفيل المنهج وحل امتحانات سابقة", tareq: false, hazem: false }
-        ],
-        "2026-05-30": [
-            { name: "كيمياء: تقفيل مشتقات الهيدروكربونات العضوية", tareq: false, hazem: false },
-            { name: "جيولوجيا: الباب الخامس + علوم البيئة", tareq: false, hazem: false }
-        ],
-        "2026-05-31": [
-            { name: "عربي: مراجعة النحو كامل + قراءة متحررة ونصوص", tareq: false, hazem: false },
-            { name: "أحياء/رياضة: مراجعة التكاثر كامل / استاتيكا وديناميكا", tareq: false, hazem: false }
-        ],
-        // 📚 معسكر الحل (امتحانات شاملة)
-        "2026-06-01": [
-            { name: "حل امتحانين شاملين عربي + امتحان فيزياء", tareq: false, hazem: false },
-            { name: "مراجعة أخطاء الحل وكتابة الملاحظات", tareq: false, hazem: false }
-        ],
-        "2026-06-02": [
-            { name: "حل امتحانين كيمياء شامل + امتحان إنجليزي", tareq: false, hazem: false }
-        ],
-        "2026-06-03": [
-            { name: "حل امتحان شامل جيولوجيا + امتحان أحياء/رياضة", tareq: false, hazem: false }
-        ],
-        "2026-06-04": [
-            { name: "حل امتحانين عربي شامل + امتحان لغة ثانية", tareq: false, hazem: false }
-        ],
-        "2026-06-05": [
-            { name: "حل امتحان شامل فيزياء + امتحان كيمياء", tareq: false, hazem: false }
-        ],
-        "2026-06-06": [
-            { name: "حل امتحان شامل إنجليزي + امتحان جيولوجيا", tareq: false, hazem: false }
-        ],
-        "2026-06-07": [
-            { name: "حل امتحان شامل أحياء/رياضة + امتحان عربي", tareq: false, hazem: false }
-        ],
-        "2026-06-08": [
-            { name: "حل امتحان الوزارة التجريبي لكل المواد", tareq: false, hazem: false }
-        ],
-        "2026-06-09": [
-            { name: "مراجعة شاملة لكتيب المفاهيم (المجلد الوزاري)", tareq: false, hazem: false }
-        ],
-        // ⚔️ مدعكة الامتحانات (بدء العد التنازلي الشرس)
-        "2026-06-10": [{ name: "عربي: مراجعة الفروع (النحو والبلاغة بقوة)", tareq: false, hazem: false }],
-        "2026-06-11": [{ name: "عربي: مراجعة الأدب والنصوص المتحررة", tareq: false, hazem: false }],
-        "2026-06-12": [{ name: "عربي: حل 3 امتحانات ثانوية عامة سابقة", tareq: false, hazem: false }],
-        "2026-06-13": [{ name: "عربي: مراجعة القصة والتعبير المقالي", tareq: false, hazem: false }],
-        "2026-06-14": [{ name: "عربي: معسكر غلق ثغرات النحو والصرف", tareq: false, hazem: false }],
-        "2026-06-15": [{ name: "عربي: حل امتحان دور أول ودور ثاني 2025", tareq: false, hazem: false }],
-        "2026-06-16": [{ name: "عربي: فرم المراجعة النهائية الجزء الأول", tareq: false, hazem: false }],
-        "2026-06-17": [{ name: "عربي: فرم المراجعة النهائية الجزء الثاني", tareq: false, hazem: false }],
-        "2026-06-18": [{ name: "عربي: حل وتوقع الأسئلة المقالية المتوقعة", tareq: false, hazem: false }],
-        "2026-06-19": [{ name: "عربي: مراجعة ليلة الامتحان الشاملة - يوم 1", tareq: false, hazem: false }],
-        "2026-06-20": [{ name: "عربي: اللمسات الأخيرة والنوم مبكراً للتركيز", tareq: false, hazem: false }],
-        "2026-06-21": [{ name: "🔥 لجنة الامتحان الأولى - دخول الصالة وقفل التحدي بنجاح!", tareq: false, hazem: false }]
-    };
 
     let campData = {};
 
@@ -193,17 +123,10 @@
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
-            campData = json.record;
-            
-            // لو السيرفر لسه فاضي خالص أو ممسوح، يحط الجدول الجاهز بتاعي
-            if (!campData || Object.keys(campData).length < 5) {
-                campData = defaultPlan;
-                await saveToServer();
-            }
+            campData = json.record || {};
             renderDashboard();
         } catch (e) { 
-            console.log("تحميل البيانات علق، بيعرض الافتراضي..."); 
-            campData = defaultPlan;
+            console.log("السيرفر علق، بيحاول يجيب آخر داتا محلياً..."); 
             renderDashboard();
         }
     }
@@ -247,6 +170,7 @@
                         <div class="task-name">${task.name}</div>
                         <button class="btn-status ${task.tareq ? 'done' : 'not-done'}" onclick="toggleTask('${dateStr}', ${index}, 'tareq')">طارق ${task.tareq ? '✅' : '❌'}</button>
                         <button class="btn-status ${task.hazem ? 'done' : 'not-done'}" onclick="toggleTask('${dateStr}', ${index}, 'hazem')">حازم ${task.hazem ? '✅' : '❌'}</button>
+                        <button class="btn-danger" onclick="deleteTask('${dateStr}', ${index})">🗑️</button>
                     </div>
                 `;
             });
@@ -257,7 +181,11 @@
                         <div class="day-title">اليوم ${dayCounter} - ${formattedDate}</div>
                         <div class="day-date">${dateStr}</div>
                     </div>
-                    <div class="tasks-list">${itemsHtml || '<p style="color:#64748b; font-size:0.85rem; text-align:center;">يوم مخصص للراحة أو المراجعة الطارئة</p>'}</div>
+                    <div class="task-input-zone">
+                        <input type="text" id="input-${dateStr}" placeholder="إضافة مهمة جديدة..." onkeypress="if(event.key==='Enter') addTask('${dateStr}')">
+                        <button onclick="addTask('${dateStr}')">➕</button>
+                    </div>
+                    <div class="tasks-list">${itemsHtml || '<p style="color:#475569; font-size:0.85rem; text-align:center; margin-top:20px;">الجدول فارغ.. اضغط ➕ لإضافة موادك</p>'}</div>
                 </div>
             `;
             startDate.setDate(startDate.getDate() + 1); dayCounter++;
@@ -266,15 +194,46 @@
         document.getElementById('scoreHazem').innerText = hScore < 10 ? "0"+hScore : hScore;
     }
 
-    async function toggleTask(dateStr, index, userField) {
-        const myField = (currentUser === "طارق") ? "tareq" : "hazem";
-        if (userField !== myField) { alert("دي خانة زميلك يا بطل! 😉"); return; }
-        campData[dateStr][index][userField] = !campData[dateStr][index][userField];
+    async function addTask(dateStr) {
+        const input = document.getElementById(`input-${dateStr}`);
+        if (!input.value.trim()) return;
+        campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
+        input.value = '';
         renderDashboard();
         await saveToServer();
     }
 
-    setInterval(loadData, 7000);
+    // 🤬 نظام الحماية والقفش الصارم مع النغمات الصوتية
+    async function toggleTask(dateStr, index, userField) {
+        const myField = (currentUser === "طارق") ? "tareq" : "hazem";
+        
+        if (userField !== myField) { 
+            // التلقيح والشتيمة لو حد لعب في خانة التاني 😂
+            alert("يا عم أنت.. خليك في حالك وفي خيبتك وم تلمسش درجات زميلك! ركز في مادتك وبلاش بياخة وعك 🤬💪"); 
+            return; 
+        }
+        
+        // لو تمام، بيغير الإنجاز ويشغل الصوت
+        campData[dateStr][index][userField] = !campData[dateStr][index][userField];
+        
+        if (campData[dateStr][index][userField] === true) {
+            playSuccessSound(); // تشغيل صوت "تن" الفرم فوراً
+        }
+        
+        renderDashboard();
+        await saveToServer();
+    }
+
+    async function deleteTask(dateStr, index) {
+        if (confirm("حذف المهمة؟")) {
+            campData[dateStr].splice(index, 1);
+            renderDashboard();
+            await saveToServer();
+        }
+    }
+
+    // تحديث تلقائي حقيقي كل 4 ثواني عشان حازم يشوف كتابتك وأنت تشوف كتابته لايف
+    setInterval(loadData, 4000);
     loadData();
 </script>
 </body>
