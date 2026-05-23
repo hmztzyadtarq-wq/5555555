@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -92,8 +93,10 @@
 
 <script>
     const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
-    // 🛠️ تم إصلاح كتابة الكي هنا بوضع الهروب الصحيح حتى لا يضرب الـ JavaScript
-    const API_KEY = "\$2a\$10\$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
+    
+    // 🔐 تشفير الـ كي بـ Base64 لمنع أي مشاكل في معالجة نصوص الـ JavaScript والـ $ الـقرفانة دي
+    const OBFUSCATED_KEY = "JDJhJDEwJFI3TWJ5VS45djc4Ui4uS3E5Mkkxek8xYUMyQTFlMkszdTRNNXY2Vzd4OFk5ejBBMUIyQzNE";
+    const API_KEY = atob(OBFUSCATED_KEY);
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSuccessSound() {
@@ -134,7 +137,6 @@
     async function saveToServer() {
         isSaving = true;
         clearInterval(syncInterval); 
-        
         try {
             await fetch(BIN_URL, {
                 method: "PUT",
@@ -144,14 +146,13 @@
         } catch(e) {
             console.log("خطأ أثناء الحفظ");
         }
-        
         isSaving = false;
         startSync(); 
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        syncInterval = setInterval(loadData, 6000); // تحديث هادئ كل 6 ثواني
+        syncInterval = setInterval(loadData, 6000);
     }
 
     function renderDashboard() {
