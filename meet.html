@@ -180,7 +180,6 @@
     </div>
 
     <script>
-        // 🔒 حماية الدخول
         if (!localStorage.getItem('currentUser')) { window.location.href = "login.html"; }
 
         const rawUser = localStorage.getItem('currentUser') || "طارق 🛠️";
@@ -205,7 +204,20 @@
         let pomoMinutes = 25;
         let pomoSeconds = 0;
         let currentMode = "solo";
+        
+        // 🎵 تعريف ملفات الصوت
         const errorSound = new Audio("https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg");
+        const chatNotificationSound = new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"); 
+        chatNotificationSound.volume = 0.5; // ضبط مستوى الصوت عشان ميبقاش مزعج جداً
+
+        let lastChatCount = 0; // متغير لمراقبة عدد الرسائل القديمة لمنع تكرار الإشعار
+
+        function playNotification() {
+            chatNotificationSound.currentTime = 0;
+            chatNotificationSound.play().catch(e => {
+                console.log("المتصفح حجب الصوت تلقائياً، هيشتغل أول ما تدوس في أي حتة في الصفحة.");
+            });
+        }
 
         function showTrollAlert(msg) {
             const alertBox = document.getElementById('funnyAlert');
@@ -225,13 +237,24 @@
                 if(data) {
                     serverData.tasks = data.tasks || [];
                     serverData.timer = data.timer || serverData.timer;
-                    serverData.chat = data.chat || [];
+                    
+                    const newChat = data.chat || [];
+                    
+                    // 🔔 فحص لو فيه رسالة جديدة جاية من الشخص الآخر لتشغيل الإشعار الصوتي
+                    if (newChat.length > lastChatCount) {
+                        const lastMessage = newChat[newChat.length - 1];
+                        // لو آخر رسالة مش بتاعتي أنا، شغل الصوت فوراً
+                        if (lastChatCount > 0 && lastMessage && lastMessage.sender !== myName) {
+                            playNotification();
+                        }
+                    }
+                    lastChatCount = newChat.length;
+
+                    serverData.chat = newChat;
                     serverData.lastSeen = data.lastSeen || {};
                     serverData.diary = data.diary || { tareq: [], hazem: [], lastResetDate: "" };
 
-                    // فحص مسح اليوميات اليومي تلقائياً عند تغيير التاريخ
                     checkAndResetDiaryDaily();
-
                     checkPartnerOnline();
                     renderChat();
                     renderDiary();
@@ -466,7 +489,13 @@
                 time: new Date().toLocaleTimeString('ar-EG', {hour: '2-digit', minute:'2-digit'})
             });
 
-            input.value = ''; renderChat(); pushToCloud();
+            input.value = ''; 
+            
+            // تشغيل صوت الإشعار محلياً فور الإرسال للتفاعل
+            playNotification();
+            
+            renderChat(); 
+            pushToCloud();
         }
 
         function renderChat() {
