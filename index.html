@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -112,19 +113,41 @@
     let campData = {};
     let syncInterval; 
     let isSaving = false; 
-    let lockServerUpdates = false; // قفل أمان لمنع التحديثات الهابطة البايظة أثناء التعديل المحلي
+
+    // دالة الدمج الذكي لمنع اختفاء البيانات أو مسحها تلقائياً
+    function mergeData(serverRecord) {
+        if (!serverRecord || typeof serverRecord !== 'object') return;
+        
+        for (const dateStr in serverRecord) {
+            if (!campData[dateStr]) {
+                campData[dateStr] = serverRecord[dateStr];
+            } else {
+                // دمج المصفوفات بناءً على اسم المهمة منعاً للتكرار أو المسح
+                const localTasks = campData[dateStr];
+                const serverTasks = serverRecord[dateStr];
+                
+                serverTasks.forEach(sTask => {
+                    const exists = localTasks.find(lTask => lTask.name === sTask.name);
+                    if (!exists) {
+                        localTasks.push(sTask);
+                    } else {
+                        // تحديث الحالة فقط لو حد علم علامة الصح
+                        exists.tareq = exists.tareq || sTask.tareq;
+                        exists.hazem = exists.hazem || sTask.hazem;
+                    }
+                });
+            }
+        }
+    }
 
     async function loadData() {
-        // لو بنسيف أو القفل الزمني شغال، ارفض تماماً إنك تجيب داتا من السيرفر تنزل فوق داتاتنا الحالية
-        if (isSaving || lockServerUpdates) return; 
+        if (isSaving) return; 
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
             
             if (json && json.record && typeof json.record === 'object') {
-                campData = json.record;
-            } else {
-                campData = {};
+                mergeData(json.record);
             }
         } catch (e) { 
             console.log("خطأ شبكة مؤقت"); 
@@ -135,9 +158,7 @@
 
     async function saveToServer() {
         isSaving = true;
-        lockServerUpdates = true; // شغل القفل فوراً لمنع المسح التلقائي
         clearInterval(syncInterval); 
-        
         try {
             await fetch(BIN_URL, {
                 method: "PUT",
@@ -145,23 +166,15 @@
                 body: JSON.stringify(campData)
             });
         } catch(e) {
-            console.log("خطأ أثناء الحفظ بالسيرفر");
+            console.log("خطأ أثناء الحفظ");
         }
-        
         isSaving = false;
-        
-        // فك قفل الاستقبال بعد 8 ثواني كاملة عشان نضمن إن السيرفر حدث الملف المشترك بنسبة 100%
-        setTimeout(() => {
-            lockServerUpdates = false;
-            startSync();
-        }, 8000);
+        startSync(); 
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        if (!lockServerUpdates) {
-            syncInterval = setInterval(loadData, 7000); 
-        }
+        syncInterval = setInterval(loadData, 5000); 
     }
 
     function renderDashboard() {
@@ -229,12 +242,14 @@
         const input = document.getElementById(`input-${dateStr}`);
         if (!input || !input.value.trim()) return;
         
-        // إضافة محلياً فوراً لمنع أي اختفاء بصري للمهمة
-        campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
+        const taskName = input.value.trim();
+        // حماية مضافة: منع تكرار نفس الاسم في نفس اليوم
+        const exists = campData[dateStr].find(t => t.name === taskName);
+        if (exists) return;
+
+        campData[dateStr].push({ name: taskName, tareq: false, hazem: false });
         input.value = '';
         renderDashboard(); 
-        
-        // حفظ آمن مع تفعيل قفل الـ 8 ثواني
         await saveToServer();
     }
 
@@ -251,10 +266,12 @@
     }
 
     async function deleteTask(dateStr, index) {
-        if (confirm("حذف المهمة؟")) {
+        if (confirm("حذف المهمة نهائياً؟")) {
             campData[dateStr].splice(index, 1);
             renderDashboard();
             await saveToServer();
+            // عمل ريفريش إجباري للسيرفر لضمان مسحها من باقي الأجهزة فوراً
+            await loadData();
         }
     }
 
