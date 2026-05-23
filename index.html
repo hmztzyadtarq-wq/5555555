@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -75,14 +74,12 @@
 </nav>
 
 <div class="container">
-    <!-- 🏆 لوحة الـ VS والمقارنة لايف -->
     <div class="vs-board">
         <div class="score-card"><h3>طارق 🛠️</h3><div id="scoreTareq" class="score-num">00</div></div>
         <div class="vs-sign">VS</div>
         <div class="score-card"><h3>حازم 🩺</h3><div id="scoreHazem" class="score-num">00</div></div>
     </div>
 
-    <!-- 🟪 المراحل الثلاثة -->
     <div class="phase-title phase-1-title">🔥  المرحلة الأولى: العشرة الأوائل (20/5 - 31/5)</div>
     <div class="days-grid" id="phase1Container"></div>
 
@@ -97,7 +94,6 @@
     const BIN_URL = "https://api.jsonbin.io/v3/b/664f3da3ad19ca34f86e6466";
     const API_KEY = "$2a$10$R7MbyU.9v78R4.Kq92I1zO1aC2A1e2K3u4M5v6W7x8Y9z0A1B2C3D";
 
-    // نغمة الإنجاز
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSuccessSound() {
         const oscillator = audioCtx.createOscillator();
@@ -117,11 +113,11 @@
     document.getElementById('userTag').innerText = "الحساب الحالي: " + currentUser;
 
     let campData = {};
-    let syncInterval; // متغير لتخزين التايمر ونقدر نوقفه ونشغله بمزاجنا
-    let isSaving = false; // Flag بيمنع الـ Fetch القديم إنه يبوظ الجديد
+    let syncInterval; 
+    let isSaving = false; 
 
     async function loadData() {
-        if (isSaving) return; // لو بنرفع داتا حالياً.. اوعى تعمل داونلود عشان متمسحش حاجة
+        if (isSaving) return; 
         try {
             const res = await fetch(BIN_URL, { headers: { "X-Master-Key": API_KEY } });
             const json = await res.json();
@@ -134,7 +130,7 @@
 
     async function saveToServer() {
         isSaving = true;
-        clearInterval(syncInterval); // وقف الـ Interval فوراً عشان ميعملش ريفريش في نفس اللحظة
+        clearInterval(syncInterval); 
         
         try {
             await fetch(BIN_URL, {
@@ -147,12 +143,12 @@
         }
         
         isSaving = false;
-        startSync(); // رجع التحديث التلقائي يشتغل بعد ما السيرفر استقر بنجاح
+        startSync(); 
     }
 
     function startSync() {
         clearInterval(syncInterval);
-        syncInterval = setInterval(loadData, 5000); // تحديث كل 5 ثواني في الأوقات العادية
+        syncInterval = setInterval(loadData, 5000); 
     }
 
     function renderDashboard() {
@@ -162,6 +158,7 @@
         
         p1Container.innerHTML = ''; p2Container.innerHTML = ''; p3Container.innerHTML = '';
         
+        // 💡 التعديل السحري هنا: المتغير بقى بيتعرف ويقول "بسم الله" من جديد كل ما الفانكشن تترسم
         let startDate = new Date('2026-05-20');
         const endDate = new Date('2026-06-21');
         let dayCounter = 1; let tScore = 0; let hScore = 0;
@@ -216,7 +213,7 @@
         
         campData[dateStr].push({ name: input.value.trim(), tareq: false, hazem: false });
         input.value = '';
-        renderDashboard();
+        renderDashboard(); // هنا الكود هيعيد الرسم من أول يوم 20 مايو بنجاح!
         await saveToServer();
     }
 
@@ -246,10 +243,10 @@
         }
     }
 
-    // تشغيل اللود الأول وبدء التايمر الذكي الجديد
     loadData().then(() => {
         startSync();
     });
 </script>
 </body>
 </html>
+
