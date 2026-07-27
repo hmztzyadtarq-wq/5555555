@@ -8,7 +8,42 @@
     <title>ProTech - برو تيك للماكينات والطباعة</title>
     <!-- FontAwesome الأيقونات الاحترافية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+   <style>
+   @media (max-width: 768px) { 
+    header { 
+        padding: 10px 12px; 
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .logo { font-size: 18px; }
+    .nav-icons { 
+        position: static; 
+        transform: none; 
+        gap: 4px; 
+        width: 100%;
+        justify-content: space-around;
+        order: 3;
+        margin-top: 5px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 5px;
+    }
+    .nav-icons button {
+        font-size: 11px;
+        padding: 4px 6px;
+        gap: 2px;
+    }
+    .nav-icons button i { font-size: 14px; }
+    .nav-icons span { font-size: 9px; }
+    .cart-trigger-btn {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    .slideshow-container { height: 180px; margin-bottom: 15px; }
+    .btn-360 { top: auto; bottom: 85px; left: 15px; font-size: 11px; padding: 6px 12px; }
+    .sub-banner-details-wrapper { flex-direction: column; }
+    .container { padding: 0 10px; margin: 10px auto; }
+    body { padding-bottom: 120px; }
+}
         /* --- الأوضاع الستة + الوضع التلقائي --- */
         :root[data-theme="light"] {
             --bg-color: #f8f9fa;
@@ -766,41 +801,13 @@
             color: var(--text-color);
         }
 
-        /* --- تعديلات الموبايل الإضافية لضمان عدم الخروج عن الشاشة --- */
         @media (max-width: 768px) {
-            header { 
-                padding: 10px 12px; 
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .logo { font-size: 18px; }
-            .nav-icons { 
-                position: static; 
-                transform: none; 
-                gap: 4px; 
-                width: 100%;
-                justify-content: space-around;
-                order: 3;
-                margin-top: 5px;
-                border-top: 1px solid var(--border-color);
-                padding-top: 5px;
-            }
-            .nav-icons button {
-                font-size: 11px;
-                padding: 4px 6px;
-                gap: 2px;
-            }
-            .nav-icons button i { font-size: 14px; }
-            .nav-icons span { font-size: 9px; }
-            .cart-trigger-btn {
-                font-size: 11px;
-                padding: 6px 10px;
-            }
-            .slideshow-container { height: 180px; margin-bottom: 15px; }
-            .btn-360 { top: auto; bottom: 85px; left: 15px; font-size: 11px; padding: 6px 12px; }
+            header { padding: 12px 15px; }
+            .nav-icons { position: static; transform: none; gap: 8px; }
+            .logo { font-size: 20px; }
+            .slideshow-container { height: 220px; }
+            .btn-360 { top: 75px; left: 10px; font-size: 12px; padding: 6px 12px; }
             .sub-banner-details-wrapper { flex-direction: column; }
-            .container { padding: 0 10px; margin: 10px auto; }
-            body { padding-bottom: 120px; }
         }
     </style>
 </head>
@@ -852,6 +859,127 @@
                 <div class="slide" style="background-image: url('https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-6/687378114_10163963997682567_3586316144285632201_n.jpg?stp=dst-jpg_tt6&cstp=mx1273x1276&ctp=s1273x1276&_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeG8LbVqxRwCUu3w7sxa20kmvDcdk2ag4sq8Nx2TZqDiykWDEj-t8o7RG29uN-Xh8gSPwWd-DKVQ9ybTUCSG14gG&_nc_ohc=7K891a-G-OAQ7kNvwFG_jp9&_nc_oc=AdpVdSWlxPT3klaHFjVGfkUGF0zj22eZiT1xpCiRaHiL6QJVAaK_jLhVoX1MQyys9n0&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=l3jNI80t6hob5EXpR58tyw&_nc_ss=7b2a8&oh=00_AQAotYTZbGBf04Ytm1-daqJTqMEPP_x-k1X8ikfkmsrEVA&oe=6A6D4367');">
                     <div class="slide-content"><h2 data-i18n="slide_3_title">صيانة ودعم فني على مدار الساعة</h2></div>
                 </div>
+                <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض الوكلاء وشهادات التقدير</title>
+    <style>
+        /* تنسيق عام لشبكة الصور */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* تنسيق المربع الحاضن للصورة */
+        .gallery-item {
+            width: 100%;
+            height: 200px; /* يجعل المربع ثابت الأبعاد */
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        /* تنسيق الصورة داخل المربع */
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* لضمان ظهور الصورة بالكامل داخل المربع بدون قص */
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        /* نافذة العرض الكبيرة (Lightbox) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .lightbox .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="text-align: center; margin-top: 30px;">وكلاؤنا وشهادات التقدير</h2>
+
+    <!-- معرض الصور المربعة -->
+    <div class="gallery-container">
+        <!-- الصورة الأولى -->
+        <div class="gallery-item" onclick="openLightbox('images/cert1.jpg')">
+            <img src="https://scontent.fcai19-2.fna.fbcdn.net/v/t51.82787-15/752838679_18415436563148748_1034128723220752883_n.jpg?stp=dst-jpg_tt6&cstp=mx857x1140&ctp=s590x590&_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHCGiXEPOAev84mpWRf5KEhOFuSGkT-GCk4W5IaRP4YKTVTQmmjCxWL3oUHzoFksQVZK65mQlulhDu_0chN4tZC&_nc_ohc=sZV0VuB-ciwQ7kNvwGSKUr7&_nc_oc=AdrzWiAz3hJ5rQyVKE3jQeWZXbbKWWrBjD-zoRaTwlPlEIWwEBLjyg3KGwuQ2np0OUk&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=bEMUpsEVMMXOvU-HNydvmA&_nc_ss=7b2a8&oh=00_AQCojJMtS8-zx-ee1v7wO4pkdjEHPzpxfeROfDtfSQ3AYQ&oe=6A6D3C76" alt="شهادة تقدير 1">
+        </div>
+        
+        <!-- الصورة الثانية -->
+        <div class="gallery-item" onclick="openLightbox('images/agent1.png')">
+            <img src="images/agent1.png" alt="شعار الوكيل 1">
+        </div>
+
+        <!-- يمكنك تكرار الكود التالي لكل صورة إضافية -->
+        <div class="gallery-item" onclick="openLightbox('images/cert2.jpg')">
+            <img src="images/cert2.jpg" alt="شهادة تقدير 2">
+        </div>
+    </div>
+
+    <!-- نافذة تكبير الصورة (تفتح عند النقر) -->
+    <div id="myLightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-btn">&times;</span>
+        <img id="lightboxImg" src="" alt="صورة مكبرة">
+    </div>
+
+    <script>
+        // دالة فتح الصورة المكبرة
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('myLightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            lightboxImg.src = imageSrc;
+            lightbox.style.display = 'flex';
+        }
+
+        // دالة إغلاق النافذة
+        function closeLightbox() {
+            document.getElementById('myLightbox').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
             </div>
 
             <div class="stats-container">
@@ -870,12 +998,22 @@
             </div>
         </div>
 
-        <!-- 2. صفحة المكن -->
+        <!-- 2. صفحة المكن (مضاف إليها بانر الصور المتحركة كل 3 ثوانٍ في الصفحة الأولى للـ 5 أنواع) -->
         <div id="videos" class="page">
+            
+            <!-- المستوى الأول: أنواع المكن الـ 5 الرئيسية + بانر المتحرك كل 3 ثواني -->
             <div id="cat-level-1" class="machine-section active">
+                
+                <!-- البنر المتحرك كل 3 ثواني في الصفحة الأولى للماكينات -->
                 <div class="slideshow-container" id="mainMachinesBanner">
                     <div class="slide active" style="background-image: url('https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-6/643717536_122252975474188486_6651397221300364705_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x938&ctp=s590x590&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHpARaGL-lpBd8gNIA6mKiJvevSfxVIzwm969J_FUjPCUcxOv-1lELSBSkt5OO0Fiz2-NU3OKCTcamfbm1GOivf&_nc_ohc=Kn_JA4UpjKUQ7kNvwGG_JBl&_nc_oc=AdrYDSWdvfHma76faUBv5_HoIFuIzZ8GzZr-YWV3uonbvJhSIuzrG6covO07JSsi5EU&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=ANkc-RyVcRvUQ5X2K4-BIg&_nc_ss=7b2a8&oh=00_AQC3nVdGpG576tkukSW7mjddFNxWJimQAntJaIbeu5ntbA&oe=6A6D5570');">
                         <div class="slide-content"><h2>بانر ماكينات برو تيك الاحترافية - الجودة أولاً</h2></div>
+                    </div>
+                    <div class="slide" style="background-image: url('https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-6/631898752_10163792381227556_1937286974616996084_n.jpg?stp=c0.106.960.960a_dst-jpg_tt6&cstp=mx960x960&ctp=s206x206&_nc_cat=109&ccb=1-7&_nc_sid=50ad20&_nc_eui2=AeFXsieMvwNOqr-9CIh_kjrOmOjLvkaYT9GY6Mu-RphP0QKmdFHi6Vt6LXYf3Anxng_bbbGZ9WpGDfcwIgNZapRn&_nc_ohc=Uv7UeYgrUR4Q7kNvwGrurh_&_nc_oc=AdrXkWm8Jxlo7ox2k1KTiPdf-NnbKZUJeBB_lCfHHEW9Gs65Cs-lWqJrR0yju8GOwms&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=QXLAjTK0TiXzy8YU09sWgA&_nc_ss=7b2a8&oh=00_AQBwc-mcCmMnTFpcD9WoVE53s5uzw7gfLdKPrx6K7lx0Cw&oe=6A6D583A');">
+                        <div class="slide-content"><h2>عروض خاصة على خطوط الإنتاج والتركيب</h2></div>
+                    </div>
+                    <div class="slide" style="background-image: url('https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-6/604762204_10163605670752556_7221208194103086024_n.jpg?stp=c294.0.1080.1080a_dst-jpg_tt6&cstp=mx1080x1080&ctp=s206x206&_nc_cat=106&ccb=1-7&_nc_sid=714c7a&_nc_eui2=AeFOg2uzFRoFdqUU2bAgt8CVlWATSRECHtqVYBNJEQIe2nMXMNyQyfBgYh7CJYHVgQVEQDpiuObknPJkxuVDFqkK&_nc_ohc=B50DGIn0RgoQ7kNvwFv3vqx&_nc_oc=AdqhbbT78NUq-8mFXRvW929aIO08D8v6uRjGaSqWgPyvSv5IXRsR8XUuPGMgejjRKd0&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=LvurE2kKX3GsxBSZ3Kaiqg&_nc_ss=7b2a8&oh=00_AQA7bSUbrBHLQlEhaQbpOVOqkO6VnfLyKGlRHlLBHBYbeQ&oe=6A6D6134');">
+                        <div class="slide-content"><h2>ضمان شامل ودعم فني معتمد</h2></div>
                     </div>
                 </div>
 
@@ -906,60 +1044,724 @@
                         <div class="explore-badge"><i class="fa-solid fa-hand-pointer"></i> استعرض الموديلات</div>
                     </div>
                     <div class="machine-card" onclick="openMachineCategory('trelluter')">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZz9Zz9Zz9Zz9Zz9Zz9Zz9Zz9Zz9Zz9Zz9Zz9&s=10" alt="Trelluter Printing Machine">
+                        <img src="data:image/jpeg;base64,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" alt="Trelluter Printing Machine">
                         <h3>ماكينات تريلوتر</h3>
                         <p>دقة متناهية وحلول هندسية متكاملة للطباعة</p>
                         <div class="explore-badge"><i class="fa-solid fa-hand-pointer"></i> استعرض الموديلات</div>
                     </div>
                 </div>
             </div>
+
+            <!-- المستوى الثاني: تفاريع الـ UV -->
+            <div id="cat-uv" class="machine-section">
+                <button class="back-btn" onclick="backToMainCat()"><i class="fa-solid fa-arrow-right"></i> الرجوع للرئيسية</button>
+                
+                <div class="sub-banner-details-wrapper">
+                    <div class="sub-slideshow-container" id="subBanner-uv">
+                        <div class="sub-slide active" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="sub-slide" style="background-image: url('https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="animated-details-box">
+                        <h3>تفاصيل ماكينات UV</h3>
+                        <p><b>طبيعة الطباعة:</b> طباعة مباشرة بجودة فائقة على الأسطح الصلبة والمرنة.<br><b>المقاسات:</b> متوفرة بمقاسات متعددة (من A3 وحتى 3×4 متر).<br><b>المميزات:</b> ثبات عالي للأحبار ومقاومة للعوامل الجوية.</p>
+                    </div>
+                </div>
+
+                <h2 style="font-size: 18px; margin-bottom: 15px;">أنواع ماكينات الـ UV الـ 5 الفرعية</h2>
+                <div class="machine-grid">
+                    <div class="machine-card" onclick="openFlatbedSizes()">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb-LT_WhfFrT3YVfB3F9FGoaR4gl6kEwNqkladnqBDig&s=10" alt="Flatbed UV">
+                        <h3>1. فلات بَد (Flatbed)</h3>
+                        <p>طباعة مباشرة على الأسطح المسطحة (يحتوي على 6 مقاسات تفصيلية)</p>
+                        <div class="explore-badge"><i class="fa-solid fa-hand-pointer"></i> عرض المقاسات الـ 6</div>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('رول تو رول UV')">
+                        <img src="data:image/jpeg;base64,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TTE7n+5lJZ09Y2NrXt+bikibI8Zg43BxszzZn9XYuj02rwjaGNMQa0ANHU0VgBsAA2BZpjAAA0AAAAAAAADIAAbApTZpivkbyw+7R86j5F8sPuzOdZZFFYn5DH6H3dvSVJ0C39D7u3pLMIgwvW+39D7uOkh1fb+h93/rWaRBhet1ne0/u/8AWnW5H4Om5aUdNZpEGE63I/B0nug6ah2rcZ/F0nug6aziIMCdWI9m90nug6apOqsXg6T3QdNbAiDX+tWLwVJ7o3pqetaLwNGf3NvSWfRBgRqxF4Ci9zHTUHVaE7YKH3MdNZ9EGtVWp0L2lphogD3KRzTyObKCOQrkevupc1FOZgA6le4YCzfMEZIAwPDnOLbm9iXEG9tuS+gVTLE17S17Q5rgQ5rgC1wO0EHIhXY+YIZHFoDiSG3DBxNBNyByknlXXtynR1XA6bf43MhfFG6K7wQ52di0BxtwTnkPo9xYWn3KJ3STY54omb6/esLXPxMLiW5Yhhs3CLZ8fL0XVPQhoqVsBmMtnE4iC0C9uC1pJs0efjVtSMzdQiLKqkREEKFKhAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQVIiIIUKVCAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgqREQQoUqEBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERBUiIghQpUICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiCpERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREEoiIP/2Q==" alt="Roll to Roll UV">
+                        <h3>2. رول تو رول (Roll to Roll)</h3>
+                        <p>المخصصة للرولات والخامات المرنة بتقنية UV</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('هايبيرد UV')">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSko3Sbri11ZdeRFxQkCaKVW-VWTNkLFt_uyXFyqjZ7Cw&s=10" alt="Hybrid UV">
+                        <h3>3. هايبرد (Hybrid)</h3>
+                        <p>تجمع بين ميزات الفلات بَد والرول معاً بكفاءة</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('موديلات TDF')">
+                        <img src="data:image/jpeg;base64,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" alt="TDF UV">
+                        <h3>4. موديلات TDF</h3>
+                        <p>حلول تكنولوجية مخصصة للطباعة الصناعية</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('موديلات 1×7')">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK30nMj3eYM3fx4h5iT80Bd0W62ougeFiaUH7YGi1VXA&s=10" alt="1x7 UV">
+                        <h3>5. موديلات 1×7</h3>
+                        <p>الأداء الفائق والتوزيع المتوازن لأحبار اليو في</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المستوى الثالث: مقاسات الفلات بَد -->
+            <div id="cat-flatbed" class="machine-section">
+                <button class="back-btn" onclick="openMachineCategory('uv')"><i class="fa-solid fa-arrow-right"></i> الرجوع لأنواع UV</button>
+                <button class="btn-360" onclick="openModal360('ماكينات فلات بَد')"><i class="fa-solid fa-cube"></i> معاينة 360 درجة</button>
+                <h2 style="font-size: 18px; margin-bottom: 15px;">مقاسات ماكينات فلات بَد (Flatbed) التفصيلية</h2>
+                <div class="machine-grid">
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس A3')">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Flatbed A3">
+                        <h3>مقاس A3</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس A3</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس 60×40')">
+                        <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=500&q=80" alt="Flatbed 60x40">
+                        <h3>مقاس 60×40</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس 60×40</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس 60×90')">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80" alt="Flatbed 60x90">
+                        <h3>مقاس 60×90</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس 60×90</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس 130×250')">
+                        <img src="https://images.unsplash.com/photo-1581092218359-5ca1b4cf53a2?auto=format&fit=crop&w=500&q=80" alt="Flatbed 130x250">
+                        <h3>مقاس 130×250</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس 130×250</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس 2×3')">
+                        <img src="https://images.unsplash.com/photo-1581092543799-d421e90145c2?auto=format&fit=crop&w=500&q=80" alt="Flatbed 2x3">
+                        <h3>مقاس 2×3 متر</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس 2×3 متر</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('فلات بَد مقاس 3×4')">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Flatbed 3x4">
+                        <h3>مقاس 3×4 متر</h3>
+                        <p>معاينة الصور والفيديوهات الخاصة بمقاس 3×4 متر</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أقسام أخرى -->
+            <div id="cat-other" class="machine-section">
+                <button class="back-btn" onclick="backToMainCat()"><i class="fa-solid fa-arrow-right"></i> الرجوع للرئيسية</button>
+                
+                <div class="sub-banner-details-wrapper">
+                    <div class="sub-slideshow-container" id="subBanner-other">
+                        <div class="sub-slide active" style="background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="sub-slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="animated-details-box">
+                        <h3 id="other-box-title">تفاصيل القسم الهندسي</h3>
+                        <p><b>الاستخدامات:</b> مصممة خصيصاً للإنتاج الضخم وإعلانات الشوارع الكبرى.<br><b>المواصفات:</b> سرعة عالية، ثبات ألوان مذهل، ومكونات أصلية معتمدة.</p>
+                    </div>
+                </div>
+
+                <button class="btn-360" onclick="openModal360('هذا القسم')"><i class="fa-solid fa-cube"></i> معاينة 360 درجة</button>
+                <h2 style="font-size: 18px; margin-bottom: 15px;" id="other-section-title">موديلات القسم</h2>
+                <div class="machine-grid" id="other-section-grid"></div>
+            </div>
+
+            <!-- رول تو رول -->
+            <div id="cat-roll-types" class="machine-section">
+                <button class="back-btn" onclick="backToMainCat()"><i class="fa-solid fa-arrow-right"></i> الرجوع للرئيسية</button>
+                
+                <div class="sub-banner-details-wrapper">
+                    <div class="sub-slideshow-container" id="subBanner-roll">
+                        <div class="sub-slide active" style="background-image: url('https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80');"></div>
+                        <div class="sub-slide" style="background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="animated-details-box">
+                        <h3>تفاصيل ماكينات رول تو رول</h3>
+                        <p><b>الغرض:</b> مخصصة لطباعة الفينيل، البانر، الفليكس، والكانفاس.<br><b>المقاسات المتاحة:</b> 160 سم، 220 سم، 320 سم، وعملاق 5 متر.<br><b>المميزات:</b> نظام تغذية سحب دقيق وأنظمة تجفيف متطورة.</p>
+                    </div>
+                </div>
+
+                <button class="btn-360" onclick="openModal360('ماكينات رول تو رول')"><i class="fa-solid fa-cube"></i> معاينة 360 درجة</button>
+                <h2 style="font-size: 18px; margin-bottom: 15px;">أنواع ماكينات رول تو رول (Roll to Roll)</h2>
+                <div class="machine-grid">
+                    <div class="machine-card" onclick="openDetailView('رول تو رول 160')">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Roll 160">
+                        <h3>مقاس 160 سم</h3>
+                        <p>الماكينة المثالية للطباعة بعرض 1.6 متر</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('رول تو رول 220')">
+                        <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=500&q=80" alt="Roll 220">
+                        <h3>مقاس 220 سم</h3>
+                        <p>أداء مستقر بعرض 2.2 متر</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('رول تو رول 320')">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80" alt="Roll 320">
+                        <h3>مقاس 320 سم</h3>
+                        <p>الماكينة الأوسع بعرض 3.2 متر</p>
+                    </div>
+                    <div class="machine-card" onclick="openDetailView('رول تو رول 5M')">
+                        <img src="https://images.unsplash.com/photo-1581092218359-5ca1b4cf53a2?auto=format&fit=crop&w=500&q=80" alt="Roll 5M">
+                        <h3>مقاس 5M (5 متر)</h3>
+                        <p>العملاق الإنتاجي للطباعة بعرض 5 أمتار</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معرض التفاصيل -->
+            <div id="detail-media-page" class="machine-section">
+                <button class="back-btn" onclick="goBackFromDetail()"><i class="fa-solid fa-arrow-right"></i> الرجوع</button>
+                <button class="btn-360" onclick="openModal360(currentDetailTitle)"><i class="fa-solid fa-cube"></i> معاينة 360 درجة</button>
+                <h2 style="font-size: 18px; margin-bottom: 15px;" id="detail-page-title">معرض الصور والفيديوهات</h2>
+                <div class="media-showcase-grid">
+                    <div class="media-box">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Photo 1">
+                        <p>صورة توضيحية من الزاوية الأمامية</p>
+                    </div>
+                    <div class="media-box">
+                        <video controls poster="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=500&q=80">
+                            <source src="" type="video/mp4">
+                        </video>
+                        <p>فيديو توضيحي لسرعة التشغيل</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. صفحة متجر الأحبار الجديدة (تسبق صفحة الإعدادات) -->
+        <div id="inks" class="page">
+            <h2 style="font-size: 20px; margin-bottom: 5px; color: var(--primary-color);">متجر الأحبار الاحترافية</h2>
+            <p style="font-size: 13px; margin-bottom: 20px; opacity: 0.8;">اختر أحبار الطباعة الأصلية المناسبة لعملك بأفضل الأسعار:</p>
+            
+            <div class="ink-store-container">
+                <div class="ink-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmNaA4QHFU9unyVDq6l1U-RARUB6ebWskqrWak5-Ob_Q&s=10" alt="حبر UV أصلي">
+                    <h3>حبر UV أصلي عالي الثبات</h3>
+                    <div class="ink-price">450 ج.م</div>
+                    <button class="btn-action" onclick="viewInkDetails('حبر UV أصلي', 450, 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80', 'أحبار اليو في الأصلية تتميز بمقاومة قصوى للعوامل الجوية وثبات لا يُقارن على الأسطح الصلبة والمرنة.')">التفاصيل</button>
+                    <button class="btn-action" onclick="addToCart('حبر UV أصلي', 450)">إضافة للسلة</button>
+                </div>
+                <div class="ink-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfFhj8uIgJy7UesIKgl6zr3SE69KhXNrRAmPrOJVIn8Q&s=10" alt="حبر إيكو سولفنت">
+                    <h3>حبر إيكو سولفنت ناعم</h3>
+                    <div class="ink-price">380 ج.م</div>
+                    <button class="btn-action" onclick="viewInkDetails('حبر إيكو سولفنت', 380, 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=500&q=80', 'أحبار إيكو سولفنت الصديقة للبيئة مخصصة لرؤوس الطباعة الحديثة وتعطي تدرجات ألوان مذهلة.')">التفاصيل</button>
+                    <button class="btn-action" onclick="addToCart('حبر إيكو سولفنت', 380)">إضافة للسلة</button>
+                </div>
+                <div class="ink-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFHa4MfhV04MgZtlJZ3ZjvozIOLbNlSubBg8ossK7Ecw&s" alt="حبر أوت دور عملاق">
+                    <h3>حبر أوت دور مقاوم للشمس</h3>
+                    <div class="ink-price">320 ج.م</div>
+                    <button class="btn-action" onclick="viewInkDetails('حبر أوت دور', 320, 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80', 'مصمم خصيصاً للافتات الشوارع الكبرى واللوحات الإعلانية التي تعرض لأشعة الشمس المباشرة لفترات طويلة.')">التفاصيل</button>
+                    <button class="btn-action" onclick="addToCart('حبر أوت دور', 320)">إضافة للسلة</button>
+                </div>
+                <div class="ink-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVglrpPQ7ttrUN4k4Or444AZ1C0cOwzgJTsgV_IWB8og&s=10" alt="حبر تريلوتر صناعي">
+                    <h3>حبر تريلوتر صناعي فائق السرعة</h3>
+                    <div class="ink-price">500 ج.م</div>
+                    <button class="btn-action" onclick="viewInkDetails('حبر تريلوتر صناعي', 500, 'https://images.unsplash.com/photo-1581092218359-5ca1b4cf53a2?auto=format&fit=crop&w=500&q=80', 'الحبر الأمثل لخطوط الإنتاج السريعة والعمل المستمر الشاق على مدار الساعة بدون توقف.')">التفاصيل</button>
+                    <button class="btn-action" onclick="addToCart('حبر تريلوتر صناعي', 500)">إضافة للسلة</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة تفاصيل حبر منفصلة -->
+        <div id="ink-detail-page" class="page">
+            <button class="back-btn" onclick="switchPage('inks')"><i class="fa-solid fa-arrow-right"></i> الرجوع للمتجر</button>
+            <div class="settings-box" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px;">
+                    <img id="detail-ink-img" src="" alt="Ink" style="width: 100%; height: 240px; object-fit: cover; border-radius: 8px;">
+                </div>
+                <div style="flex: 2; min-width: 280px;">
+                    <h2 id="detail-ink-title" style="color: var(--primary-color); margin-bottom: 10px;"></h2>
+                    <p id="detail-ink-price" style="font-size: 18px; color: var(--secondary-color); font-weight: bold; margin-bottom: 15px;"></p>
+                    <p id="detail-ink-desc" style="font-size: 14px; line-height: 1.6; margin-bottom: 20px;"></p>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-weight: bold; font-size: 13px;">فيديو توضيحي لجودة الحبر:</label>
+                        <video controls style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-top: 5px;" poster="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <button class="btn-action" onclick="addCurrentInkToCartFromDetail()" style="padding: 10px 20px; font-size: 15px;"><i class="fa-solid fa-cart-plus"></i> إضافة للسلة</button>
+                    <button class="btn-action" onclick="buyNowDirect()" style="background-color: var(--secondary-color); padding: 10px 20px; font-size: 15px;"><i class="fa-solid fa-bag-shopping"></i> شراء الآن</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. فريق العمل -->
+        <div id="team" class="page">
+            <h2 style="text-align: center; font-size: 18px;" data-i18n="team_heading">نخبة المهندسين في شركة برو تيك</h2>
+            <div class="engineers-grid">
+                <div class="engineer-card">
+                    <img src="https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-1/701084369_10164032353622567_9006676579339966799_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x1277&ctp=s200x200&_nc_cat=104&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeGe8g6ExxJv-PxB8yQkEvJhbafnsCkJHkFtp-ewKQkeQQW17HfBFBPLGuHC0HiQiOLre6G4SNEEFqR36ezb8R5C&_nc_ohc=8oVkWsLx7ZEQ7kNvwGtl5Wt&_nc_oc=AdqGtjZFg4k_yeOnRX2Ld27o9FP2LKqYHVDxMiwm-BCNNsAKLAqTxcP7Nu4cDpI6OX8&_nc_zt=24&_nc_ht=scontent.fcai19-2.fna&_nc_gid=uLMZjoVHvNGAigxl5mcD0A&_nc_ss=7b2a8&oh=00_AQDEv-dEBvG5h0Yqy07zRb8i1_jWDvG-DZcp-nWd6S4klw&oe=6A6D5178" alt="Engineer 1">
+                    <h3>م. وائل غنيم</h3>
+                    <div class="role" data-i18n="eng_role_1">صاحب ومدير شركة بروتك لماكينات الدعايه والاعلان</div>
+                    <p data-i18n="eng_bio_1">communication &electronics (Helwan University faculty of engineering)‎‏</p>
+                </div>
+                <div class="engineer-card">
+                    <img src="https://scontent.fcai19-2.fna.fbcdn.net/v/t39.30808-6/545548375_10163121460687556_3676511152574251884_n.jpg?stp=dst-jpg_tt6&cstp=mx780x785&ctp=s780x785&_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeG4ywq7lHQRaf2hSKq2GEoUlWn2-evxMZyVafb56_ExnHGMH1AEtFybbLM47hSzdvkQxM0Yj5kdCNDS2nSNAGfB&_nc_ohc=bnZDbDK7v5QQ7kNvwGyj-HY&_nc_oc=AdoqE1qjRAbGWCAn0fyepEiY29T2qj07mZWgXxVgiPIAx-b9lfpN4v130GvWBX6mxaM&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=jETv-zaqAq6-11mBJFpY-Q&_nc_ss=7b2a8&oh=00_AQDn8BfqyJRsWRygaXi4RORusw7j_Xj5z8QMJCT6pkLKpQ&oe=6A6D58FA" alt="Engineer 2">
+                    <h3>م. محمد النبوي</h3>
+                    <div class="role" data-i18n="eng_role_2">خبير الأنظمة الهندسية والدعم الفني</div>
+                    <p data-i18n="eng_bio_2">متخصص في إدارة البنية التحتية الهندسية، وفحص الجودة بكفاءة عالية.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. الإعدادات -->
+        <div id="settings" class="page">
+            <div class="settings-box">
+                <h2 style="font-size: 18px;" data-i18n="settings_heading">إعدادات الموقع</h2>
+                <br>
+                <div class="form-group">
+                    <label data-i18n="label_lang">لغة الموقع / Language</label>
+                    <select id="langSelect" onchange="changeLanguage(this.value)">
+                        <option value="ar">العربية (Arabic)</option>
+                        <option value="en">English (الإنجليزية)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="label_mode">وضع الموقع / Theme Mode</label>
+                    <select id="themeSelect" onchange="changeTheme(this.value)">
+                        <option value="auto">الوضع التلقائي (حسب الوقت ☀️🌙)</option>
+                        <option value="light">الوضع الفاتح (Light)</option>
+                        <option value="dark">الوضع الداكن (Dark)</option>
+                        <option value="blue">الوضع الأزرق التقني (Blue Tech)</option>
+                        <option value="neon">وضع النيون العصري (Neon Cyber)</option>
+                        <option value="emerald">وضع الزمردي الأخضر (Emerald Green)</option>
+                        <option value="gold">الوضع الذهبي الفاخر (Luxury Gold)</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- وسائل التواصل الثابتة -->
-    <div class="social-bar">
-        <a href="https://wa.me/" target="_blank" class="social-icon wa"><i class="fa-brands fa-whatsapp"></i></a>
-        <a href="mailto:info@protech.com" class="social-icon email-icon"><i class="fa-solid fa-envelope"></i></a>
-        <a href="https://facebook.com" target="_blank" class="social-icon fb"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="https://instagram.com" target="_blank" class="social-icon insta"><i class="fa-brands fa-instagram"></i></a>
+    <!-- نافذة سلة الشراء وإتمام الطلب (تشبه Excel) -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <button class="close-modal" onclick="closeCartModal()">&times;</button>
+            <h3 style="color: var(--primary-color); margin-bottom: 10px;"><i class="fa-solid fa-file-excel"></i> سلة الشراء (تقارير الطلب)</h3>
+            <p style="font-size: 12px; opacity: 0.8; margin-bottom: 15px;">مراجعة المنتجات والكميات بتنسيق جدول الاكسيل:</p>
+            
+            <div id="cart-table-container">
+                <!-- جدول الاكسيل يعبأ ديناميكياً -->
+            </div>
+
+            <div class="customer-form" style="margin-top: 20px;">
+                <h4 style="font-size: 15px; margin-bottom: 10px; color: var(--primary-color);">بيانات العميل للإرسال الفوري:</h4>
+                <input type="text" id="custName" placeholder="اسم العميل الكريم">
+                <input type="text" id="custPhone" placeholder="رقم الهاتف أو الجوال">
+                <button class="btn-action" onclick="submitOrderToWhatsApp()" style="width: 100%; padding: 12px; font-size: 15px; background-color: #25d366;"><i class="fa-brands fa-whatsapp"></i> إتمام الشراء وإرسال الطلب لواتساب الشركة</button>
+            </div>
+        </div>
     </div>
 
-    <!-- زر الاستشارة الفنية المنبثقة -->
-    <button class="consultation-trigger" onclick="openConsultationModal()"><i class="fa-solid fa-headset"></i> استشارة فنية</button>
+    <!-- نافذة تأكيد الطلب الناجحة -->
+    <div class="cart-modal" id="successModal">
+        <div class="cart-modal-content" style="text-align: center;">
+            <button class="close-modal" onclick="closeSuccessModal()">&times;</button>
+            <div style="font-size: 45px; color: #25d366; margin-bottom: 10px;"><i class="fa-solid fa-circle-check"></i></div>
+            <h3 style="color: var(--primary-color); margin-bottom: 10px;">تم إرسال الطلب بنجاح!</h3>
+            
+            <!-- صورة تمثيلية بتصميم الاكسيل كما طلبْت -->
+            <div style="background: rgba(0,102,204,0.1); border: 1px dashed var(--primary-color); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <i class="fa-solid fa-table fa-2x" style="color: var(--primary-color); margin-bottom: 5px;"></i>
+                <p style="font-size: 13px; font-weight: bold;">[تقرير Excel مرسل لشركة ProTech]</p>
+                <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">تم تسجيل تفاصيل المنتجات والأسماء وإرسالها للرقم 01020008299</p>
+            </div>
 
-    <div class="consultation-modal" id="consultationModal">
+            <p style="font-size: 15px; font-weight: bold; color: var(--secondary-color); margin: 15px 0;">سوف يتم التواصل معكم في أقرب وقت</p>
+            <p style="font-size: 12px; opacity: 0.8;">المدة المقترحة للرد: خلال 10 إلى 30 دقيقة عمل.</p>
+            <button class="btn-action" onclick="closeSuccessModal()" style="margin-top: 15px; padding: 8px 20px;">حسناً</button>
+        </div>
+    </div>
+
+    <!-- نافذة معاينة 360 درجة -->
+    <div class="modal-360" id="modal360">
+        <div class="modal-360-content">
+            <button class="close-modal" onclick="closeModal360()">&times;</button>
+            <h3 id="modal-360-title" style="color: var(--primary-color); margin-bottom: 5px;">معاينة 360 درجة</h3>
+            <p style="font-size: 12px; opacity: 0.8;">اسحب بالفأرة أو الأصبع لاستعراض الماكينة من جميع الزوايا</p>
+            <div class="viewer-simulation">
+                <i class="fa-solid fa-arrows-spin fa-2x fa-spin" style="margin-left: 10px;"></i>
+                <span>جارِ تحميل عارض 360 درجة...</span>
+            </div>
+            <button onclick="closeModal360()" style="background-color: var(--primary-color); color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">إغلاق المعاينة</button>
+        </div>
+    </div>
+
+    <!-- زر الاستشارة الفنية -->
+    <button class="consultation-trigger" onclick="toggleModal(true)" data-i18n="consult_btn">تحتاج استشارة فنية؟</button>
+
+    <div class="consultation-modal" id="consultModal">
         <div class="consultation-content">
-            <button class="close-modal" onclick="closeConsultationModal()">&times;</button>
-            <h3>طلب استشارة فنية</h3>
-            <p>تواصل مع فريق الهندسة والدعم الفني مباشرة عبر الواتساب للإجابة عن استفساراتك.</p>
-            <a href="https://wa.me/" target="_blank"><i class="fa-brands fa-whatsapp"></i> تواصل عبر الواتساب</a>
+            <button class="close-modal" onclick="toggleModal(false)">&times;</button>
+            <h3 data-i18n="modal_title">تواصل مباشر مع المهندسين</h3>
+            <p data-i18n="modal_desc">اختر المهندس المناسب لاستشارتك الفنية الفورية:</p>
+            <a href="https://wa.me/2001020008299" target="_blank"><i class="fa-brands fa-whatsapp"></i> م. وائل غنيم (صيانة وبرمجة)</a>
+            <a href="https://wa.me/2001092201111" target="_blank"><i class="fa-brands fa-whatsapp"></i> م. محمد النبوي (الدعم الفني)</a>
         </div>
+    </div>
+
+    <!-- التواصل الثابت -->
+    <div class="social-bar">
+        <a href="https://wa.me/2001020008299" target="_blank" class="social-icon wa" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:your-email@gmail.com" class="social-icon email-icon" title="Gmail"><i class="fa-solid fa-envelope"></i></a>
+        <a href="https://www.facebook.com/share/18vmJG7X55/" target="_blank" class="social-icon fb" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://instagram.com" target="_blank" class="social-icon insta" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
     </div>
 
     <script>
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.getElementById('nav-' + pageId + '-btn')?.classList.add('active');
+        // السلايدشو الرئيسي والبانر الأول للمكن (كل 3 ثواني)
+        function initAllSliders() {
+            // السلايدشو الرئيسي
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('#home .slide');
+            if(slides.length > 0) {
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 3000);
+            }
+
+            // بانر صفحة المكن الأول (كل 3 ثواني)
+            let mainMachineSlideIdx = 0;
+            const mainMachineSlides = document.querySelectorAll('#mainMachinesBanner .slide');
+            if(mainMachineSlides.length > 0) {
+                setInterval(() => {
+                    mainMachineSlides[mainMachineSlideIdx].classList.remove('active');
+                    mainMachineSlideIdx = (mainMachineSlideIdx + 1) % mainMachineSlides.length;
+                    mainMachineSlides[mainMachineSlideIdx].classList.add('active');
+                }, 3000);
+            }
+        }
+        initAllSliders();
+
+        // سلايدشو البنرات الفرعية
+        function initSubSliders() {
+            ['subBanner-uv', 'subBanner-roll', 'subBanner-other'].forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if(container) {
+                    const subSlides = container.querySelectorAll('.sub-slide');
+                    let idx = 0;
+                    setInterval(() => {
+                        subSlides[idx].classList.remove('active');
+                        idx = (idx + 1) % subSlides.length;
+                        subSlides[idx].classList.add('active');
+                    }, 4000);
+                }
+            });
+        }
+        initSubSliders();
+
+        // نظام السلة وإدارة منتجات الأحبار
+        let cart = [];
+        let currentSelectedInk = { name: '', price: 0, image: '', desc: '' };
+
+        function viewInkDetails(name, price, image, desc) {
+            currentSelectedInk = { name, price, image, desc };
+            document.getElementById('detail-ink-title').innerText = name;
+            document.getElementById('detail-ink-price').innerText = price + " ج.م";
+            document.getElementById('detail-ink-img').src = image;
+            document.getElementById('detail-ink-desc').innerText = desc;
+            switchPage('ink-detail-page');
+        }
+
+        function addToCart(name, price) {
+            let found = cart.find(item => item.name === name);
+            if(found) {
+                found.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartCount();
+            alert("تم إضافة الحبر للسلة بنجاح!");
+        }
+
+        function addCurrentInkToCartFromDetail() {
+            addToCart(currentSelectedInk.name, currentSelectedInk.price);
+        }
+
+        function buyNowDirect() {
+            addToCart(currentSelectedInk.name, currentSelectedInk.price);
+            openCartModal();
+        }
+
+        function updateCartCount() {
+            let totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalCount;
         }
 
         function openCartModal() {
-            // منطق السلة
+            renderCartTable();
+            document.getElementById('cartModal').style.display = 'flex';
         }
 
-        function openConsultationModal() {
-            document.getElementById('consultationModal').style.display = 'flex';
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = 'none';
         }
 
-        function closeConsultationModal() {
-            document.getElementById('consultationModal').style.display = 'none';
+        function renderCartTable() {
+            let container = document.getElementById('cart-table-container');
+            if(cart.length === 0) {
+                container.innerHTML = `<p style="text-align: center; padding: 20px; opacity: 0.7;">السلة فارغة حالياً.</p>`;
+                return;
+            }
+
+            let html = `
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            <th>النوع / المنتج</th>
+                            <th>السعر الفردي</th>
+                            <th>الكمية / العدد</th>
+                            <th>الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let grandTotal = 0;
+            cart.forEach(item => {
+                let total = item.price * item.qty;
+                grandTotal += total;
+                html += `
+                    <tr>
+                        <td><b>${item.name}</b></td>
+                        <td>${item.price} ج.م</td>
+                        <td>${item.qty}</td>
+                        <td><b>${total} ج.م</b></td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    <tr>
+                        <td colspan="3" style="text-align: left; font-weight: bold;">المبلغ الإجمالي الكلي:</td>
+                        <td><b style="color: var(--secondary-color);">${grandTotal} ج.م</b></td>
+                    </tr>
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = html;
+        }
+
+        function submitOrderToWhatsApp() {
+            let name = document.getElementById('custName').value.trim();
+            let phone = document.getElementById('custPhone').value.trim();
+
+            if(!name || !phone) {
+                alert("يرجى إدخال اسم العميل ورقم الهاتف لإتمام الطلب!");
+                return;
+            }
+
+            if(cart.length === 0) {
+                alert("السلة فارغة!");
+                return;
+            }
+
+            // تنسيق الرسالة على شكل جدول اكسيل منظم للواتساب
+            let message = `📊 *[تقرير طلب جديد - متجر ProTech]*\n\n`;
+            message += `👤 *اسم العميل:* ${name}\n`;
+            message += `📞 *رقم الهاتف:* ${phone}\n`;
+            message += `----------------------------------\n`;
+            message += `📋 *تفاصيل المنتجات (جدول Excel):*\n`;
+
+            let grandTotal = 0;
+            cart.forEach((item, index) => {
+                let total = item.price * item.qty;
+                grandTotal += total;
+                message += `${index + 1}. *النوع:* ${item.name} | *العدد:* ${item.qty} | *السعر:* ${item.price} ج.م | *الإجمالي:* ${total} ج.م\n`;
+            });
+
+            message += `----------------------------------\n`;
+            message += `💰 *الإجمالي الكلي:* ${grandTotal} ج.م\n`;
+            message += `⏱️ *المدة المقترحة للرد:* خلال 10 إلى 30 دقيقة\n`;
+            message += `✅ *الحالة:* بانتظار تأكيد الشركة`;
+
+            let encodedMessage = encodeURIComponent(message);
+            let whatsappUrl = `https://wa.me/2001020008299?text=${encodedMessage}`;
+
+            // فتح واتساب الشركة بالرقم المطلوب
+            window.open(whatsappUrl, '_blank');
+
+            // إغلاق سلة الشراء وإظهار رسالة النجاح
+            closeCartModal();
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // تفريغ السلة
+            cart = [];
+            updateCartCount();
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+            switchPage('home');
+        }
+
+        // التنقل بين صفحات الموقع الرئيسية
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.machine-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            if(pageId === 'videos') {
+                document.getElementById('videos').classList.add('active');
+                document.getElementById('cat-level-1').classList.add('active');
+                document.getElementById('nav-videos-btn').classList.add('active');
+            } else if(pageId === 'inks') {
+                document.getElementById('inks').classList.add('active');
+                document.getElementById('nav-inks-btn').classList.add('active');
+            } else {
+                document.getElementById(pageId).classList.add('active');
+                let btn = document.getElementById('nav-' + pageId + '-btn');
+                if(btn) btn.classList.add('active');
+            }
+        }
+
+        // إدارة أقسام المكن الداخلية
+        function hideAllMachineSections() {
+            document.querySelectorAll('.machine-section').forEach(sec => sec.classList.remove('active'));
+        }
+
+        function backToMainCat() {
+            hideAllMachineSections();
+            document.getElementById('cat-level-1').classList.add('active');
         }
 
         function openMachineCategory(cat) {
-            // الانتقال للأقسام الداخلية
+            hideAllMachineSections();
+            if(cat === 'uv') {
+                document.getElementById('cat-uv').classList.add('active');
+            } else if(cat === 'eco') {
+                document.getElementById('cat-roll-types').classList.add('active');
+            } else {
+                document.getElementById('cat-other').classList.add('active');
+                const titles = {
+                    outdoor: 'ماكينات أوت دور',
+                    limitless: 'ماكينات ليميتلس',
+                    trelluter: 'ماكينات تريلوتر'
+                };
+                document.getElementById('other-section-title').innerText = titles[cat];
+                document.getElementById('other-box-title').innerText = "تفاصيل " + titles[cat];
+                document.getElementById('other-section-grid').innerHTML = `
+                    <div class="machine-card" onclick="openDetailView('${titles[cat]} - موديل 1')">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=500&q=80" alt="Model">
+                        <h3>موديل قياسي احترافي</h3>
+                        <p>اضغط لاستعراض الصور والفيديوهات التفصيلية</p>
+                    </div>
+                `;
+            }
         }
+
+        function openFlatbedSizes() {
+            hideAllMachineSections();
+            document.getElementById('cat-flatbed').classList.add('active');
+        }
+
+        let currentDetailTitle = "الماكينة";
+
+        function openDetailView(title) {
+            currentDetailTitle = title;
+            hideAllMachineSections();
+            document.getElementById('detail-media-page').classList.add('active');
+            document.getElementById('detail-page-title').innerText = "معرض الصور والفيديوهات لـ: " + title;
+        }
+
+        function goBackFromDetail() {
+            hideAllMachineSections();
+            document.getElementById('cat-level-1').classList.add('active');
+        }
+
+        // عارض 360 درجة
+        function openModal360(title) {
+            document.getElementById('modal-360-title').innerText = "معاينة 360 درجة لـ: " + title;
+            document.getElementById('modal360').style.display = 'flex';
+        }
+
+        function closeModal360() {
+            document.getElementById('modal360').style.display = 'none';
+        }
+
+        function toggleModal(show) {
+            document.getElementById('consultModal').style.display = show ? 'flex' : 'none';
+        }
+
+        // إعدادات السمات واللغة
+        const translations = {
+            ar: {
+                nav_home: "الرئيسية",
+                nav_videos: "المكن",
+                nav_team: "الفريق",
+                nav_settings: "الإعدادات",
+                slide_1_title: "أحدث ماكينات الطباعة الرقمية",
+                slide_2_title: "جودة فائقة واعتمادية كاملة",
+                slide_3_title: "صيانة ودعم فني على مدار الساعة",
+                stat_1: "ماكينة تم تركيبها وصيانتها",
+                stat_2: "سنوات خبرة رائدة",
+                stat_3: "عميل راضٍ وشركاء نجاح",
+                team_heading: "نخبة المهندسين في شركة برو تيك",
+                eng_role_1: "استشاري صيانة وبرمجة ماكينات الطباعة",
+                eng_bio_1: "خبرة تزيد عن 10 سنوات في تركيب وصيانة البرمجيات الخاصة بالماكينات.",
+                eng_role_2: "خبير الأنظمة الهندسية والدعم الفني",
+                eng_bio_2: "متخصص في إدارة البنية التحتية الهندسية، وفحص الجودة بكفاءة عالية.",
+                settings_heading: "إعدادات الموقع",
+                label_lang: "لغة الموقع",
+                label_mode: "وضع الموقع",
+                consult_btn: "تحتاج استشارة فنية؟",
+                modal_title: "تواصل مباشر مع المهندسين",
+                modal_desc: "اختر المهندس المناسب لاستشارتك الفنية الفورية:"
+            },
+            en: {
+                nav_home: "Home",
+                nav_videos: "Machines",
+                nav_team: "Team",
+                nav_settings: "Settings",
+                slide_1_title: "Latest Digital Printing Machines",
+                slide_2_title: "Superior Quality & Full Reliability",
+                slide_3_title: "24/7 Maintenance & Technical Support",
+                stat_1: "Machines Installed & Maintained",
+                stat_2: "Years of Leading Experience",
+                stat_3: "Satisfied Clients & Partners",
+                team_heading: "ProTech Expert Engineers",
+                eng_role_1: "Printing Machines Maintenance & Programming Consultant",
+                eng_bio_1: "Over 10 years of experience in machinery software.",
+                eng_role_2: "Engineering Systems & Tech Support Expert",
+                eng_bio_2: "Specialized in engineering infrastructure and quality control.",
+                settings_heading: "Website Settings",
+                label_lang: "Website Language",
+                label_mode: "Theme Mode",
+                consult_btn: "Need Tech Support?",
+                modal_title: "Direct Contact with Engineers",
+                modal_desc: "Choose the right engineer for your instant technical consultation:"
+            }
+        };
+
+        function changeTheme(themeName) {
+            if (themeName === 'auto') {
+                const hour = new Date().getHours();
+                const autoTheme = (hour >= 18 || hour < 6) ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', autoTheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', themeName);
+            }
+            localStorage.setItem('protech_theme', themeName);
+        }
+
+        function changeLanguage(lang) {
+            document.documentElement.setAttribute('data-lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            localStorage.setItem('protech_lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+        }
+
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('protech_theme') || 'auto';
+            const savedLang = localStorage.getItem('protech_lang') || 'ar';
+            document.getElementById('themeSelect').value = savedTheme;
+            document.getElementById('langSelect').value = savedLang;
+            changeTheme(savedTheme);
+            changeLanguage(savedLang);
+        };
     </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </body>
 </html>
